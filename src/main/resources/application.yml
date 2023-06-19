@@ -1,0 +1,33 @@
+camel:
+  context:
+    name: quarkus-camel-example-rest-json
+  rest:
+    inline-routes: false
+
+quarkus:
+  datasource:
+    db-kind: h2
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+  kafka:
+    bootstrap:
+      servers: localhost:29092
+mp:
+  messaging:
+    outgoing:
+      users-out:
+        connector: smallrye-kafka
+        topic: user-out
+    incoming:
+      users-in:
+        connector: smallrye-kafka
+        key:
+          deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+        value:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        topic: user-in
+  log:
+    category:
+      "io.quarkus.category":
+        level: INFO

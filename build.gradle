@@ -1,0 +1,114 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "1.8.21"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.8.21"
+    id "org.jetbrains.kotlin.plugin.noarg" version "1.8.21"
+    id 'io.quarkus'
+    id 'jacoco'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    implementation'net.bytebuddy:byte-buddy:1.14.4'
+    testImplementation group: 'net.bytebuddy', name: 'byte-buddy-agent', version: '1.14.4'
+
+    testImplementation 'org.mockito:mockito-core:5.3.1'
+    testImplementation 'org.mockito:mockito-inline:5+'
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+
+    implementation("io.quarkus:quarkus-smallrye-reactive-messaging-kafka")
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.+"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2"
+
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:quarkus-camel-bom:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-openshift'
+    implementation 'io.quarkus:quarkus-hibernate-orm'
+    implementation 'io.quarkus:quarkus-kafka-client'
+    implementation 'io.quarkus:quarkus-resteasy-multipart'
+    implementation 'io.quarkus:quarkus-config-yaml'
+    implementation 'io.quarkus:quarkus-kubernetes'
+    implementation 'io.quarkus:quarkus-jdbc-postgresql'
+    implementation 'io.quarkus:quarkus-jdbc-h2'
+    implementation 'io.quarkus:quarkus-test-h2'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-log'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-kafka'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-kotlin'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-jta'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-base64'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-quartz'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-jpa'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-jaxb'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-jackson'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-direct'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-mock'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-bean'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-rest-openapi'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-xml-jaxb'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-microprofile-fault-tolerance'
+    //implementation 'org.apache.camel.quarkus:camel-quarkus-amqp'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-attachments'
+    //implementation 'io.quarkus:quarkus-keycloak-authorization'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-seda'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-zip-deflater'
+    //implementation 'org.apache.camel.quarkus:camel-quarkus-jms'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-mail'
+    implementation 'io.quarkus:quarkus-kotlin'
+    //implementation 'io.quarkus:quarkus-opentelemetry'
+    implementation 'io.quarkus:quarkus-jackson'
+    implementation 'io.quarkus:quarkus-resteasy-jackson'
+    implementation 'io.quarkus:quarkus-kafka-streams'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'io.quarkus:quarkus-arc'
+    implementation 'io.quarkus:quarkus-resteasy'
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'io.smallrye.reactive:smallrye-reactive-messaging-in-memory'
+}
+
+group 'com.scprojekt'
+version '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+test {
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+}
+allOpen {
+    annotation("jakarta.ws.rs.Path")
+    annotation("jakarta.enterprise.context.ApplicationScoped")
+    annotation("io.quarkus.test.junit.QuarkusTest")
+}
+
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+}
+
+jacocoTestReport {
+    reports {
+    }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_17
+    kotlinOptions.javaParameters = true
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_17
+}

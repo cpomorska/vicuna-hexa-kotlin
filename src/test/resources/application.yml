@@ -1,0 +1,32 @@
+quarkus:
+  http:
+    port: 8083
+  datasource:
+    db-kind: h2
+    jdbc:
+      url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;Mode=MySQL;
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+      sql-load-script: import.sql
+  kafka:
+    bootstrap:
+      servers: localhost:29092
+mp:
+  messaging:
+    outgoing:
+      users-out:
+        connector: smallrye-kafka
+        key.deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+        value.deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+        topic: user-out
+    incoming:
+      users-in:
+        connector: smallrye-kafka
+        value.deserializer: com.scprojekt.infrastructure.messaging.UserDeserializer
+        topic: user-in
+        broadcast: true
+  log:
+    category:
+      "io.quarkus.category":
+        level: INFO
