@@ -1,10 +1,9 @@
 package com.scprojekt.infrastructure.processor
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.domain.model.user.entity.UserNumber
-import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.infrastructure.repository.BaseCamelRepository
 import com.scprojekt.infrastructure.repository.BaseJpaUserRepository
+import com.scprojekt.util.*
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
@@ -16,12 +15,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 import java.util.function.Consumer
-
-
-private const val TESTROLE = "testrole"
-private const val TESTUSER = "Testuser"
-private const val USER_ID_TESTUSER_1 = 1L
-private const val UUID_TESTUSER_1 = "586c2084-d545-4fac-b7d3-2319382df14f"
 
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource::class)
@@ -40,7 +33,7 @@ class UserRestRouteTest {
     @BeforeEach
     @Transactional
     fun setup() {
-        testUser = createTestUser()
+        testUser = UserTestUtil.createTestUser()
 
         val users: MutableList<User>? = userRepository.findAllInRepository()
         users?.forEach(Consumer { u: User ->
@@ -49,62 +42,46 @@ class UserRestRouteTest {
     }
 
     @Test
-    fun ifAnUserNotExistInDatabaseItCanBeCreatedViaCreateEndpoint() {
+    fun ifUserNotExistsInDatabaseItWillBeCreatedViaCreateEndpoint() {
         given()
-            .header("Content-type", "application/json")
+            .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
             .body(testUser)
             .`when`()
-            .post("/api/store/user/create")
+            .post(URI_CREATE)
             .then()
             .statusCode(200)
     }
 
     @Test
-    fun ifAnUserExistInDatabaseItCanBeUpdatedViaManageEndpoint() {
+    fun ifUserExistsInDatabaseItWillBeUpdatedViaManageEndpoint() {
         userCamelRepository.createEntity(testUser)
         val userFromRepo: User? = userRepository.findByUUID(UUID_TESTUSER_1)
 
         given()
-            .header("Content-type", "application/json")
+            .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
             .body(userFromRepo)
             .`when`()
-            .post("/api/store/user/manage")
+            .post(URI_MANAGE)
             .then()
             .statusCode(200)
     }
 
     @Test
-    fun ifAnUserExistInDatabaseItCanBeDeletedViaDeleteEndpoint() {
+    fun ifUserExistsInDatabaseItWillBeDeletedViaDeleteEndpoint() {
         userCamelRepository.createEntity(testUser)
         val userFromRepo: User? = userRepository.findByUUID(UUID_TESTUSER_1)
 
         given()
-            .header("Content-type", "application/json")
+            .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
             .body(userFromRepo)
             .`when`()
-            .post("/api/store/user/delete")
+            .post(URI_DELETE)
             .then()
             .statusCode(200)
     }
 
-    private fun createTestUser(): User {
-        val user = User()
-        val userType = UserType()
-        val userTypeList: MutableList<UserType> = ArrayList()
-        val userNumber = UserNumber()
-        userNumber.uuid = UUID.fromString(UUID_TESTUSER_1)
-        userType.userTypeId = USER_ID_TESTUSER_1
-        userType.userRoleType = TESTROLE
-        userType.userTypeDescription = TESTUSER
-        userTypeList.add(userType)
-        user.userId = USER_ID_TESTUSER_1
-        user.userName = TESTUSER
-        user.userDescription = TESTUSER
-        user.userNumber = userNumber
-        user.userType = "UserType"
-        return user
-    }
+
 }

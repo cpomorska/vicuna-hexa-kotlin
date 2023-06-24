@@ -1,10 +1,12 @@
 package com.scprojekt.domain.service
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.domain.model.user.entity.UserNumber
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.infrastructure.repository.BaseJpaUserRepository
 import com.scprojekt.infrastructure.service.BaseUserReadOnlyService
+import com.scprojekt.util.TESTUSER
+import com.scprojekt.util.UUID_TESTUSER_1
+import com.scprojekt.util.UserTestUtil.Companion.createTestUser
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
@@ -17,11 +19,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 import java.util.function.Consumer
-
-private const val TESTROLE = "testrole"
-private const val TESTUSER = "Testuser"
-private const val USER_ID_TESTUSER_1 = 1L
-private const val UUID_TESTUSER_1 = "586c2084-d545-4fac-b7d3-2319382df14f"
 
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource::class)
@@ -63,7 +60,7 @@ class BasicUserReadOnlyServiceTest {
 
     @Test
     fun findAllUserByType() {
-        val userType: UserType = UserType()
+        val userType = UserType()
         userType.userRoleType = "UserType"
 
         val result: List<User> = baseUserReadOnlyService.findAllUsersByType(userType)
@@ -74,23 +71,5 @@ class BasicUserReadOnlyServiceTest {
     fun findAllUserByDescription() {
         val result: List<User> = baseUserReadOnlyService.findAllUserByDescription(TESTUSER)
         assertThat(result[0].userDescription).isNotEmpty().isEqualTo(TESTUSER)
-    }
-
-    private fun createTestUser(): User {
-        val user = User()
-        val userType = UserType()
-        val userTypeList: MutableList<UserType> = ArrayList()
-        val userNumber = UserNumber()
-        userNumber.uuid = UUID.fromString(UUID_TESTUSER_1)
-        userType.userTypeId = USER_ID_TESTUSER_1
-        userType.userRoleType = TESTROLE
-        userType.userTypeDescription = TESTUSER
-        userTypeList.add(userType)
-        user.userId = USER_ID_TESTUSER_1
-        user.userName = TESTUSER
-        user.userDescription = TESTUSER
-        user.userNumber = userNumber
-        user.userType = "UserType"
-        return user
     }
 }

@@ -12,7 +12,7 @@ class SQLInjectionSafeConstraintValidator : ConstraintValidator<SQLInjectionSafe
                     "DATABASE LINK, DBLINK, INDEX, CONSTRAINT, TRIGGER, USER, SCHEMA, DATABASE, PLUGGABLE DATABASE, BUCKET, " +
                     "CLUSTER, COMMENT, SYNONYM, TYPE, JAVA, SESSION, ROLE, PACKAGE, PACKAGE BODY, OPERATOR" +
                     "SEQUENCE, RESTORE POINT, PFILE, CLASS, CURSOR, OBJECT, RULE, USER, DATASET, DATASTORE, " +
-                    "COLUMN, FIELD, OPERATOR";
+                    "COLUMN, FIELD, OPERATOR"
 
     private val sqlRegexps = arrayOf(
         "(?i)(.*)(\\b)+SELECT(\\b)+\\s.*(\\b)+FROM(\\b)+\\s.*(.*)",
@@ -35,12 +35,12 @@ class SQLInjectionSafeConstraintValidator : ConstraintValidator<SQLInjectionSafe
         "(?i)(.*)(\\b)+DESCRIBE(\\b)+(\\w)*\\s.*(.*)",
         "(.*)(/\\*|\\*/|;){1,}(.*)",
         "(.*)(-){2,}(.*)"
-    );
+    )
 
     // pre-build the Pattern objects for faster validation
     private val validationPatterns : MutableList<Pattern>
         get() {
-            return getValidationPatterns()
+            return getAllValidationPatterns()
         }
 
     override fun initialize(sql : SQLInjectionSafe){
@@ -64,18 +64,18 @@ class SQLInjectionSafeConstraintValidator : ConstraintValidator<SQLInjectionSafe
     }
 
     private fun matches( pattern: Pattern, dataString: String): Boolean{
-        var matcher = pattern.matcher(dataString);
+        val matcher = pattern.matcher(dataString)
         return matcher.matches()
     }
-    private fun getValidationPatterns(): MutableList<Pattern> {
-        var patterns = mutableListOf<Pattern>()
+    private fun getAllValidationPatterns(): MutableList<Pattern> {
+        val patterns = mutableListOf<Pattern>()
         for(sqlExpression :String in sqlRegexps){
             patterns.add(getPattern(sqlExpression))
         }
         return patterns
     }
     private fun getPattern(regEx:String) : Pattern{
-        return Pattern.compile(regEx, Pattern.CASE_INSENSITIVE or Pattern.UNICODE_CASE);
+        return Pattern.compile(regEx, Pattern.CASE_INSENSITIVE or Pattern.UNICODE_CASE)
     }
     private fun isEmpty(cs :CharSequence): Boolean {
         return cs.isEmpty()
