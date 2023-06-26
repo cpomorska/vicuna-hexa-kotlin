@@ -1,4 +1,4 @@
-package com.scprojekt.infrastructure.processor
+package com.scprojekt.infrastructure.routes
 
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.infrastructure.repository.BaseCamelRepository

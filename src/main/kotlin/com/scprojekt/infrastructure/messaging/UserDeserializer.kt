@@ -14,9 +14,9 @@ class UserDeserializer : Deserializer<User> {
 
     override fun deserialize(topic: String?, data: ByteArray?): User? {
         log.info("Deserializing...")
-        return objectMapper?.readValue(
+        return objectMapper.readValue(
             String(
-                data ?: throw SerializationException("Error when deserializing byte[] to Product"), UTF_8
+                data ?: throw SerializationException("Error when deserializing to User"), UTF_8
             ), User::class.java
         )
     }

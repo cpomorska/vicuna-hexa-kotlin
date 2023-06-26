@@ -5,6 +5,12 @@ camel:
     inline-routes: false
 
 quarkus:
+  http:
+    cors:
+      origins: /.*/
+    http2: false
+    access-log:
+      enabled: true
   datasource:
     db-kind: h2
   hibernate-orm:

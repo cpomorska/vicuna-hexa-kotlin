@@ -37,7 +37,7 @@ class UserManagementServiceTest {
     }
 
     @Test
-    fun manageExistingsUser() {
+    fun manageExistingUser() {
         val userManagementService = UserManagementService(userToBackendProducer)
 
         val result = userManagementService.manageExistingUser(user)

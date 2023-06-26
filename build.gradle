@@ -56,6 +56,8 @@ dependencies {
     implementation 'org.apache.camel.quarkus:camel-quarkus-rest-openapi'
     implementation 'org.apache.camel.quarkus:camel-quarkus-xml-jaxb'
     implementation 'org.apache.camel.quarkus:camel-quarkus-microprofile-fault-tolerance'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-junit5'
+    implementation 'org.apache.camel.quarkus:camel-quarkus-integration-test-kotlin:2.1.0'
     //implementation 'org.apache.camel.quarkus:camel-quarkus-amqp'
     implementation 'org.apache.camel.quarkus:camel-quarkus-attachments'
     //implementation 'io.quarkus:quarkus-keycloak-authorization'

@@ -6,14 +6,18 @@ import com.scprojekt.infrastructure.processor.CamelConstants
 import com.scprojekt.infrastructure.processor.JpaUrlProcessor
 import com.scprojekt.infrastructure.processor.StringToUUidProcessor
 import com.scprojekt.infrastructure.repository.BaseJpaUserRepository
+import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_CREATEUSER
+import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_DELETEUSER
+import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_FINDBYUUID
+import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_SAVEINDATABASE
+import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DRECT_MANAGEUSER
+import com.scprojekt.infrastructure.routes.RouteConstants.Companion.MEDIATYPE_JSON
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
 import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.model.rest.RestBindingMode
 import java.util.*
-
-private const val MEDIATYPE_JSON = "application/json"
 
 @ApplicationScoped
 class UserRestRoute : RouteBuilder() {
@@ -37,11 +41,11 @@ class UserRestRoute : RouteBuilder() {
 
     private fun createUserStoreRoute(){
         rest("/api/store/user")
-            .post("create").consumes(MEDIATYPE_JSON).type(User::class.java).to("direct:createUser").enableCORS(true)
-            .post("manage").consumes(MEDIATYPE_JSON).type(User::class.java).to("direct:manageUser").enableCORS(true)
-            .post("delete").consumes(MEDIATYPE_JSON).type(User::class.java).to("direct:deleteUser").enableCORS(true)
+            .post("create").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_CREATEUSER).enableCORS(true)
+            .post("manage").consumes(MEDIATYPE_JSON).type(User::class.java).to(DRECT_MANAGEUSER).enableCORS(true)
+            .post("delete").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_DELETEUSER).enableCORS(true)
 
-        from("direct:createUser")
+        from(DIRECT_CREATEUSER)
             .routeId("infra.rest.createuser")
             .log("create user")
             .transacted()
@@ -49,7 +53,7 @@ class UserRestRoute : RouteBuilder() {
             .log(LoggingLevel.INFO, "Entity created")
             .end()
 
-        from("direct:manageUser")
+        from(DRECT_MANAGEUSER)
             .routeId("infra.rest.manageuser")
             .log("manage user")
             .transacted()
@@ -57,7 +61,7 @@ class UserRestRoute : RouteBuilder() {
             .log(LoggingLevel.INFO, "Entity updated")
             .end()
 
-        from("direct:deleteUser")
+        from(DIRECT_DELETEUSER)
             .routeId("infra.rest.removeuser")
             .log("deleting user \${body}")
             .transacted()
@@ -68,10 +72,10 @@ class UserRestRoute : RouteBuilder() {
 
     private fun createUserReadonlyRoute() {
         rest("/api/read/user")
-            .get("uuid/{uuid}").consumes(MEDIATYPE_JSON).type(UUID::class.java).to("direct:byUUID")
-            .get("bytype/{type}").consumes(MEDIATYPE_JSON).type(UserType::class.java).to("direct:byType")
-            .get("byname/{name}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byName")
-            .get("bydescr/{description}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byDescription")
+            .get("uuid/{uuid}").consumes(MEDIATYPE_JSON).type(UUID::class.java).to("direct:byUUID").enableCORS(true)
+            .get("bytype/{type}").consumes(MEDIATYPE_JSON).type(UserType::class.java).to("direct:byType").enableCORS(true)
+            .get("byname/{name}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byName").enableCORS(true)
+            .get("bydescr/{description}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byDescription").enableCORS(true)
             .enableCORS
 
         from("direct:byUUID")
@@ -106,7 +110,7 @@ class UserRestRoute : RouteBuilder() {
     }
 
     private fun storeInDatabase(){
-        from(CamelConstants.DIRECT_SAVEINDATABASE)
+        from(DIRECT_SAVEINDATABASE)
             .transacted()
             .process(prepareJpaUrlProcessor)
             .choice()
@@ -118,7 +122,7 @@ class UserRestRoute : RouteBuilder() {
     }
 
     private fun findByUUIDInDatabase(){
-        from(CamelConstants.DIRECT_FINDBYUUID)
+        from(DIRECT_FINDBYUUID)
             .transacted()
             //.process(stringToUuidProcessor)
             .bean(BaseJpaUserRepository::class.java, "findByUUID(\${header.uuid})")

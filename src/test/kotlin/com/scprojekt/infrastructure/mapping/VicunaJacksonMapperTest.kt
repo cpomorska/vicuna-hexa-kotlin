@@ -1,0 +1,3 @@
+package com.scprojekt.infrastructure.mapping
+
+class VicunaJacksonMapperTest
