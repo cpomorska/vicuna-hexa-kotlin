@@ -17,11 +17,11 @@ class BaseJpaUserRepository @Inject constructor(private var em: EntityManager) :
 
     override fun findByUUID(uid: String): User? {
         val uuid = UUID.fromString(uid)
-        try {
+        return try {
             val query: TypedQuery<User> = em.createQuery(" SELECT u from User u WHERE u.userNumber.uuid =: uuid", User::class.java)
-            return query.setParameter("uuid", uuid).singleResult
+            query.setParameter("uuid", uuid).singleResult
         } catch (nre: NoResultException){
-            return null
+            null
         }
     }
 
@@ -67,6 +67,5 @@ class BaseJpaUserRepository @Inject constructor(private var em: EntityManager) :
 
     override fun updateEntity(entity: User) {
         em.merge(entity)
-        em.flush()
     }
 }

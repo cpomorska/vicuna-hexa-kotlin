@@ -13,7 +13,7 @@ class UserFromBackendConsumer {
     @Incoming("users-in")
     @Acknowledgment(Acknowledgment.Strategy.POST_PROCESSING)
     fun receive(record: Record<UUID?, String?>): User? {
-        val user: User? = VicunaJacksonMapper.getInstance()?.readValue(record.value().toString(), User::class.java)
-        return user;
+        val user: User? = VicunaJacksonMapper.getInstance().readValue(record.value().toString(), User::class.java)
+        return user
     }
 }

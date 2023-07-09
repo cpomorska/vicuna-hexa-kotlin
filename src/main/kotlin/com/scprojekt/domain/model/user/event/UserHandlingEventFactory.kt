@@ -17,7 +17,7 @@ class UserHandlingEventFactory {
         val userHandlingEventType = UserHandlingEventType()
 
         userHandlingEventType.eventType = handlingEventType
-        userHandlingEventType.eventDescription = handlingEventType.eventType.toString()
+        userHandlingEventType.eventDescription = handlingEventType.eventType
 
         userCreationEvent.eventid = UUID.randomUUID()
         userCreationEvent.userHandlingEventType = userHandlingEventType

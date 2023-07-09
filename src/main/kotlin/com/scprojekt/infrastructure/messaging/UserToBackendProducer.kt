@@ -15,10 +15,10 @@ class UserToBackendProducer : UserProducer {
 
     @Inject
     @Channel("users-out")
-    lateinit var emitter: Emitter<Record<UUID, String>>
+    private lateinit var emitter: Emitter<Record<UUID, String>>
 
     override fun produceUserHandlingEvent(userHandlingEvent: UserHandlingEvent): UUID {
-        val serializedUserHandlingEvent = VicunaJacksonMapper.getInstance()?.writeValueAsString(userHandlingEvent)
+        val serializedUserHandlingEvent = VicunaJacksonMapper.getInstance().writeValueAsString(userHandlingEvent)
         emitter.send(Record.of(UUID.randomUUID(), serializedUserHandlingEvent)).whenComplete { success, error ->
             success ?.let {
                 storeUserEvent(userHandlingEvent)

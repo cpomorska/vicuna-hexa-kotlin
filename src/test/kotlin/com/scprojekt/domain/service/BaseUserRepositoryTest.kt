@@ -10,7 +10,6 @@ import com.scprojekt.util.UserTestUtil.Companion.createTestUser
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
-import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
@@ -24,7 +23,6 @@ import java.util.function.Consumer
 class BaseUserRepositoryTest  {
 
     @Inject
-    @field: Default
     lateinit var userRepository: BaseJpaUserRepository
 
     @AfterEach
@@ -123,6 +121,15 @@ class BaseUserRepositoryTest  {
     @Test
     @Transactional
     fun updateEntity() {
+        val newUser: User = createTestUser()
+        userRepository.createEntity(newUser)
+        val result = userRepository.findByUUID(UUID_TESTUSER_1)
+
+        result?.userNumber?.uuid = UUID.fromString(UUID_TESTUSER_2)
+        userRepository.updateEntity(result!!)
+        val result1: User? = userRepository.findByUUID(UUID_TESTUSER_1)
+
+        assertThat(result1?.userNumber!!.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_2))
     }
 
 }
