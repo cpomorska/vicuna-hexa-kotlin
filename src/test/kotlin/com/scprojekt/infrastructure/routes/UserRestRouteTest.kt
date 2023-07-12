@@ -1,8 +1,8 @@
 package com.scprojekt.infrastructure.routes
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.infrastructure.repository.BaseCamelRepository
-import com.scprojekt.infrastructure.repository.BaseJpaUserRepository
+import com.scprojekt.infrastructure.repository.UserCamelRepository
+import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.util.*
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
@@ -24,11 +24,11 @@ class UserRestRouteTest {
 
     @Inject
     @field:Default
-    lateinit var userCamelRepository: BaseCamelRepository
+    lateinit var userCamelRepository: UserCamelRepository
 
     @Inject
     @field: Default
-    lateinit var userRepository: BaseJpaUserRepository
+    lateinit var userRepository: UserJpaRepository
 
     @BeforeEach
     @Transactional

@@ -10,5 +10,5 @@ import jakarta.inject.Inject
  * Implementation of @see{AbstractUserReadOnlyService}
  */
 @ApplicationScoped
-class BaseUserReadOnlyService @Inject constructor(userRepository: UserRepository) : AbstractUserReadOnlyService(userRepository) {
+class UserReadOnlyService @Inject constructor(userRepository: UserRepository) : AbstractUserReadOnlyService(userRepository) {
 }

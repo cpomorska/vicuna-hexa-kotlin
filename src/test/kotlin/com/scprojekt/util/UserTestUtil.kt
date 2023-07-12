@@ -1,8 +1,11 @@
 package com.scprojekt.util
 
 import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.domain.model.user.entity.UserEventStore
 import com.scprojekt.domain.model.user.entity.UserNumber
 import com.scprojekt.domain.model.user.entity.UserType
+import com.scprojekt.domain.model.user.event.UserHandlingEvent
+import com.scprojekt.infrastructure.mapping.VicunaJacksonMapper
 import java.util.*
 
 const val TESTROLE = "testrole"
@@ -37,5 +40,14 @@ class UserTestUtil {
             user.userType = "UserType"
             return user
         }
+
+        @JvmStatic
+        fun createTestUserEventStore(userHandlingEvent: UserHandlingEvent): UserEventStore {
+            val userEvent = UserEventStore()
+            userEvent.uuid = userHandlingEvent.eventid
+            userEvent.userHandlingEvent = VicunaJacksonMapper.getInstance().writeValueAsString(userHandlingEvent)
+            return userEvent
+        }
     }
+
 }

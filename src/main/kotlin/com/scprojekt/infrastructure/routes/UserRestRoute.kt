@@ -5,7 +5,7 @@ import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.infrastructure.processor.CamelConstants
 import com.scprojekt.infrastructure.processor.JpaUrlProcessor
 import com.scprojekt.infrastructure.processor.StringToUUidProcessor
-import com.scprojekt.infrastructure.repository.BaseJpaUserRepository
+import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_CREATEUSER
 import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_DELETEUSER
 import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_FINDBYUUID
@@ -23,7 +23,7 @@ import java.util.*
 class UserRestRoute : RouteBuilder() {
 
     @Inject
-    private lateinit var baseUserRepository: BaseJpaUserRepository
+    private lateinit var baseUserRepository: UserJpaRepository
 
     @Inject
     private lateinit var stringToUuidProcessor: StringToUUidProcessor
@@ -104,7 +104,7 @@ class UserRestRoute : RouteBuilder() {
         from("direct:byDescription")
             .routeId("infra.rest.bydescription")
             .log(LoggingLevel.INFO,"user by uuid")
-            .bean(BaseJpaUserRepository::class.java, "findByDescription(\${body}})")
+            .bean(UserJpaRepository::class.java, "findByDescription(\${body}})")
             .log(LoggingLevel.INFO, "users by description found")
             .end()
     }
@@ -125,7 +125,7 @@ class UserRestRoute : RouteBuilder() {
         from(DIRECT_FINDBYUUID)
             .transacted()
             //.process(stringToUuidProcessor)
-            .bean(BaseJpaUserRepository::class.java, "findByUUID(\${header.uuid})")
+            .bean(UserJpaRepository::class.java, "findByUUID(\${header.uuid})")
             .marshal().json()
             .log(LoggingLevel.INFO, "user by \${header.uuid} found")
             .end()

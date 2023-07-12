@@ -10,5 +10,5 @@ import jakarta.inject.Inject
  * Implementation of @see{AbstractUserStorageService}
  */
 @ApplicationScoped
-class BaseUserStorageService @Inject constructor(userRepository: UserRepository) : AbstractUserStorageService(userRepository) {
+class UserStorageService @Inject constructor(userRepository: UserRepository) : AbstractUserStorageService(userRepository) {
 }

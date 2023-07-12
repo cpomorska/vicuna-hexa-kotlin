@@ -2,8 +2,8 @@ package com.scprojekt.domain.service
 
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
-import com.scprojekt.infrastructure.repository.BaseJpaUserRepository
-import com.scprojekt.infrastructure.service.BaseUserReadOnlyService
+import com.scprojekt.infrastructure.repository.UserJpaRepository
+import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.util.TESTUSER
 import com.scprojekt.util.UUID_TESTUSER_1
 import com.scprojekt.util.UserTestUtil.Companion.createTestUser
@@ -26,11 +26,11 @@ class BasicUserReadOnlyServiceTest {
 
     @Inject
     @field: Default
-    lateinit var userRepository: BaseJpaUserRepository
+    lateinit var userRepository: UserJpaRepository
 
     @Inject
     @field:Default
-    lateinit var baseUserReadOnlyService : BaseUserReadOnlyService
+    lateinit var baseUserReadOnlyService : UserReadOnlyService
 
     @BeforeEach
     fun init(){

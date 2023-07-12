@@ -18,7 +18,7 @@ import org.apache.camel.ProducerTemplate
 import java.util.concurrent.CompletableFuture
 
 @ApplicationScoped
-class BaseCamelRepository {
+class UserCamelRepository {
 
     @Inject
     private lateinit var camelProducer: ProducerTemplate

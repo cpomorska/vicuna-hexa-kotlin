@@ -1,9 +1,9 @@
 package com.scprojekt.domain.service
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.infrastructure.repository.BaseJpaUserRepository
-import com.scprojekt.infrastructure.service.BaseUserReadOnlyService
-import com.scprojekt.infrastructure.service.BaseUserStorageService
+import com.scprojekt.infrastructure.repository.UserJpaRepository
+import com.scprojekt.infrastructure.service.UserReadOnlyService
+import com.scprojekt.infrastructure.service.UserStorageService
 import com.scprojekt.util.UUID_TESTUSER_1
 import com.scprojekt.util.UUID_TESTUSER_2
 import com.scprojekt.util.UserTestUtil.Companion.createTestUser
@@ -26,18 +26,18 @@ import java.util.function.Consumer
 @QuarkusTestResource(H2DatabaseTestResource::class)
 class BaseUserStorageServiceTest {
 
-    private lateinit var baseUserStorageService: BaseUserStorageService
-    private lateinit var baseUserReadOnlyService : BaseUserReadOnlyService
+    private lateinit var baseUserStorageService: UserStorageService
+    private lateinit var baseUserReadOnlyService : UserReadOnlyService
 
     @Inject
     @field: Default
-    lateinit var userRepository: BaseJpaUserRepository
+    lateinit var userRepository: UserJpaRepository
 
 
     @BeforeEach
     fun init(){
-        baseUserReadOnlyService = BaseUserReadOnlyService(userRepository)
-        baseUserStorageService = BaseUserStorageService(userRepository)
+        baseUserReadOnlyService = UserReadOnlyService(userRepository)
+        baseUserStorageService = UserStorageService(userRepository)
     }
 
     @AfterEach

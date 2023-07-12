@@ -13,7 +13,7 @@ import java.util.*
 
 @ApplicationScoped
 @Transactional
-class BaseJpaUserRepository @Inject constructor(private var em: EntityManager) : UserRepository {
+class UserJpaRepository @Inject constructor(private var em: EntityManager) : UserRepository {
 
     override fun findByUUID(uid: String): User? {
         val uuid = UUID.fromString(uid)

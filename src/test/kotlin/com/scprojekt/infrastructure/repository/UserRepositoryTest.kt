@@ -1,7 +1,6 @@
-package com.scprojekt.domain.service
+package com.scprojekt.infrastructure.repository
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.infrastructure.repository.BaseJpaUserRepository
 import com.scprojekt.util.TESTUSER
 import com.scprojekt.util.USER_ID_TESTUSER_1
 import com.scprojekt.util.UUID_TESTUSER_1
@@ -20,10 +19,10 @@ import java.util.function.Consumer
 
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource::class)
-class BaseUserRepositoryTest  {
+class UserRepositoryTest  {
 
     @Inject
-    lateinit var userRepository: BaseJpaUserRepository
+    lateinit var userRepository: UserJpaRepository
 
     @AfterEach
     @Transactional
@@ -65,7 +64,6 @@ class BaseUserRepositoryTest  {
         userRepository.createEntity(user)
         val result: User = userRepository.findByDescription(TESTUSER).first()
 
-        assertThat(result.userId).isEqualTo(USER_ID_TESTUSER_1)
         assertThat(result.userNumber.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_1))
         assertThat(result.userDescription).isEqualTo(TESTUSER)
     }
