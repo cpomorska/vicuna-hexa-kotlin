@@ -61,7 +61,7 @@ class UserJpaRepository @Inject constructor(private var em: EntityManager) : Use
     }
 
     override fun removeEntity(entity: User) {
-        val user = entity.userId?.let { findByIdInRepository(it) }
+        val user = entity.userNumber.uuid?.let { findByUUID(it.toString()) }
         em.remove(user)
     }
 

@@ -8,11 +8,12 @@ import jakarta.persistence.EntityManager
 import jakarta.persistence.NoResultException
 import jakarta.persistence.TypedQuery
 import jakarta.transaction.Transactional
+import java.util.*
 
 @ApplicationScoped
 @Transactional
 class UserEventStoreRepository @Inject constructor(private var em: EntityManager): UserStoreRepository {
-    override fun findByUUID(uuid: String): UserEventStore? {
+    override fun findByUUID(uuid: UUID?): UserEventStore? {
         return try {
             val query: TypedQuery<UserEventStore> = em.createQuery(" SELECT u from UserEventStore u WHERE u.uuid =: uuid", UserEventStore::class.java)
             query.setParameter("uuid", uuid).singleResult

@@ -1,24 +1,37 @@
-camel:
-  context:
-    name: quarkus-camel-example-rest-json
-  rest:
-    inline-routes: false
-
 quarkus:
+  camel:
+    context:
+      name: quarkus-camel-example-rest-json
+    openapi:
+      expose:
+        enabled: true
+    rest:
+      inline-routes: true
   http:
     cors:
       origins: /.*/
     http2: false
     access-log:
       enabled: true
+    port: 8089
+    auth:
+      permission:
+        authenticated:
+          paths:  /*
+          policy: authenticated
   datasource:
     db-kind: h2
   hibernate-orm:
     database:
       generation: drop-and-create
-  kafka:
-    bootstrap:
-      servers: localhost:29092
+  oidc:
+    auth-server-url: http://localhost:8180/realms/development
+    client-id: backend-service
+    credentials.secret: secret
+    keycloak.devservices.realm-path: dev-realm.json
+#kafka:
+#   bootstrap:
+#     servers: localhost:29092
 mp:
   messaging:
     outgoing:
@@ -33,7 +46,14 @@ mp:
         value:
           deserializer: org.apache.kafka.common.serialization.StringDeserializer
         topic: user-in
+
+  openapi:
+   scan:
+      disable: false
   log:
-    category:
-      "io.quarkus.category":
-        level: INFO
+   category:
+     "io.quarkus.category":
+       level: INFO
+
+  smallrye-openapi:
+    security-scheme: implicit

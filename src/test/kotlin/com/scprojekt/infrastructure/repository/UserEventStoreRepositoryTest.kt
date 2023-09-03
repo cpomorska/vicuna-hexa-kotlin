@@ -37,7 +37,7 @@ class UserEventStoreRepositoryTest {
         val userEvent = UserHandlingEventFactory.getInstance().createUserHandlingEvent(HandlingEventType.CREATEUSER, createTestUser())
         val userEventStore = createTestUserEventStore(userEvent)
         userStoreRepository.createEntity(userEventStore)
-        val result: UserEventStore? = userStoreRepository.findByUUID(userEventStore.uuid.toString())
+        val result: UserEventStore? = userStoreRepository.findByUUID(userEventStore.uuid)
 
         Assertions.assertThat(result?.uuid).isEqualTo(userEventStore.uuid)
     }
