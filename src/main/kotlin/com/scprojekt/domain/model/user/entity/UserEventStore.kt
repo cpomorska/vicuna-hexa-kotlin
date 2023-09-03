@@ -13,12 +13,12 @@ open class UserEventStore {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "benutzerevent_seq", sequenceName = "BENUTZEREVENTID_SEQ", allocationSize = 1)
     @Column(name = "benutzereventid")
-    var userEventStoreId: Long? = null
+    open var userEventStoreId: Long? = null
 
     @Lob
     @Column(name="benutzerventuuid", unique = true, updatable = false, length = 36)
     @NotEmpty(message = "benutzerventuuid mann!")
-    var uuid: UUID? = null
+    open var uuid: UUID? = null
 
     @Lob
     @Column(name="benutzerbehandlungevent")

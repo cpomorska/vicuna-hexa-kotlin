@@ -32,7 +32,17 @@ class UserRestRoute : RouteBuilder() {
     private lateinit var prepareJpaUrlProcessor: JpaUrlProcessor
 
     override fun configure() {
-        restConfiguration().bindingMode(RestBindingMode.json).inlineRoutes(true)
+        restConfiguration()
+            .bindingMode(RestBindingMode.json)
+            .inlineRoutes(true)
+            .dataFormatProperty("prettyPrint", "true")
+            .apiContextPath("docs")
+            .apiProperty("api.title", "Vicuna API")
+            .apiProperty("api.version", "1.0")
+            .apiProperty("cors", "true")
+            .clientRequestValidation(true)
+            .enableCORS(true)
+
         findByUUIDInDatabase()
         storeInDatabase()
         createUserReadonlyRoute()
@@ -41,15 +51,16 @@ class UserRestRoute : RouteBuilder() {
 
     private fun createUserStoreRoute(){
         rest("/api/store/user")
-            .post("create").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_CREATEUSER).enableCORS(true)
-            .post("manage").consumes(MEDIATYPE_JSON).type(User::class.java).to(DRECT_MANAGEUSER).enableCORS(true)
-            .post("delete").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_DELETEUSER).enableCORS(true)
+            .post("create").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_CREATEUSER)
+            .post("manage").consumes(MEDIATYPE_JSON).type(User::class.java).to(DRECT_MANAGEUSER)
+            .post("delete").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_DELETEUSER)
 
         from(DIRECT_CREATEUSER)
             .routeId("infra.rest.createuser")
             .log("create user")
             .transacted()
             .bean(baseUserRepository, "createEntity(\${body})")
+            .description("creates a user")
             .log(LoggingLevel.INFO, "Entity created")
             .end()
 
@@ -72,39 +83,38 @@ class UserRestRoute : RouteBuilder() {
 
     private fun createUserReadonlyRoute() {
         rest("/api/read/user")
-            .get("uuid/{uuid}").consumes(MEDIATYPE_JSON).type(UUID::class.java).to("direct:byUUID").enableCORS(true)
-            .get("bytype/{type}").consumes(MEDIATYPE_JSON).type(UserType::class.java).to("direct:byType").enableCORS(true)
-            .get("byname/{name}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byName").enableCORS(true)
-            .get("bydescr/{description}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byDescription").enableCORS(true)
-            .enableCORS
+            .get("uuid/{uuid}").consumes(MEDIATYPE_JSON).type(UUID::class.java).to("direct:byUUID")
+            .get("bytype/{type}").consumes(MEDIATYPE_JSON).type(UserType::class.java).to("direct:byType")
+            .get("byname/{name}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byName")
+            .get("bydescr/{description}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byDescription")
 
         from("direct:byUUID")
             .routeId("infra.rest.byuuid")
             .log(LoggingLevel.INFO,"user by uuid")
             .process(stringToUuidProcessor)
-            .bean(baseUserRepository, "findByUUID(\${body})")
-            .marshal().json()
-            .log(LoggingLevel.INFO, "user by \${body} found")
+            .bean(baseUserRepository, "findByUUID(\${header.uuid})")
+            //.marshal().json()
+            .log(LoggingLevel.INFO, "user by \${header.uuid} found")
             .end()
 
         from("direct:byType")
             .routeId("infra.rest.bytype")
             .log(LoggingLevel.INFO,"user by id")
-            .bean(baseUserRepository, "findByType(\${body}})")
+            .bean(baseUserRepository, "findByType(\${header.type})")
             .log(LoggingLevel.INFO, "users by type found")
             .end()
 
         from("direct:byName")
             .routeId("infra.rest.byname")
             .log(LoggingLevel.INFO,"user by name")
-            .bean(baseUserRepository, "findByName(\${body})")
+            .bean(baseUserRepository, "findByName(\${header.name})")
             .log(LoggingLevel.INFO, "user by name found")
             .end()
 
         from("direct:byDescription")
             .routeId("infra.rest.bydescription")
             .log(LoggingLevel.INFO,"user by uuid")
-            .bean(UserJpaRepository::class.java, "findByDescription(\${body}})")
+            .bean(UserJpaRepository::class.java, "findByDescription(\${header.description})")
             .log(LoggingLevel.INFO, "users by description found")
             .end()
     }
