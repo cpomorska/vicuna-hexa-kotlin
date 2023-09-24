@@ -17,7 +17,7 @@ quarkus:
     auth:
       permission:
         authenticated:
-          paths:  /opi/*
+          paths:  /*
           policy: authenticated
   datasource:
     db-kind: h2
@@ -27,11 +27,8 @@ quarkus:
   oidc:
     auth-server-url: http://localhost:8180/realms/development
     client-id: backend-service
-    credentials:
-      secret: secret
-    keycloak:
-      devservices:
-        realm-path: dev-realm.json
+    credentials.secret: secret
+    keycloak.devservices.realm-path: dev-realm.json
 #kafka:
 #   bootstrap:
 #     servers: localhost:29092
@@ -54,9 +51,9 @@ mp:
    scan:
       disable: false
   log:
-   category:
-     "io.quarkus.category":
-       level: INFO
+    category:
+      "io.quarkus.category":
+        level: INFO
 
   smallrye-openapi:
     security-scheme: implicit
