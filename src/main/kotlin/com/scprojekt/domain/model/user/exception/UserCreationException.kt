@@ -1,8 +1,6 @@
-package com.scprojekt.domain.model.user.exception;
+package com.scprojekt.domain.model.user.exception
 
-import com.scprojekt.domain.model.user.entity.UserNumber
-
-class UserCreationException(e: Throwable, userNumber: UserNumber) : UserException(e, userNumber) {
+class UserCreationException(e: Throwable, override val userParam: String) : UserException(e, userParam) {
     override val message: String?
-        get() = userNumber?.let { String.format("Error creating user with UserNumber ${it.uuid} | ${e.message} ")}
+        get() = userParam.let { String.format("Error creating user with UserNumber ${it} | ${e.message} ")}
 }

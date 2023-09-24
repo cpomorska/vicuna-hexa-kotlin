@@ -51,9 +51,9 @@ mp:
    scan:
       disable: false
   log:
-   category:
-     "io.quarkus.category":
-       level: INFO
+    category:
+      "io.quarkus.category":
+        level: INFO
 
   smallrye-openapi:
     security-scheme: implicit

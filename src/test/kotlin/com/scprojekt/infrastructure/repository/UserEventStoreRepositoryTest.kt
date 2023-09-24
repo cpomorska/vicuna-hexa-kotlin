@@ -1,9 +1,9 @@
 package com.scprojekt.infrastructure.repository
 
 import com.scprojekt.domain.model.user.entity.UserEventStore
-import com.scprojekt.domain.model.user.event.HandlingEventType
-import com.scprojekt.domain.model.user.event.UserHandlingEventFactory
-import com.scprojekt.domain.model.user.repository.UserStoreRepository
+import com.scprojekt.domain.model.user.event.UserEventFactory
+import com.scprojekt.domain.model.user.event.UserEventType
+import com.scprojekt.domain.model.user.repository.UserEventRepository
 import com.scprojekt.util.UserTestUtil.Companion.createTestUser
 import com.scprojekt.util.UserTestUtil.Companion.createTestUserEventStore
 import io.quarkus.test.common.QuarkusTestResource
@@ -21,23 +21,23 @@ import java.util.function.Consumer
 class UserEventStoreRepositoryTest {
 
     @Inject
-    lateinit var userStoreRepository: UserStoreRepository
+    lateinit var userEventRepository: UserEventRepository
 
     @AfterEach
     @Transactional
     fun teardown() {
-        val users: MutableList<UserEventStore>? = userStoreRepository.findAllInRepository()
+        val users: MutableList<UserEventStore>? = userEventRepository.findAllToRemove()
         users?.forEach(Consumer { u: UserEventStore ->
-            userStoreRepository.removeEntity(u)
+            userEventRepository.removeEntity(u)
         })
     }
 
     @Test
     fun findByUUID() {
-        val userEvent = UserHandlingEventFactory.getInstance().createUserHandlingEvent(HandlingEventType.CREATEUSER, createTestUser())
+        val userEvent = UserEventFactory.getInstance().createUserEvent(UserEventType.CREATE, createTestUser())
         val userEventStore = createTestUserEventStore(userEvent)
-        userStoreRepository.createEntity(userEventStore)
-        val result: UserEventStore? = userStoreRepository.findByUUID(userEventStore.uuid)
+        userEventRepository.createEntity(userEventStore)
+        val result: UserEventStore? = userEventRepository.findByUUID(userEventStore.uuid)
 
         Assertions.assertThat(result?.uuid).isEqualTo(userEventStore.uuid)
     }

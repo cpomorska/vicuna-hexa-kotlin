@@ -13,7 +13,6 @@ import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.util.*
 import java.util.function.Consumer
 
 @QuarkusTest
@@ -35,7 +34,7 @@ class UserRestRouteTest {
     fun setup() {
         testUser = UserTestUtil.createTestUser()
 
-        val users: MutableList<User>? = userRepository.findAllInRepository()
+        val users: MutableList<User>? = userRepository.findAllToRemove()
         users?.forEach(Consumer { u: User ->
             userRepository.removeEntity(u)
         })

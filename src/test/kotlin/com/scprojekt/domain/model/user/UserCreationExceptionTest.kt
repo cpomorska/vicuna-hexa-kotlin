@@ -15,28 +15,28 @@ class Test {
     @Test
     fun createdIsNotNull() {
         val userNumber = UserNumber(UUID.randomUUID())
-        val userCreationException = UserCreationException(Throwable("Message"), userNumber);
+        val userCreationException = UserCreationException(Throwable("Message"), userNumber.uuid.toString())
 
         assertThat(userCreationException).isInstanceOf(UserException::class.java).isInstanceOf(UserCreationException::class.java)
-        assertThat(userCreationException.e.message).isNotNull;
+        assertThat(userCreationException.e.message).isNotNull
     }
 
     @Test
     fun createduserCreationExceptionContainsValidMessage() {
         val userNumber = UserNumber(UUID.randomUUID())
-        val userCreationException = UserCreationException(Throwable("Message"), userNumber);
+        val userCreationException = UserCreationException(Throwable("Message"), userNumber.uuid.toString())
 
         assertThat(userCreationException).isInstanceOf(UserCreationException::class.java)
-        assertThat(userCreationException.e).isInstanceOf(Throwable::class.java).message().contains("Message");
+        assertThat(userCreationException.e).isInstanceOf(Throwable::class.java).message().contains("Message")
     }
 
     @ParameterizedTest
     @MethodSource("uuidsForUUIDInMessage")
     fun createduserCreationExceptionMessageContainsUsernumberUUID(uuid: UUID?) {
         val userNumber = UserNumber(uuid)
-        val userCreationException = UserCreationException(Throwable("Message"), userNumber);
+        val userCreationException = UserCreationException(Throwable("Message"), userNumber.uuid.toString())
 
-        assertThat(userCreationException.e.message).isNotNull;
+        assertThat(userCreationException.e.message).isNotNull
         assertThat(userCreationException.message).contains("Message").contains(userNumber.uuid.toString())
     }
 

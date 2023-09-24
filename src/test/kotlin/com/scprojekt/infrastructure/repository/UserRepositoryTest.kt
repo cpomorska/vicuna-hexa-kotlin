@@ -27,7 +27,7 @@ class UserRepositoryTest  {
     @AfterEach
     @Transactional
     fun teardown() {
-        val users: MutableList<User>? = userRepository.findAllInRepository()
+        val users: MutableList<User>? = userRepository.findAllToRemove()
         users?.forEach(Consumer { u: User ->
             userRepository.removeEntity(u)
         })
@@ -72,7 +72,7 @@ class UserRepositoryTest  {
     fun findAllInRepository() {
         val user: User = createTestUser()
         userRepository.createEntity(user)
-        val result: MutableList<User>? = userRepository.findAllInRepository()
+        val result: MutableList<User>? = userRepository.findAllToRemove()
 
         assertThat(result).isNotEmpty
         assertThat(result?.count()).isEqualTo(USER_ID_TESTUSER_1)
@@ -82,9 +82,9 @@ class UserRepositoryTest  {
     fun findByIdInRepository() {
         val user: User = createTestUser()
         userRepository.createEntity(user)
-        val testUser: User? = userRepository.findAllInRepository()?.first()
+        val testUser: User? = userRepository.findAllToRemove()?.first()
 
-        val result: User? = testUser?.userId?.let { userRepository.findByIdInRepository(it) }
+        val result: User? = testUser?.userNumber?.uuid?.let { userRepository.findByUUID(it.toString()) }
         assertThat(result?.userId).isEqualTo(testUser?.userId)
         assertThat(result?.userNumber?.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_1))
         assertThat(result?.userName).isEqualTo(TESTUSER)
@@ -107,10 +107,10 @@ class UserRepositoryTest  {
     fun removeEntity() {
         val user: User = createTestUser()
         userRepository.createEntity(user)
-        val testUser: User = userRepository.findAllInRepository()?.first()!!
+        val testUser: User = userRepository.findAllToRemove()?.first()!!
         userRepository.removeEntity(testUser)
 
-        val result: MutableList<User>? = userRepository.findAllInRepository()
+        val result: MutableList<User>? = userRepository.findAllToRemove()
 
         assertThat(result).isEmpty()
         assertThat(result?.count()).isZero()

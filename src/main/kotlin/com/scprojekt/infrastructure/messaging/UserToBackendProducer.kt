@@ -1,7 +1,7 @@
 package com.scprojekt.infrastructure.messaging
 
 import com.scprojekt.domain.model.user.event.UserHandlingEvent
-import com.scprojekt.domain.model.user.service.UserProducer
+import com.scprojekt.domain.model.user.messaging.UserProducer
 import com.scprojekt.infrastructure.mapping.VicunaJacksonMapper
 import io.smallrye.reactive.messaging.kafka.Record
 import jakarta.enterprise.context.ApplicationScoped
@@ -28,7 +28,7 @@ class UserToBackendProducer : UserProducer {
             }
         }
 
-        return userHandlingEvent.eventid!!
+        return userHandlingEvent.eventid
     }
 
     override fun storeUserEvent(userHandlingEvent: UserHandlingEvent): Boolean {

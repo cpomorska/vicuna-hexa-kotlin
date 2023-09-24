@@ -5,8 +5,8 @@ import java.util.*
 
 
 class UserHandlingEvent {
-    var eventid: UUID? = null
-    var user: User? = null
-    var userHandlingEventType: UserHandlingEventType? = null
-    var eventTriggeredTimestamp: Long? = null
+    lateinit var eventid: UUID
+    lateinit var user: User
+    lateinit var userHandlingEventType: UserHandlingEventType
+    var eventTriggeredTimestamp: Long? = 1L
 }
