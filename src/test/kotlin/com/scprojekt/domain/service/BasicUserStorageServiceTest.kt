@@ -43,7 +43,7 @@ class BaseUserStorageServiceTest {
     @AfterEach
     @Transactional
     fun teardown() {
-        val users: MutableList<User>? = userRepository.findAllInRepository()
+        val users: MutableList<User>? = userRepository.findAllToRemove()
         users?.forEach(Consumer { u: User ->
             userRepository.removeEntity(u)
         })

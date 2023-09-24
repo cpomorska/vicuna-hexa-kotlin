@@ -67,6 +67,7 @@ class SQLInjectionSafeConstraintValidator : ConstraintValidator<SQLInjectionSafe
         val matcher = pattern.matcher(dataString)
         return matcher.matches()
     }
+
     private fun getAllValidationPatterns(): MutableList<Pattern> {
         val patterns = mutableListOf<Pattern>()
         for(sqlExpression :String in sqlRegexps){

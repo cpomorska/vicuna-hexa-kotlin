@@ -1,4 +1,4 @@
-package com.scprojekt.domain.model.user.service
+package com.scprojekt.domain.model.user.messaging
 
 import java.util.*
 

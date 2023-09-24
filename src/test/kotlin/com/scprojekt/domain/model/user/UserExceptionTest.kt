@@ -16,18 +16,18 @@ class UserExceptionTest {
     @Test
     fun createdUserExceptionIsNotNull() {
         val userNumber = UserNumber(UUID.randomUUID())
-        val userException = UserException(Throwable("Message"), userNumber);
+        val userException = UserException(Throwable("Message"), userNumber.uuid.toString())
 
-        assertThat(userException.e.message).isNotNull;
+        assertThat(userException.e.message).isNotNull
     }
 
     @ParameterizedTest
     @MethodSource("uuidsForUUIDInMessage")
     fun createdUserExceptionMessageContainsUsernumberUUID(uuid: UUID?) {
         val userNumber = UserNumber(uuid)
-        val userException = UserException(Throwable("Message"), userNumber);
+        val userException = UserException(Throwable("Message"), userNumber.uuid.toString())
 
-        assertThat(userException.e.message).isNotNull;
+        assertThat(userException.e.message).isNotNull
         assertThat(userException.message).contains("Message").contains(userNumber.uuid.toString())
     }
 

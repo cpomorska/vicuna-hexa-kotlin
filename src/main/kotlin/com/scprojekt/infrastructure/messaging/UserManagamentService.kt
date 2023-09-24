@@ -1,7 +1,7 @@
 package com.scprojekt.infrastructure.messaging
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.domain.model.user.event.HandlingEventType
+import com.scprojekt.domain.model.user.event.UserEventType
 import com.scprojekt.domain.model.user.service.UserMessagingService
 import io.vertx.core.impl.logging.Logger
 import io.vertx.core.impl.logging.LoggerFactory
@@ -18,19 +18,19 @@ class UserManagementService(
     private val logger: Logger = LoggerFactory.getLogger(UserMessagingService::class.java)
 
     override fun registerNewUser(user: User): UUID {
-        return processUser(user, HandlingEventType.CREATEUSER)
+        return processUser(user, UserEventType.CREATE)
     }
 
     override fun manageExistingUser(user: User): UUID {
-        return processUser(user, HandlingEventType.MANAGEUSER)
+        return processUser(user, UserEventType.MANAGE)
     }
 
     override fun disableExistingUser(user: User): UUID {
-        return processUser(user, HandlingEventType.DISABLEUSER)
+        return processUser(user, UserEventType.DISABLE)
     }
 
     override fun deleteExistingUser(user: User): UUID {
-        return processUser(user, HandlingEventType.DELETEUSER)
+        return processUser(user, UserEventType.DELETE)
     }
 }
 

@@ -46,26 +46,26 @@ class UserJpaRepository @Inject constructor(private var em: EntityManager) : Use
         return query.resultList
     }
 
-    override fun findAllInRepository(): MutableList<User>? {
-        val query: TypedQuery<User> = em.createQuery(" SELECT u from User u", User::class.java)
-        return query.resultList
-    }
-
-    override fun findByIdInRepository(id: Long): User? {
-        return em.find(User::class.java, id)
-    }
-
-    override fun createEntity(entity: User) {
+    override fun createEntity(entity: User): UUID {
         em.merge(entity)
         em.flush()
+        return entity.userNumber.uuid!!
     }
 
-    override fun removeEntity(entity: User) {
+    override fun removeEntity(entity: User): UUID {
         val user = entity.userNumber.uuid?.let { findByUUID(it.toString()) }
         em.remove(user)
+        return entity.userNumber.uuid!!
     }
 
-    override fun updateEntity(entity: User) {
+    override fun updateEntity(entity: User): UUID {
         em.merge(entity)
+        return entity.userNumber.uuid!!
+    }
+
+    fun findAllToRemove(): MutableList<User>? {
+        val query: TypedQuery<User> =
+            em.createQuery(" SELECT u from User u", User::class.java)
+        return query.resultList
     }
 }

@@ -1,10 +1,9 @@
-package com.scprojekt.domain.model.user.exception;
+package com.scprojekt.domain.model.user.exception
 
-import com.scprojekt.domain.model.user.entity.UserNumber
 import lombok.NoArgsConstructor
 
 @NoArgsConstructor
-open class UserException(open val e: Throwable, open val userNumber: UserNumber?) : Exception(e) {
+open class UserException(open val e: Throwable, open val userParam: String?) : RuntimeException(e) {
     override val message: String?
-        get() = userNumber?.let { String.format("Userexception occured with UserNumber ${it}?:'null' | ${e.message}", it) }
+        get() = userParam?.let { String.format("Userexception occured with parameter ${it}?:'null' | ${e.message}", it) }
 }

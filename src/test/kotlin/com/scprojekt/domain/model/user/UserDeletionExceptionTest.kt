@@ -15,28 +15,28 @@ class UserDeletionExceptionTest {
     @Test
     fun createdUserDeletionExceptionIsNotNull() {
         val userNumber = UserNumber(UUID.randomUUID())
-        val userDeletionException = UserDeletionException(Throwable("Message"), userNumber);
+        val userDeletionException = UserDeletionException(Throwable("Message"), userNumber.uuid.toString())
 
         assertThat(userDeletionException).isInstanceOf(UserException::class.java).isInstanceOf(UserDeletionException::class.java)
-        assertThat(userDeletionException.e.message).isNotNull;
+        assertThat(userDeletionException.e.message).isNotNull
     }
 
     @Test
     fun createdUserDeletionExceptionContainsValidMessage() {
         val userNumber = UserNumber(UUID.randomUUID())
-        val userDeletionException = UserDeletionException(Throwable("Message"), userNumber);
+        val userDeletionException = UserDeletionException(Throwable("Message"), userNumber.uuid.toString())
 
         assertThat(userDeletionException).isInstanceOf(UserDeletionException::class.java)
-        assertThat(userDeletionException.e).isInstanceOf(Throwable::class.java).message().contains("Message");
+        assertThat(userDeletionException.e).isInstanceOf(Throwable::class.java).message().contains("Message")
     }
 
     @ParameterizedTest
     @MethodSource("uuidsForUUIDInMessage")
     fun createdUserDeletionExceptionMessageContainsUsernumberUUID(uuid: UUID?) {
         val userNumber = UserNumber(uuid)
-        val userDeletionException = UserDeletionException(Throwable("Message"), userNumber);
+        val userDeletionException = UserDeletionException(Throwable("Message"), userNumber.uuid.toString());
 
-        assertThat(userDeletionException.e.message).isNotNull;
+        assertThat(userDeletionException.e.message).isNotNull
         assertThat(userDeletionException.message).contains("Message").contains(userNumber.uuid.toString())
     }
 

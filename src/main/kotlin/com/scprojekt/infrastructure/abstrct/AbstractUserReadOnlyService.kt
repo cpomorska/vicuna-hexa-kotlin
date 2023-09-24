@@ -13,10 +13,6 @@ abstract class AbstractUserReadOnlyService : UserReadOnlyService {
         userRepository = userRepositoryInject
     }
 
-    override fun getUserById(id: Long): User {
-        return userRepository!!.findByIdInRepository(id)!!
-    }
-
     override fun getUserByUuid(userUuid: String): User? {
         return userRepository?.findByUUID(userUuid)
     }
