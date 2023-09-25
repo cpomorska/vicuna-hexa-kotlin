@@ -1,10 +1,11 @@
 package com.scprojekt.mimetidae.domain.shared
 
-import java.util.*
+import com.scprojekt.domain.model.user.dto.UuidResponse
+import io.quarkus.hibernate.orm.panache.PanacheRepository
 
 
-interface BaseRepository<T>  {
-    fun removeEntity(type: T): UUID
-    fun createEntity(type: T): UUID
-    fun updateEntity(type: T): UUID
+interface BaseRepository<T> : PanacheRepository<T> {
+    fun removeEntity(entity: T): UuidResponse
+    fun createEntity(entity: T): UuidResponse
+    fun updateEntity(entity: T): UuidResponse
 }

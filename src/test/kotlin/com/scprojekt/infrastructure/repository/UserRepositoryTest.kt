@@ -125,7 +125,7 @@ class UserRepositoryTest  {
 
         result?.userNumber?.uuid = UUID.fromString(UUID_TESTUSER_2)
         userRepository.updateEntity(result!!)
-        val result1: User? = userRepository.findByUUID(UUID_TESTUSER_1)
+        val result1: User? = userRepository.findByUUID(UUID_TESTUSER_2)
 
         assertThat(result1?.userNumber!!.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_2))
     }

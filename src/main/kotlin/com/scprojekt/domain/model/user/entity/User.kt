@@ -1,13 +1,14 @@
 package com.scprojekt.domain.model.user.entity
 
 import com.scprojekt.domain.shared.SQLInjectionSafe
+import com.scprojekt.mimetidae.domain.shared.BaseEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotEmpty
 
 @Entity
 @Table(name = "benutzer")
 @NamedQuery(name = "getUUID", query = "SELECT u from User u WHERE u.userNumber.uuid = :uuid")
-open class User {
+open class User : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

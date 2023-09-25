@@ -1,5 +1,6 @@
 package com.scprojekt.infrastructure.repository
 
+import com.scprojekt.domain.model.user.dto.UuidResponse
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.domain.model.user.repository.UserRepository
@@ -18,9 +19,10 @@ class UserJpaRepository @Inject constructor(private var em: EntityManager) : Use
     override fun findByUUID(uid: String): User? {
         val uuid = UUID.fromString(uid)
         return try {
-            val query: TypedQuery<User> = em.createQuery(" SELECT u from User u WHERE u.userNumber.uuid =: uuid", User::class.java)
+            val query: TypedQuery<User> =
+                em.createQuery(" SELECT u from User u WHERE u.userNumber.uuid =: uuid", User::class.java)
             query.setParameter("uuid", uuid).singleResult
-        } catch (nre: NoResultException){
+        } catch (nre: NoResultException) {
             null
         }
     }
@@ -46,26 +48,33 @@ class UserJpaRepository @Inject constructor(private var em: EntityManager) : Use
         return query.resultList
     }
 
-    override fun createEntity(entity: User): UUID {
+    override fun createEntity(entity: User): UuidResponse {
         em.merge(entity)
         em.flush()
-        return entity.userNumber.uuid!!
+        return UuidResponse(entity.userNumber.uuid!!)
     }
 
-    override fun removeEntity(entity: User): UUID {
+    override fun removeEntity(entity: User): UuidResponse {
         val user = entity.userNumber.uuid?.let { findByUUID(it.toString()) }
         em.remove(user)
-        return entity.userNumber.uuid!!
+        return UuidResponse(entity.userNumber.uuid!!)
     }
 
-    override fun updateEntity(entity: User): UUID {
-        em.merge(entity)
-        return entity.userNumber.uuid!!
+    override fun updateEntity(entity: User): UuidResponse {
+        val query = em.createQuery(
+            " UPDATE User u set u.userDescription =: userdescription, u.userName =: username, u.userNumber.uuid =: uuid WHERE u.userId =: userid"
+        )
+        query.setParameter("userid", entity.userId)
+        query.setParameter("userdescription", entity.userDescription)
+        query.setParameter("username", entity.userName)
+        query.setParameter("uuid", entity.userNumber.uuid)
+        query.executeUpdate()
+
+        return UuidResponse(entity.userNumber.uuid!!)
     }
 
     fun findAllToRemove(): MutableList<User>? {
-        val query: TypedQuery<User> =
-            em.createQuery(" SELECT u from User u", User::class.java)
+        val query: TypedQuery<User> = em.createQuery(" SELECT u from User u", User::class.java)
         return query.resultList
     }
 }

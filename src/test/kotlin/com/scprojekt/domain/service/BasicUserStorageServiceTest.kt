@@ -1,5 +1,6 @@
 package com.scprojekt.domain.service
 
+import com.scprojekt.domain.model.user.dto.UuidResponse
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
@@ -53,9 +54,10 @@ class BaseUserStorageServiceTest {
     @Transactional
     fun whenCreateUserIsCalledTheUserIsCreated() {
         val testUuid = UUID.fromString(UUID_TESTUSER_1)
-        val result: UUID = createTestUser().let { baseUserStorageService.createUser(it) }
-        assertThat(result).isNotNull().isEqualTo(UUID.fromString(UUID_TESTUSER_1))
-        assertEquals(testUuid, result)
+        val result: UuidResponse = createTestUser().let { baseUserStorageService.createUser(it) }
+        assertThat(result).isNotNull().isInstanceOf(UuidResponse::class.java)
+        assertThat(result.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_1))
+        assertEquals(testUuid, result.uuid)
     }
 
     @Test
@@ -65,11 +67,11 @@ class BaseUserStorageServiceTest {
 
         val resultUUID1 = createTestUser().let { baseUserStorageService.createUser(it) }
         val result1: User = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)!!
-        assertThat(result1.userNumber.uuid).isEqualTo(resultUUID1)
+        assertThat(result1.userNumber.uuid).isEqualTo(resultUUID1.uuid)
 
         result1.userNumber.uuid = uuidUpdated
         baseUserStorageService.updateUser(result1)
-        val result: User = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)!!
+        val result: User = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_2)!!
 
         assertThat(result).isNotNull
         assertThat(result.userNumber.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_2))
@@ -84,7 +86,7 @@ class BaseUserStorageServiceTest {
         val uuidResult = result1.let { baseUserStorageService.removeUser(it) }
         val result: User? = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)
 
-        assertThat(uuidResult).isEqualTo(UUID.fromString(UUID_TESTUSER_1))
+        assertThat(uuidResult.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_1))
         assertThat(result).isNull()
     }
 }

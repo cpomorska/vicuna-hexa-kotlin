@@ -27,8 +27,8 @@ quarkus:
   oidc:
     auth-server-url: http://localhost:8180/realms/development
     client-id: backend-service
-    credentials.secret: secret
-    keycloak.devservices.realm-path: dev-realm.json
+    credentials:
+      secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
 #kafka:
 #   bootstrap:
 #     servers: localhost:29092
