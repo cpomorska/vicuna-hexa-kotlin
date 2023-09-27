@@ -3,6 +3,9 @@ package com.scprojekt.domain.model.user.event
 import com.scprojekt.domain.model.user.entity.User
 import java.util.*
 
+/**
+ * Factory for UserEvents
+ */
 class UserEventFactory {
     companion object {
         @JvmStatic
