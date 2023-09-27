@@ -27,11 +27,11 @@ quarkus:
   liquibase:
     migrate-at-start: true
     change-log: db/db.changelog-master.yaml
-  oidc:
-    auth-server-url: http://localhost:8180/realms/development
-    client-id: backend-service
-    credentials:
-      secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+#  oidc:
+#    auth-server-url: http://localhost:8180/realms/development
+#    client-id: backend-service
+#    credentials:
+#      secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
 #kafka:
 #   bootstrap:
 #     servers: localhost:29092
