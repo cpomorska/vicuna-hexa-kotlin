@@ -19,6 +19,8 @@ import org.junit.jupiter.api.Test
 import java.util.function.Consumer
 
 
+private const val USERNAME_ALICE_MANN = "alice"
+
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource::class)
 class UserRestRouteTest {
@@ -49,7 +51,7 @@ class UserRestRouteTest {
     @Test
     fun ifUserNotExistsInDatabaseItWillBeCreatedViaCreateEndpoint() {
         given()
-            .auth().oauth2(getAccessToken("alice"))
+            .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
             .body(testUser)
@@ -68,7 +70,7 @@ class UserRestRouteTest {
         userFromRepo!!.userName = "New User"
 
         given()
-            .auth().oauth2(getAccessToken("alice"))
+            .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
             .body(userFromRepo)
@@ -86,7 +88,7 @@ class UserRestRouteTest {
         val userFromRepo: User? = userRepository.findByUUID(UUID_TESTUSER_1)
 
         given()
-            .auth().oauth2(getAccessToken("alice"))
+            .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
             .body(testUser)

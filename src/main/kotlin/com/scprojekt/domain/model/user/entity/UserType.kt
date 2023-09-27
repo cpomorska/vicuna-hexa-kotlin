@@ -1,24 +1,26 @@
 package com.scprojekt.domain.model.user.entity
 import com.scprojekt.domain.shared.SQLInjectionSafe
-import com.scprojekt.mimetidae.domain.shared.BaseEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
-@Table(name = "benutzertyp")
-open class UserType: BaseEntity() {
+@Table(name = "usertype")
+open class UserType {
 
     @Id
-    @Column(name="benutzertypid")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usertype_seq")
+    @SequenceGenerator(name = "usertype_seq", sequenceName = "USERTYPE_SEQ", allocationSize = 1, initialValue = 1)
+    @Column(name="usertypeid")
     open var userTypeId: Long? =null
 
     @SQLInjectionSafe
-    @Column(name="benutzerrolle")
+    @Column(name="usertyperole")
     open var userRoleType: String? = null
 
     @SQLInjectionSafe
-    @Column(name="benutzertypbeschreibung")
+    @Column(name="usertypedescription")
     open var userTypeDescription: String?=null
+
+    @SQLInjectionSafe
+    @Column(name="usertypeenabled")
+    open var userTypeEnabled: Boolean = true
 }

@@ -1,7 +1,7 @@
 quarkus:
   camel:
     context:
-      name: quarkus-camel-example-rest-json
+      name: vicuna-hexa-kotlin
     openapi:
       expose:
         enabled: true
@@ -23,7 +23,10 @@ quarkus:
     db-kind: h2
   hibernate-orm:
     database:
-      generation: drop-and-create
+      generation: none
+  liquibase:
+    migrate-at-start: true
+    change-log: db/db.changelog-master.yaml
   oidc:
     auth-server-url: http://localhost:8180/realms/development
     client-id: backend-service

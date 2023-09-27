@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 
-class VicunaJacksonMapper : ObjectMapper() {
+class VicunaObjectMapper : ObjectMapper() {
     companion object {
         fun getInstance(): ObjectMapper {
-            val vicunaJacksonMapper = VicunaJacksonMapper()
-            vicunaJacksonMapper.init()
+            val vicunaObjectMapper = VicunaObjectMapper()
+            vicunaObjectMapper.init()
 
-            return vicunaJacksonMapper
+            return vicunaObjectMapper
         }
     }
 

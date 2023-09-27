@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: db/init/init-master_1.xml

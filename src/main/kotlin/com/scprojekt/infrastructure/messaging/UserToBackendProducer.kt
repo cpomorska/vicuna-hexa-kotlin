@@ -2,7 +2,7 @@ package com.scprojekt.infrastructure.messaging
 
 import com.scprojekt.domain.model.user.event.UserHandlingEvent
 import com.scprojekt.domain.model.user.messaging.UserProducer
-import com.scprojekt.infrastructure.mapping.VicunaJacksonMapper
+import com.scprojekt.infrastructure.mapping.VicunaObjectMapper
 import io.smallrye.reactive.messaging.kafka.Record
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
@@ -18,7 +18,7 @@ class UserToBackendProducer : UserProducer {
     private lateinit var emitter: Emitter<Record<UUID, String>>
 
     override fun produceUserHandlingEvent(userHandlingEvent: UserHandlingEvent): UUID {
-        val serializedUserHandlingEvent = VicunaJacksonMapper.getInstance().writeValueAsString(userHandlingEvent)
+        val serializedUserHandlingEvent = VicunaObjectMapper.getInstance().writeValueAsString(userHandlingEvent)
         emitter.send(Record.of(UUID.randomUUID(), serializedUserHandlingEvent)).whenComplete { success, error ->
             success ?.let {
                 storeUserEvent(userHandlingEvent)

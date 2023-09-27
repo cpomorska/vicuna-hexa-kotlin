@@ -32,7 +32,7 @@ class Test {
 
     @ParameterizedTest
     @MethodSource("uuidsForUUIDInMessage")
-    fun createduserCreationExceptionMessageContainsUsernumberUUID(uuid: UUID?) {
+    fun createduserCreationExceptionMessageContainsUsernumberUUID(uuid: UUID) {
         val userNumber = UserNumber(uuid)
         val userCreationException = UserCreationException(Throwable("Message"), userNumber.uuid.toString())
 

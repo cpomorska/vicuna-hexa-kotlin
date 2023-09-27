@@ -1,7 +1,7 @@
 package com.scprojekt.infrastructure.messaging
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.infrastructure.mapping.VicunaJacksonMapper
+import com.scprojekt.infrastructure.mapping.VicunaObjectMapper
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.Deserializer
 import org.slf4j.LoggerFactory
@@ -9,7 +9,7 @@ import kotlin.text.Charsets.UTF_8
 
 
 class UserDeserializer : Deserializer<User> {
-    private val objectMapper = VicunaJacksonMapper.getInstance()
+    private val objectMapper = VicunaObjectMapper.getInstance()
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun deserialize(topic: String?, data: ByteArray?): User? {

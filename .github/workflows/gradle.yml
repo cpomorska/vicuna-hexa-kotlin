@@ -5,13 +5,13 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: Gradle Kotlin CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop","main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "develop","main" ]
 
 permissions:
   contents: read
@@ -32,6 +32,8 @@ jobs:
       uses: fwilhe2/setup-kotlin@main
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
