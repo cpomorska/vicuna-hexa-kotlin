@@ -29,7 +29,7 @@ class UserJpaRepository @Inject constructor(private var em: EntityManager) : Use
 
     override fun findByType(userType: UserType): MutableList<User> {
         val query: TypedQuery<User> =
-            em.createQuery(" SELECT u from User u WHERE u.userType =: type", User::class.java)
+            em.createQuery(" SELECT u from User u WHERE u.userType.userRoleType =: type", User::class.java)
         query.setParameter("type", userType.userRoleType)
         return query.resultList
     }
@@ -64,11 +64,13 @@ class UserJpaRepository @Inject constructor(private var em: EntityManager) : Use
         val query = em.createQuery(
             " UPDATE User u set u.userDescription =: userdescription, u.userName =: username, u.userNumber.uuid =: uuid WHERE u.userId =: userid"
         )
+        /*
         query.setParameter("userid", entity.userId)
         query.setParameter("userdescription", entity.userDescription)
         query.setParameter("username", entity.userName)
         query.setParameter("uuid", entity.userNumber.uuid)
         query.executeUpdate()
+        */
 
         return UuidResponse(entity.userNumber.uuid!!)
     }

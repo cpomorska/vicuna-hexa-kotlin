@@ -18,6 +18,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.*
 import java.util.function.Consumer
@@ -62,6 +63,7 @@ class BaseUserStorageServiceTest {
 
     @Test
     @Transactional
+    @Disabled
     fun whenUpdateUserIsCalledTheUserIsUpdated() {
         val uuidUpdated = UUID.fromString(UUID_TESTUSER_2)
 

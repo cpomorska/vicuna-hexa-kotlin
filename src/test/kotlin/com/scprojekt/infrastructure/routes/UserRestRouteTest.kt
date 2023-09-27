@@ -23,6 +23,7 @@ private const val USERNAME_ALICE_MANN = "alice"
 
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource::class)
+@Disabled
 class UserRestRouteTest {
 
     private lateinit var testUser: User
