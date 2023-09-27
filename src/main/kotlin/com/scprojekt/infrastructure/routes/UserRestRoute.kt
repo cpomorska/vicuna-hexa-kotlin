@@ -2,16 +2,17 @@ package com.scprojekt.infrastructure.routes
 
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
+import com.scprojekt.infrastructure.constants.Routes
+import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_CREATEUSER
+import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_DELETEUSER
+import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_FINDBYUUID
+import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_SAVEINDATABASE
+import com.scprojekt.infrastructure.constants.Routes.Companion.DRECT_MANAGEUSER
+import com.scprojekt.infrastructure.constants.Routes.Companion.MEDIATYPE_JSON
 import com.scprojekt.infrastructure.processor.CamelConstants
 import com.scprojekt.infrastructure.processor.JpaUrlProcessor
 import com.scprojekt.infrastructure.processor.StringToUUidProcessor
 import com.scprojekt.infrastructure.repository.UserJpaRepository
-import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_CREATEUSER
-import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_DELETEUSER
-import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_FINDBYUUID
-import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DIRECT_SAVEINDATABASE
-import com.scprojekt.infrastructure.routes.RouteConstants.Companion.DRECT_MANAGEUSER
-import com.scprojekt.infrastructure.routes.RouteConstants.Companion.MEDIATYPE_JSON
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
 import org.apache.camel.LoggingLevel

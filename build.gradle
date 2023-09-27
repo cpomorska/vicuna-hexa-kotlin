@@ -42,6 +42,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
     implementation 'io.quarkus:quarkus-jdbc-h2'
     implementation 'io.quarkus:quarkus-test-h2'
+    implementation 'io.quarkus:quarkus-liquibase'
     implementation 'org.apache.camel.quarkus:camel-quarkus-log'
     implementation 'org.apache.camel.quarkus:camel-quarkus-kafka'
     implementation 'org.apache.camel.quarkus:camel-quarkus-kotlin'
@@ -74,12 +75,15 @@ dependencies {
     implementation 'io.quarkus:quarkus-resteasy-jackson'
     implementation 'io.quarkus:quarkus-kafka-streams'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'io.quarkus:quarkus-hibernate-orm-panache'
     implementation 'io.quarkus:quarkus-arc'
     implementation 'io.quarkus:quarkus-resteasy'
     implementation 'io.quarkus:quarkus-smallrye-openapi'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     testImplementation 'io.smallrye.reactive:smallrye-reactive-messaging-in-memory'
+    //testImplementation 'io.quarkus:quarkus-test-oidc-server'
+    testImplementation 'io.quarkus:quarkus-test-keycloak-server'
 }
 
 group 'com.scprojekt'

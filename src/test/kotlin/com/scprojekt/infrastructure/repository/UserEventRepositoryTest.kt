@@ -1,6 +1,6 @@
 package com.scprojekt.infrastructure.repository
 
-import com.scprojekt.domain.model.user.entity.UserEventStore
+import com.scprojekt.domain.model.user.entity.UserEvent
 import com.scprojekt.domain.model.user.event.UserEventFactory
 import com.scprojekt.domain.model.user.event.UserEventType
 import com.scprojekt.domain.model.user.repository.UserEventRepository
@@ -18,7 +18,7 @@ import java.util.function.Consumer
 
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource::class)
-class UserEventStoreRepositoryTest {
+class UserEventRepositoryTest {
 
     @Inject
     lateinit var userEventRepository: UserEventRepository
@@ -26,8 +26,8 @@ class UserEventStoreRepositoryTest {
     @AfterEach
     @Transactional
     fun teardown() {
-        val users: MutableList<UserEventStore>? = userEventRepository.findAllToRemove()
-        users?.forEach(Consumer { u: UserEventStore ->
+        val users: MutableList<UserEvent>? = userEventRepository.findAllToRemove()
+        users?.forEach(Consumer { u: UserEvent ->
             userEventRepository.removeEntity(u)
         })
     }
@@ -37,7 +37,7 @@ class UserEventStoreRepositoryTest {
         val userEvent = UserEventFactory.getInstance().createUserEvent(UserEventType.CREATE, createTestUser())
         val userEventStore = createTestUserEventStore(userEvent)
         userEventRepository.createEntity(userEventStore)
-        val result: UserEventStore? = userEventRepository.findByUUID(userEventStore.uuid)
+        val result: UserEvent? = userEventRepository.findByUUID(userEventStore.uuid)
 
         Assertions.assertThat(result?.uuid).isEqualTo(userEventStore.uuid)
     }

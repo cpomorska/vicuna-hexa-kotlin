@@ -4,12 +4,13 @@ import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.domain.model.user.repository.UserRepository
 import com.scprojekt.domain.model.user.service.UserReadOnlyService
+import jakarta.inject.Named
 
 abstract class AbstractUserReadOnlyService : UserReadOnlyService {
     var userRepository : UserRepository? = null
 
     constructor(/* required for quarkus*/)
-    constructor(userRepositoryInject: UserRepository) {
+    constructor(@Named("UserJapRepository") userRepositoryInject: UserRepository) {
         userRepository = userRepositoryInject
     }
 

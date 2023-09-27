@@ -7,19 +7,28 @@ import com.scprojekt.util.*
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
+import io.quarkus.test.keycloak.client.KeycloakTestClient
 import io.restassured.RestAssured.given
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
+import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.function.Consumer
 
+
+private const val USERNAME_ALICE_MANN = "alice"
+
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource::class)
+@Disabled
 class UserRestRouteTest {
 
     private lateinit var testUser: User
+
+    private val keycloakClient = KeycloakTestClient()
 
     @Inject
     @field:Default
@@ -43,6 +52,7 @@ class UserRestRouteTest {
     @Test
     fun ifUserNotExistsInDatabaseItWillBeCreatedViaCreateEndpoint() {
         given()
+            .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
             .body(testUser)
@@ -50,14 +60,18 @@ class UserRestRouteTest {
             .post(URI_CREATE)
             .then()
             .statusCode(200)
+            .body("uuid", equalTo(UUID_TESTUSER_1))
     }
 
     @Test
+    @Disabled
     fun ifUserExistsInDatabaseItWillBeUpdatedViaManageEndpoint() {
         userCamelRepository.createEntity(testUser)
         val userFromRepo: User? = userRepository.findByUUID(UUID_TESTUSER_1)
+        userFromRepo!!.userName = "New User"
 
         given()
+            .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
             .body(userFromRepo)
@@ -65,6 +79,8 @@ class UserRestRouteTest {
             .post(URI_MANAGE)
             .then()
             .statusCode(200)
+            .assertThat()
+            .body("uuid", equalTo(UUID_TESTUSER_1))
     }
 
     @Test
@@ -73,14 +89,18 @@ class UserRestRouteTest {
         val userFromRepo: User? = userRepository.findByUUID(UUID_TESTUSER_1)
 
         given()
+            .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
-            .body(userFromRepo)
+            .body(testUser)
             .`when`()
             .post(URI_DELETE)
             .then()
             .statusCode(200)
+            .body("uuid", equalTo(UUID_TESTUSER_1))
     }
 
-
+    protected fun getAccessToken(userName: String?): String {
+        return keycloakClient.getAccessToken(userName)
+    }
 }

@@ -1,8 +1,9 @@
-package com.scprojekt.infrastructure.routes
+package com.scprojekt.infrastructure.constants
 
-class RouteConstants {
+class Routes {
 
     companion object {
+
         const val MEDIATYPE_JSON = "application/json"
 
         /* Routes */

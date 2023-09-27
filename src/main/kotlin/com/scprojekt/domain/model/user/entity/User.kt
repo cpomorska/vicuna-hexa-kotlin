@@ -1,33 +1,37 @@
 package com.scprojekt.domain.model.user.entity
 
 import com.scprojekt.domain.shared.SQLInjectionSafe
+import com.scprojekt.mimetidae.domain.shared.BaseEntity
 import jakarta.persistence.*
-import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
+import lombok.Builder
 
 @Entity
-@Table(name = "benutzer")
-@NamedQuery(name = "getUUID", query = "SELECT u from User u WHERE u.userNumber.uuid = :uuid")
-open class User {
+@Table(name = "users")
+@Builder
+open class User : BaseEntity() {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "benutzerid_seq", sequenceName = "BENUTZERID_SEQ", allocationSize = 1)
-    @Column(name = "benutzerid")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "USER_SEQ", allocationSize = 1, initialValue = 1)
+    @Column(name = "userid")
     open var userId: Long? = null
 
-    @NotEmpty
-    open lateinit var userType: String
+    @ManyToOne(cascade = arrayOf(CascadeType.ALL))
+    @JoinColumn(name = "usertypeid")
+    @NotNull
+    open var userType: UserType = UserType()
 
     @SQLInjectionSafe
-    @Column(name = "benutzername", nullable = false)
+    @Column(name = "username", nullable = false)
     open lateinit var userName: String
 
-    @Embedded
-    @Column(nullable = false)
+    @OneToOne(cascade = arrayOf(CascadeType.ALL))
+    @JoinColumn(name = "usernumberid")
+    @NotNull
     open lateinit var userNumber: UserNumber
 
-    //@NotNull
-    //@SQLInjectionSafe
-    @Column(name = "benutzerdescription")
+    @SQLInjectionSafe
+    @Column(name = "userdescription")
     open lateinit var userDescription: String
 }

@@ -1,15 +1,19 @@
 package com.scprojekt.util
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.domain.model.user.entity.UserEventStore
+import com.scprojekt.domain.model.user.entity.UserEvent
 import com.scprojekt.domain.model.user.entity.UserNumber
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.domain.model.user.event.UserHandlingEvent
-import com.scprojekt.infrastructure.mapping.VicunaJacksonMapper
+import com.scprojekt.infrastructure.mapping.VicunaObjectMapper
+import com.scprojekt.mimetidae.domain.model.user.dto.CreateUserRequest
+import com.scprojekt.mimetidae.domain.model.user.dto.DeleteUserRequest
+import com.scprojekt.mimetidae.domain.model.user.dto.UpdateUserRequest
 import java.util.*
 
 const val TESTROLE = "testrole"
 const val TESTUSER = "Testuser"
+const val NEUUSER = "Testuser"
 const val USER_ID_TESTUSER_1 = 1L
 const val UUID_TESTUSER_1 = "586c2084-d545-4fac-b7d3-2319382df14f"
 const val UUID_TESTUSER_2 = "35fa10da-594a-4601-a7b7-0a707a3c1ce7"
@@ -28,7 +32,7 @@ class UserTestUtil {
             val user = User()
             val userType = UserType()
             val userTypeList: MutableList<UserType> = ArrayList()
-            val userNumber = UserNumber()
+            val userNumber = UserNumber(UUID.randomUUID())
             userNumber.uuid = UUID.fromString(UUID_TESTUSER_1)
             userType.userTypeId = USER_ID_TESTUSER_1
             userType.userRoleType = TESTROLE
@@ -38,17 +42,42 @@ class UserTestUtil {
             user.userName = TESTUSER
             user.userDescription = TESTUSER
             user.userNumber = userNumber
-            user.userType = "UserType"
+            user.userType =
             return user
         }
 
         @JvmStatic
-        fun createTestUserEventStore(userHandlingEvent: UserHandlingEvent): UserEventStore {
-            val userEvent = UserEventStore()
+        fun createTestUserEventStore(userHandlingEvent: UserHandlingEvent): UserEvent {
+            val userEvent = UserEvent()
             userEvent.uuid = userHandlingEvent.eventid
-            userEvent.userHandlingEvent = VicunaJacksonMapper.getInstance().writeValueAsString(userHandlingEvent)
+            userEvent.userHandlingEvent = VicunaObjectMapper.getInstance().writeValueAsString(userHandlingEvent)
             return userEvent
         }
-    }
 
+        @JvmStatic
+        fun createUserRequest(user: User): CreateUserRequest {
+            var createUserRequest = CreateUserRequest()
+            createUserRequest.userName = user.userName
+            createUserRequest.userDescription = user.userDescription
+            createUserRequest.userType = user.userType
+            createUserRequest.userNumber = user.userNumber
+            return createUserRequest
+        }
+
+        @JvmStatic
+        fun updateUserRequest(user: User): UpdateUserRequest {
+            var updateUserRequest = UpdateUserRequest()
+            updateUserRequest.userName = user.userName
+            updateUserRequest.userUpdate = user.userNumber.uuid!!
+            return updateUserRequest
+        }
+
+        @JvmStatic
+        fun deleteUserRequest(user: User): DeleteUserRequest {
+            var deleteUserRequest = DeleteUserRequest()
+            deleteUserRequest.userName = NEUUSER
+            deleteUserRequest.userNumber = user.userNumber
+            return deleteUserRequest
+        }
+    }
 }

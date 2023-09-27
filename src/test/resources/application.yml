@@ -4,14 +4,24 @@ quarkus:
   datasource:
     db-kind: h2
     jdbc:
-      url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;Mode=MySQL;
+      url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;Mode=Oracle;
   hibernate-orm:
     database:
-      generation: drop-and-create
-      sql-load-script: import.sql
+      generation: update
+  liquibase:
+    migrate-at-start: false
   kafka:
     bootstrap:
       servers: localhost:29092
+#  oidc:
+#    #auth-server-url: http://localhost:8180/realms/development
+#    client-id: quarkus-service-app
+#    credentials.secret: secret
+#    application-type: service
+#    keycloak:
+#      devservices:
+#        realm-path: dev-realm.json
+#        service-name: quarkus
 mp:
   messaging:
     outgoing:

@@ -32,7 +32,7 @@ class UserDeletionExceptionTest {
 
     @ParameterizedTest
     @MethodSource("uuidsForUUIDInMessage")
-    fun createdUserDeletionExceptionMessageContainsUsernumberUUID(uuid: UUID?) {
+    fun createdUserDeletionExceptionMessageContainsUsernumberUUID(uuid: UUID) {
         val userNumber = UserNumber(uuid)
         val userDeletionException = UserDeletionException(Throwable("Message"), userNumber.uuid.toString());
 
