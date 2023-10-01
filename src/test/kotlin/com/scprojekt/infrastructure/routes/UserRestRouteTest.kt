@@ -66,7 +66,7 @@ class UserRestRouteTest {
     @Test
     @Disabled
     fun ifUserExistsInDatabaseItWillBeUpdatedViaManageEndpoint() {
-        userCamelRepository.createEntity(testUser)
+        userRepository.createEntity(testUser)
         val userFromRepo: User? = userRepository.findByUUID(UUID_TESTUSER_1)
         userFromRepo!!.userName = "New User"
 

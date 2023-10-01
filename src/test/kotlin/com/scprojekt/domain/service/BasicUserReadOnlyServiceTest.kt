@@ -4,7 +4,6 @@ import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
-import com.scprojekt.util.TESTROLE
 import com.scprojekt.util.TESTUSER
 import com.scprojekt.util.UUID_TESTUSER_1
 import com.scprojekt.util.UserTestUtil.Companion.createTestUser
@@ -17,7 +16,6 @@ import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.*
 import java.util.function.Consumer
@@ -61,16 +59,14 @@ class BasicUserReadOnlyServiceTest {
     }
 
     @Test
-    @Disabled
     fun findAllUserByType() {
-        val userType = UserType()
-        userType.userRoleType = TESTROLE
+        var user = createTestUser()
 
-        val result: List<User> = baseUserReadOnlyService.findAllUsersByType(userType)
-        assertThat(result[0].userName).isNotEmpty().isEqualTo(TESTUSER)
+        val result: List<User> = baseUserReadOnlyService.findAllUsersByType(user.userType)
+        assertThat(result.first().userName).isNotEmpty().isEqualTo(TESTUSER)
     }
 
-        @Test
+    @Test
     fun findAllUserByDescription() {
         val result: List<User> = baseUserReadOnlyService.findAllUserByDescription(TESTUSER)
         assertThat(result[0].userDescription).isNotEmpty().isEqualTo(TESTUSER)

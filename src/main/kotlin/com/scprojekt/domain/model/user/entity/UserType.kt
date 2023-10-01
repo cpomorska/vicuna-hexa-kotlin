@@ -1,10 +1,11 @@
 package com.scprojekt.domain.model.user.entity
-import com.scprojekt.domain.shared.SQLInjectionSafe
+import com.scprojekt.domain.shared.database.SQLInjectionSafe
+import com.scprojekt.domain.shared.database.BaseEntity
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "usertype")
-open class UserType {
+open class UserType : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usertype_seq")

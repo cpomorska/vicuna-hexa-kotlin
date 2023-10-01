@@ -42,7 +42,7 @@ class UserTestUtil {
             user.userName = TESTUSER
             user.userDescription = TESTUSER
             user.userNumber = userNumber
-            user.userType =
+            user.userType = userType
             return user
         }
 

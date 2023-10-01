@@ -1,4 +1,4 @@
-package com.scprojekt.mimetidae.domain.shared
+package com.scprojekt.domain.shared
 
 import com.scprojekt.domain.model.user.event.UserEventType
 import jakarta.validation.constraints.NotNull

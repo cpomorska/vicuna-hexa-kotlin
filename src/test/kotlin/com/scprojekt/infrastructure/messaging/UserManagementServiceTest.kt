@@ -1,6 +1,7 @@
 package com.scprojekt.infrastructure.messaging
 
 import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.infrastructure.service.UserManagementService
 import com.scprojekt.lifecycle.MessagingTestResourcelifecycleManager
 import com.scprojekt.util.UserTestUtil
 import io.quarkus.test.common.QuarkusTestResource
@@ -10,7 +11,6 @@ import jakarta.inject.Inject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.util.*
 
 
 @QuarkusTest

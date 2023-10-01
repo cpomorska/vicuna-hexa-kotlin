@@ -2,7 +2,7 @@ package com.scprojekt.domain.model.user.repository
 
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
-import com.scprojekt.mimetidae.domain.shared.BaseRepository
+import com.scprojekt.domain.shared.database.BaseRepository
 
 interface UserIntegrationRepository : BaseRepository<User> {
     fun findByUUID(uid: String): User?

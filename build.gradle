@@ -80,6 +80,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-resteasy'
     implementation 'io.quarkus:quarkus-smallrye-openapi'
     testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'com.tngtech.archunit:archunit-junit5:1.1.0'
     testImplementation 'io.rest-assured:rest-assured'
     testImplementation 'io.smallrye.reactive:smallrye-reactive-messaging-in-memory'
     //testImplementation 'io.quarkus:quarkus-test-oidc-server'
