@@ -6,6 +6,7 @@ import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.infrastructure.service.UserStorageService
 import com.scprojekt.util.UUID_TESTUSER_1
+import com.scprojekt.util.UUID_TESTUSER_2
 import com.scprojekt.util.UserTestUtil.Companion.createTestUser
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
@@ -62,6 +63,7 @@ class BaseUserStorageServiceTest {
     @Test
     @Transactional
     fun whenUpdateUserIsCalledTheUserIsUpdated() {
+        val uuidUpdated = UUID.fromString(UUID_TESTUSER_2)
 
         val resultUUID1 = createTestUser().let { baseUserStorageService.createUser(it) }
         val result1: User = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)!!

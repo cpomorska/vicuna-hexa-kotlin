@@ -1,6 +1,7 @@
 package com.scprojekt.domain.service
 
 import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.util.TESTUSER
