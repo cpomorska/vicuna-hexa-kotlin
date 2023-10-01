@@ -1,8 +1,9 @@
-package com.scprojekt.infrastructure.messaging
+package com.scprojekt.infrastructure.service
 
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.event.UserEventType
 import com.scprojekt.domain.model.user.service.UserMessagingService
+import com.scprojekt.infrastructure.messaging.UserToBackendProducer
 import io.vertx.core.impl.logging.Logger
 import io.vertx.core.impl.logging.LoggerFactory
 import jakarta.enterprise.context.ApplicationScoped

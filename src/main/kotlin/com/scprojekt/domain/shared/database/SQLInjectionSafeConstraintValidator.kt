@@ -1,4 +1,4 @@
-package com.scprojekt.domain.shared
+package com.scprojekt.domain.shared.database
 
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext

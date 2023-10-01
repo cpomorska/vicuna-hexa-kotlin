@@ -1,4 +1,4 @@
-package com.scprojekt.mimetidae.domain.shared
+package com.scprojekt.domain.shared.database
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column

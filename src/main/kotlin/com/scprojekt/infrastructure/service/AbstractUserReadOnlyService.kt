@@ -1,4 +1,4 @@
-package com.scprojekt.infrastructure.abstrct
+package com.scprojekt.infrastructure.service
 
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType

@@ -6,7 +6,6 @@ import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.infrastructure.service.UserStorageService
 import com.scprojekt.util.UUID_TESTUSER_1
-import com.scprojekt.util.UUID_TESTUSER_2
 import com.scprojekt.util.UserTestUtil.Companion.createTestUser
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
@@ -18,7 +17,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.*
 import java.util.function.Consumer
@@ -63,20 +61,18 @@ class BaseUserStorageServiceTest {
 
     @Test
     @Transactional
-    @Disabled
     fun whenUpdateUserIsCalledTheUserIsUpdated() {
-        val uuidUpdated = UUID.fromString(UUID_TESTUSER_2)
 
         val resultUUID1 = createTestUser().let { baseUserStorageService.createUser(it) }
         val result1: User = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)!!
         assertThat(result1.userNumber.uuid).isEqualTo(resultUUID1.uuid)
 
-        result1.userNumber.uuid = uuidUpdated
+        result1.userName = "Nanana"
         baseUserStorageService.updateUser(result1)
-        val result: User = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_2)!!
+        val result: List<User> = baseUserReadOnlyService.findAllUserByName("Nanana")
 
-        assertThat(result).isNotNull
-        assertThat(result.userNumber.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_2))
+        assertThat(result).isNotEmpty
+        assertThat(result.first().userName).isEqualTo("Nanana")
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.scprojekt.mimetidae.domain.model.user.dto
 
 import com.scprojekt.domain.model.user.event.UserEventType
-import com.scprojekt.mimetidae.domain.shared.BaseRequest
+import com.scprojekt.domain.shared.BaseRequest
 import jakarta.validation.constraints.NotNull
 import lombok.NoArgsConstructor
 import java.util.*

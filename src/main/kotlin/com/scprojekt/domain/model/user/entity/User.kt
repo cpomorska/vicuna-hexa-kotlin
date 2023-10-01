@@ -1,7 +1,7 @@
 package com.scprojekt.domain.model.user.entity
 
-import com.scprojekt.domain.shared.SQLInjectionSafe
-import com.scprojekt.mimetidae.domain.shared.BaseEntity
+import com.scprojekt.domain.shared.database.SQLInjectionSafe
+import com.scprojekt.domain.shared.database.BaseEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
 import lombok.Builder

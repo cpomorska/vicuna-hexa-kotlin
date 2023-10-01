@@ -1,13 +1,13 @@
 package com.scprojekt.domain.model.user.entity;
 
+import com.scprojekt.domain.shared.database.BaseEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
-import java.io.Serializable
 import java.util.*
 
 @Entity
 @Table(name ="usernumber")
-open class UserNumber() :Serializable {
+open class UserNumber() : BaseEntity() {
     constructor(randomUUID: UUID) : this() {
         uuid = randomUUID
     }
