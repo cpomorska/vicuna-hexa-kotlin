@@ -1,9 +1,9 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.9.10"
+    id 'org.jetbrains.kotlin.jvm' version "1.9.10"
     id "org.jetbrains.kotlin.plugin.allopen" version "1.9.10"
     id "org.jetbrains.kotlin.plugin.noarg" version "1.9.10"
-    id "io.quarkus"
-    id "jacoco"
+    id 'io.quarkus'
+    id 'jacoco'
 }
 
 repositories {
@@ -12,6 +12,11 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     /* Lombok */
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
