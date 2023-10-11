@@ -5,9 +5,9 @@ import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.infrastructure.service.UserStorageService
+import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.UUID_TESTUSER_1
 import com.scprojekt.util.UUID_TESTUSER_2
-import com.scprojekt.util.UserTestUtil.Companion.createTestUser
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest

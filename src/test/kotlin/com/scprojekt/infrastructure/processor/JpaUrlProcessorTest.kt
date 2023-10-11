@@ -1,7 +1,7 @@
 package com.scprojekt.infrastructure.processor
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.util.UserTestUtil.Companion.createTestUser
+import com.scprojekt.util.TestUtil.Companion.createTestUser
 import io.quarkus.test.junit.QuarkusTest
 import org.apache.camel.EndpointInject
 import org.apache.camel.Produce
