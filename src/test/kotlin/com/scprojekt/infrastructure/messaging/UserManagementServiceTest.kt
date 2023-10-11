@@ -3,7 +3,7 @@ package com.scprojekt.infrastructure.messaging
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.infrastructure.service.UserManagementService
 import com.scprojekt.lifecycle.MessagingTestResourcelifecycleManager
-import com.scprojekt.util.UserTestUtil
+import com.scprojekt.util.TestUtil.Companion.createTestUser
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.junit.QuarkusTest
 import jakarta.enterprise.inject.Default
@@ -25,7 +25,7 @@ class UserManagementServiceTest {
 
     @BeforeEach
     fun init(){
-        user = UserTestUtil.createTestUser()
+        user = createTestUser()
     }
 
     @Test

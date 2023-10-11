@@ -1,3 +1,2 @@
-package com.scprojekt.mimetidae.domain.shared
+package com.scprojekt.domain.shared
 
-import java.util.*
