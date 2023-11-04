@@ -18,77 +18,91 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    implementation'net.bytebuddy:byte-buddy:1.14.4'
-    testImplementation group: 'net.bytebuddy', name: 'byte-buddy-agent', version: '1.14.4'
+    /* Lombok */
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    implementation "net.bytebuddy:byte-buddy:${bytebuddyVersion}"
 
-    testImplementation 'org.mockito:mockito-core:5.3.1'
-    testImplementation 'org.mockito:mockito-inline:5+'
-    testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
-    testImplementation 'org.assertj:assertj-core:3.24.2'
+    /* Quarkus */
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:quarkus-camel-bom:${quarkusPlatformVersion}")
+    implementation "io.quarkus:quarkus-openshift"
+    implementation "io.quarkus:quarkus-hibernate-orm"
+    implementation "io.quarkus:quarkus-kafka-client"
+    implementation "io.quarkus:quarkus-resteasy-multipart"
+    implementation "io.quarkus:quarkus-oidc"
+    implementation "io.quarkus:quarkus-config-yaml"
+    implementation "io.quarkus:quarkus-kubernetes"
+    implementation "io.quarkus:quarkus-jdbc-postgresql"
+    implementation "io.quarkus:quarkus-jdbc-h2"
+    implementation "io.quarkus:quarkus-test-h2"
+    implementation "io.quarkus:quarkus-liquibase"
+    implementation "io.quarkus:quarkus-kotlin"
+    //implementation "io.quarkus:quarkus-opentelemetry"
+    implementation "io.quarkus:quarkus-jackson"
+    implementation "io.quarkus:quarkus-resteasy-jackson"
+    implementation "io.quarkus:quarkus-kafka-streams"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "io.quarkus:quarkus-hibernate-orm-panache"
+    implementation "io.quarkus:quarkus-arc"
+    implementation "io.quarkus:quarkus-resteasy"
+    implementation "io.quarkus:quarkus-smallrye-openapi"
+    implementation "io.quarkus:quarkus-smallrye-reactive-messaging-kafka"
 
-    implementation("io.quarkus:quarkus-smallrye-reactive-messaging-kafka")
+    /* Camel */
+    implementation "org.apache.camel.quarkus:camel-quarkus-log"
+    implementation "org.apache.camel.quarkus:camel-quarkus-kafka"
+    implementation "org.apache.camel.quarkus:camel-quarkus-kotlin"
+    implementation "org.apache.camel.quarkus:camel-quarkus-jta"
+    implementation "org.apache.camel.quarkus:camel-quarkus-base64"
+    implementation "org.apache.camel.quarkus:camel-quarkus-quartz"
+    implementation "org.apache.camel.quarkus:camel-quarkus-jpa"
+    implementation "org.apache.camel.quarkus:camel-quarkus-jaxb"
+    implementation "org.apache.camel.quarkus:camel-quarkus-jackson"
+    implementation "org.apache.camel.quarkus:camel-quarkus-direct"
+    implementation "org.apache.camel.quarkus:camel-quarkus-mock"
+    implementation "org.apache.camel.quarkus:camel-quarkus-bean"
+    implementation "org.apache.camel.quarkus:camel-quarkus-http:3.4.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-rest-openapi"
+    implementation "org.apache.camel.quarkus:camel-quarkus-xml-jaxb"
+    implementation "org.apache.camel.quarkus:camel-quarkus-microprofile-fault-tolerance"
+    implementation "org.apache.camel.quarkus:camel-quarkus-junit5"
+    implementation "org.apache.camel.quarkus:camel-quarkus-integration-test-kotlin:3.4.0"
+    implementation  "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.4.0"
+    //implementation "org.apache.camel.quarkus:camel-quarkus-amqp"
+    implementation "org.apache.camel.quarkus:camel-quarkus-attachments"
+    //implementation "io.quarkus:quarkus-keycloak-authorization"
+    implementation "org.apache.camel.quarkus:camel-quarkus-seda"
+    implementation "org.apache.camel.quarkus:camel-quarkus-zip-deflater"
+    //implementation "org.apache.camel.quarkus:camel-quarkus-jms"
+    implementation "org.apache.camel.quarkus:camel-quarkus-mail"
+
+    /* Jackson */
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.+"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2"
 
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:quarkus-camel-bom:${quarkusPlatformVersion}")
-    implementation 'io.quarkus:quarkus-openshift'
-    implementation 'io.quarkus:quarkus-hibernate-orm'
-    implementation 'io.quarkus:quarkus-kafka-client'
-    implementation 'io.quarkus:quarkus-resteasy-multipart'
-    implementation "io.quarkus:quarkus-oidc"
-    implementation 'io.quarkus:quarkus-config-yaml'
-    implementation 'io.quarkus:quarkus-kubernetes'
-    implementation 'io.quarkus:quarkus-jdbc-postgresql'
-    implementation 'io.quarkus:quarkus-jdbc-h2'
-    implementation 'io.quarkus:quarkus-test-h2'
-    implementation 'io.quarkus:quarkus-liquibase'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-log'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-kafka'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-kotlin'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-jta'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-base64'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-quartz'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-jpa'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-jaxb'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-jackson'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-direct'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-mock'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-bean'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-http:3.0.0-RC1'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-rest-openapi'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-xml-jaxb'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-microprofile-fault-tolerance'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-junit5'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-integration-test-kotlin:3.0.0-RC1'
-    implementation  'org.apache.camel.quarkus:camel-quarkus-openapi-java:3.0.0-RC1'
-    //implementation 'org.apache.camel.quarkus:camel-quarkus-amqp'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-attachments'
-    //implementation 'io.quarkus:quarkus-keycloak-authorization'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-seda'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-zip-deflater'
-    //implementation 'org.apache.camel.quarkus:camel-quarkus-jms'
-    implementation 'org.apache.camel.quarkus:camel-quarkus-mail'
-    implementation 'io.quarkus:quarkus-kotlin'
-    //implementation 'io.quarkus:quarkus-opentelemetry'
-    implementation 'io.quarkus:quarkus-jackson'
-    implementation 'io.quarkus:quarkus-resteasy-jackson'
-    implementation 'io.quarkus:quarkus-kafka-streams'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-    implementation 'io.quarkus:quarkus-hibernate-orm-panache'
-    implementation 'io.quarkus:quarkus-arc'
-    implementation 'io.quarkus:quarkus-resteasy'
-    implementation 'io.quarkus:quarkus-smallrye-openapi'
-    testImplementation 'io.quarkus:quarkus-junit5'
-    testImplementation 'com.tngtech.archunit:archunit-junit5:1.1.0'
-    testImplementation 'io.rest-assured:rest-assured'
-    testImplementation 'io.smallrye.reactive:smallrye-reactive-messaging-in-memory'
-    //testImplementation 'io.quarkus:quarkus-test-oidc-server'
-    testImplementation 'io.quarkus:quarkus-test-keycloak-server'
+    /* Test */
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:${lombokVersion}"
+
+    testImplementation "net.bytebuddy:byte-buddy-agent:${bytebuddyVersion}"
+
+    testImplementation "org.mockito:mockito-core:5.3.1"
+    testImplementation "org.mockito:mockito-inline:5+"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+
+    testImplementation "io.quarkus:quarkus-junit5"
+    testImplementation "com.tngtech.archunit:archunit-junit5:${archunitVersion}"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.smallrye.reactive:smallrye-reactive-messaging-in-memory"
+
+    //testImplementation "io.quarkus:quarkus-test-oidc-server"
+    testImplementation "io.quarkus:quarkus-test-keycloak-server"
 }
 
-group 'com.scprojekt'
-version '1.0.0-SNAPSHOT'
+group "com.scprojekt"
+version "1.0.0-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

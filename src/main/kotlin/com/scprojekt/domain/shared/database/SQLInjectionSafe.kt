@@ -13,5 +13,3 @@ annotation class SQLInjectionSafe (
     val groups: Array<KClass<*>>  = emptyArray<KClass<*>>(),
     val payload: Array<KClass<out Payload>> = emptyArray<KClass<out Payload>>()
 )
-{
-}

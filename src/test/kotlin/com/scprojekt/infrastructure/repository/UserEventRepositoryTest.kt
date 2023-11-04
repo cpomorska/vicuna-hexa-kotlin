@@ -4,8 +4,8 @@ import com.scprojekt.domain.model.user.entity.UserEvent
 import com.scprojekt.domain.model.user.event.UserEventFactory
 import com.scprojekt.domain.model.user.event.UserEventType
 import com.scprojekt.domain.model.user.repository.UserEventRepository
-import com.scprojekt.util.UserTestUtil.Companion.createTestUser
-import com.scprojekt.util.UserTestUtil.Companion.createTestUserEventStore
+import com.scprojekt.util.TestUtil.Companion.createTestUser
+import com.scprojekt.util.TestUtil.Companion.createTestUserEventStore
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest

@@ -1,12 +1,11 @@
 package com.scprojekt.domain.service
 
 import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.util.TESTUSER
+import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.UUID_TESTUSER_1
-import com.scprojekt.util.UserTestUtil.Companion.createTestUser
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest

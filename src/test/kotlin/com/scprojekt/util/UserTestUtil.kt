@@ -24,8 +24,7 @@ const val VALUE_APPLICATION_JSON = "application/json"
 const val URI_DELETE = "/api/store/user/delete"
 const val URI_MANAGE = "/api/store/user/manage"
 const val URI_CREATE = "/api/store/user/create"
-
-class UserTestUtil {
+class TestUtil {
     companion object {
         @JvmStatic
         fun createTestUser(): User {

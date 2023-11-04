@@ -4,6 +4,7 @@ import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.infrastructure.repository.UserCamelRepository
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.util.*
+import com.scprojekt.util.TestUtil.Companion.createTestUser
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
@@ -14,7 +15,6 @@ import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.function.Consumer
 
@@ -23,7 +23,6 @@ private const val USERNAME_ALICE_MANN = "alice"
 
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource::class)
-@Disabled
 class UserRestRouteTest {
 
     private lateinit var testUser: User
@@ -41,7 +40,7 @@ class UserRestRouteTest {
     @BeforeEach
     @Transactional
     fun setup() {
-        testUser = UserTestUtil.createTestUser()
+        testUser = createTestUser()
 
         val users: MutableList<User>? = userRepository.findAllToRemove()
         users?.forEach(Consumer { u: User ->
@@ -64,7 +63,6 @@ class UserRestRouteTest {
     }
 
     @Test
-    @Disabled
     fun ifUserExistsInDatabaseItWillBeUpdatedViaManageEndpoint() {
         userRepository.createEntity(testUser)
         val userFromRepo: User? = userRepository.findByUUID(UUID_TESTUSER_1)
