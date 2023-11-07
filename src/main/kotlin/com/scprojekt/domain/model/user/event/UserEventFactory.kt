@@ -10,8 +10,7 @@ class UserEventFactory {
     companion object {
         @JvmStatic
         fun getInstance(): UserEventFactory {
-            val eventFactory = UserEventFactory()
-            return eventFactory
+            return  UserEventFactory()
         }
     }
 

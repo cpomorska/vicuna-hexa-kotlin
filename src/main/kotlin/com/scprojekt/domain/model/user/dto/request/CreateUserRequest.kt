@@ -1,9 +1,9 @@
-package com.scprojekt.mimetidae.domain.model.user.dto
+package com.scprojekt.domain.model.user.dto.request
 
 import com.scprojekt.domain.model.user.entity.UserNumber
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.domain.model.user.event.UserEventType
-import com.scprojekt.domain.shared.BaseRequest
+import com.scprojekt.domain.shared.dto.BaseRequest
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor
 @NoArgsConstructor
 class CreateUserRequest: BaseRequest() {
 
-    override var userEventType = UserEventType.CREATE
+    var userEventType = UserEventType.CREATE
 
     @NotNull(message = "Please provide a user type")
     var userType: UserType = UserType()

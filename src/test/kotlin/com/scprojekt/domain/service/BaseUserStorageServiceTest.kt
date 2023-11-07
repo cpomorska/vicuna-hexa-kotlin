@@ -1,13 +1,12 @@
 package com.scprojekt.domain.service
 
-import com.scprojekt.domain.model.user.dto.UuidResponse
+import com.scprojekt.domain.model.user.dto.response.UuidResponse
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.infrastructure.service.UserStorageService
 import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.UUID_TESTUSER_1
-import com.scprojekt.util.UUID_TESTUSER_2
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
@@ -63,8 +62,6 @@ class BaseUserStorageServiceTest {
     @Test
     @Transactional
     fun whenUpdateUserIsCalledTheUserIsUpdated() {
-        val uuidUpdated = UUID.fromString(UUID_TESTUSER_2)
-
         val resultUUID1 = createTestUser().let { baseUserStorageService.createUser(it) }
         val result1: User = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)!!
         assertThat(result1.userNumber.uuid).isEqualTo(resultUUID1.uuid)

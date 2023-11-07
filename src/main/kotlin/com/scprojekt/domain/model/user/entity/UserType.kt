@@ -1,5 +1,5 @@
 package com.scprojekt.domain.model.user.entity
-import com.scprojekt.domain.shared.database.SQLInjectionSafe
+import com.scprojekt.domain.shared.database.NoSQLInjection
 import com.scprojekt.domain.shared.database.BaseEntity
 import jakarta.persistence.*
 
@@ -13,15 +13,15 @@ open class UserType : BaseEntity() {
     @Column(name="usertypeid")
     open var userTypeId: Long? =null
 
-    @SQLInjectionSafe
+    @NoSQLInjection
     @Column(name="usertyperole")
     open var userRoleType: String? = null
 
-    @SQLInjectionSafe
+    @NoSQLInjection
     @Column(name="usertypedescription")
     open var userTypeDescription: String?=null
 
-    @SQLInjectionSafe
+    @NoSQLInjection
     @Column(name="usertypeenabled")
     open var userTypeEnabled: Boolean = true
 }

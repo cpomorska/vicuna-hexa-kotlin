@@ -1,8 +1,8 @@
-package com.scprojekt.mimetidae.domain.model.user.dto
+package com.scprojekt.domain.model.user.dto.request
 
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.domain.model.user.event.UserEventType
-import com.scprojekt.domain.shared.BaseRequest
+import com.scprojekt.domain.shared.dto.BaseRequest
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import lombok.NoArgsConstructor
@@ -11,7 +11,7 @@ import java.util.*
 @NoArgsConstructor
 class ReadUserRequest: BaseRequest() {
 
-    override var userEventType: UserEventType = UserEventType.READ
+    var userEventType: UserEventType = UserEventType.READ
 
     var userType: UserType = UserType()
 

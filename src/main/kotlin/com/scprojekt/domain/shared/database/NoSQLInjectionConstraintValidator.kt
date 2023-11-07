@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import java.util.regex.Pattern
 
-class SQLInjectionSafeConstraintValidator : ConstraintValidator<SQLInjectionSafe, String> {
+class NoSQLInjectionConstraintValidator : ConstraintValidator<NoSQLInjection, String> {
     private val replacement: String = ")(\\b)+\\s.*(.*)"
 
     private val sqlTypes: String  =
@@ -37,26 +37,20 @@ class SQLInjectionSafeConstraintValidator : ConstraintValidator<SQLInjectionSafe
         "(.*)(-){2,}(.*)"
     )
 
-    // pre-build the Pattern objects for faster validation
     private val validationPatterns : MutableList<Pattern>
-        get() {
-            return getAllValidationPatterns()
-        }
+        get() = getAllValidationPatterns()
 
-    override fun initialize(sql : SQLInjectionSafe){
+    override fun initialize(sql : NoSQLInjection){
         //NOSONAR
     }
 
     override fun isValid(dataString:String, cxt:ConstraintValidatorContext):Boolean {
-        return isSqlInjectionSafe(dataString)
+        return isNoSqlInjection(dataString)
     }
 
-    private fun isSqlInjectionSafe(dataString:String) :Boolean{
-        if(isEmpty(dataString)){
-            return true
-        }
-        for(pattern : Pattern in validationPatterns){
-            if(matches(pattern, dataString)){
+    private fun isNoSqlInjection(dataString:String) :Boolean{
+        validationPatterns.forEach { p ->
+            if (matches(p, dataString)) {
                 return false
             }
         }
@@ -70,11 +64,10 @@ class SQLInjectionSafeConstraintValidator : ConstraintValidator<SQLInjectionSafe
 
     private fun getAllValidationPatterns(): MutableList<Pattern> {
         val patterns = mutableListOf<Pattern>()
-        for(sqlExpression :String in sqlRegexps){
-            patterns.add(getPattern(sqlExpression))
-        }
+        sqlRegexps.forEach { s -> patterns.add(getPattern(s)) }
         return patterns
     }
+
     private fun getPattern(regEx:String) : Pattern{
         return Pattern.compile(regEx, Pattern.CASE_INSENSITIVE or Pattern.UNICODE_CASE)
     }

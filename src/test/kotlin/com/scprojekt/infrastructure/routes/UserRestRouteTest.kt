@@ -72,7 +72,7 @@ class UserRestRouteTest {
             .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
-            .body(userFromRepo)
+            .body(testUser)
             .`when`()
             .post(URI_MANAGE)
             .then()
@@ -84,7 +84,6 @@ class UserRestRouteTest {
     @Test
     fun ifUserExistsInDatabaseItWillBeDeletedViaDeleteEndpoint() {
         userCamelRepository.createEntity(testUser)
-        val userFromRepo: User? = userRepository.findByUUID(UUID_TESTUSER_1)
 
         given()
             .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))

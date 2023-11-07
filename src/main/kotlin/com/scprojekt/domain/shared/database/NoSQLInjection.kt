@@ -5,11 +5,11 @@ import jakarta.validation.Payload
 import kotlin.reflect.KClass
 
 @MustBeDocumented
-@Constraint(validatedBy = [SQLInjectionSafeConstraintValidator::class])
+@Constraint(validatedBy = [NoSQLInjectionConstraintValidator::class])
 @Target(AnnotationTarget.FIELD,AnnotationTarget.TYPE_PARAMETER, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class SQLInjectionSafe (
-    val message: String = "{SQLInjectionSafe}",
+annotation class NoSQLInjection (
+    val message: String = "",
     val groups: Array<KClass<*>>  = emptyArray<KClass<*>>(),
     val payload: Array<KClass<out Payload>> = emptyArray<KClass<out Payload>>()
 )

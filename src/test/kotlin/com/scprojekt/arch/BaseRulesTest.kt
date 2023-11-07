@@ -42,5 +42,6 @@ public class BaseRulesTest {
             .andShould().beFinal()
             .because("standard logger convention")
             .allowEmptyShould(true)
+            .check(classes)
     }
 }

@@ -1,7 +1,7 @@
 package com.scprojekt.arch;
 
 import com.scprojekt.domain.shared.database.BaseEntity
-import com.scprojekt.domain.shared.database.SQLInjectionSafe
+import com.scprojekt.domain.shared.database.NoSQLInjection
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*
@@ -49,12 +49,12 @@ class EntityRulesTest {
     }
 
     @Test
-    fun string_members_must_annotated_with_sqlinjectionsafe() {
+    fun string_members_must_annotated_with_nosqlinjection() {
         fields().that().arePublic().or()
                 .arePackagePrivate()
                 .and().areDeclaredInClassesThat().resideInAPackage("..entity..")
                 .and().haveRawType(String::class.simpleName)
-                .should().beAnnotatedWith(SQLInjectionSafe::class.java)
+                .should().beAnnotatedWith(NoSQLInjection::class.java)
                 .`as`("Fields with String type should be SQLInjection safe")
                 .allowEmptyShould(true)
                 .check(classes)

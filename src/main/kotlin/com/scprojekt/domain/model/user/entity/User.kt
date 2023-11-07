@@ -1,6 +1,6 @@
 package com.scprojekt.domain.model.user.entity
 
-import com.scprojekt.domain.shared.database.SQLInjectionSafe
+import com.scprojekt.domain.shared.database.NoSQLInjection
 import com.scprojekt.domain.shared.database.BaseEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
@@ -22,7 +22,7 @@ open class User : BaseEntity() {
     @NotNull
     open var userType: UserType = UserType()
 
-    @SQLInjectionSafe
+    @NoSQLInjection
     @Column(name = "username", nullable = false)
     open lateinit var userName: String
 
@@ -31,7 +31,7 @@ open class User : BaseEntity() {
     @NotNull
     open lateinit var userNumber: UserNumber
 
-    @SQLInjectionSafe
+    @NoSQLInjection
     @Column(name = "userdescription")
     open lateinit var userDescription: String
 }
