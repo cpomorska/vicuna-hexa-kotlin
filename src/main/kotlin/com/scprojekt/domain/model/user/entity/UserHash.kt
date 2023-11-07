@@ -1,6 +1,6 @@
 package com.scprojekt.domain.model.user.entity;
 
-import com.scprojekt.domain.shared.database.SQLInjectionSafe
+import com.scprojekt.domain.shared.database.NoSQLInjection
 import com.scprojekt.domain.shared.database.BaseEntity
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -16,12 +16,12 @@ import lombok.NoArgsConstructor;
 class UserHash : BaseEntity(){
 
     @NotNull
-    @SQLInjectionSafe
+    @NoSQLInjection
     @Column(name="benutzerhash")
     var hashField: String? = null;
 
     @NotNull
-    @SQLInjectionSafe
+    @NoSQLInjection
     @Column(name="benutzersalz")
     var saltField: String? = null;
 }

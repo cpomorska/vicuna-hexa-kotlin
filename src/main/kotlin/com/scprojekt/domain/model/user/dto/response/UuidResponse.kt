@@ -1,4 +1,4 @@
-package com.scprojekt.domain.model.user.dto
+package com.scprojekt.domain.model.user.dto.response
 
 import jakarta.validation.constraints.NotNull
 import lombok.AllArgsConstructor

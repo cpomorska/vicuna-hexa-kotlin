@@ -1,4 +1,4 @@
-package com.scprojekt.domain.model.user.event
+package com.scprojekt.domain.shared.event
 
 enum class BaseEventType(val eventType: String) {
     CREATE("Create"),

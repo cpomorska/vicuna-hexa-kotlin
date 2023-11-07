@@ -1,9 +1,7 @@
-package com.scprojekt.infrastructure.processor
+package com.scprojekt.infrastructure.constants
 
-class CamelConstants {
+class Camel {
     companion object {
-
-
         /* Properties */
         const  val JPA_URL: String = "jpaUrl"
 

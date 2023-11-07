@@ -1,14 +1,14 @@
 package com.scprojekt.util
 
+import com.scprojekt.domain.model.user.dto.request.CreateUserRequest
+import com.scprojekt.domain.model.user.dto.request.DeleteUserRequest
+import com.scprojekt.domain.model.user.dto.request.UpdateUserRequest
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserEvent
 import com.scprojekt.domain.model.user.entity.UserNumber
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.domain.model.user.event.UserHandlingEvent
 import com.scprojekt.infrastructure.mapping.VicunaObjectMapper
-import com.scprojekt.mimetidae.domain.model.user.dto.CreateUserRequest
-import com.scprojekt.mimetidae.domain.model.user.dto.DeleteUserRequest
-import com.scprojekt.mimetidae.domain.model.user.dto.UpdateUserRequest
 import java.util.*
 
 const val TESTROLE = "testrole"
@@ -24,7 +24,8 @@ const val VALUE_APPLICATION_JSON = "application/json"
 const val URI_DELETE = "/api/store/user/delete"
 const val URI_MANAGE = "/api/store/user/manage"
 const val URI_CREATE = "/api/store/user/create"
-class TestUtil {
+
+internal class TestUtil {
     companion object {
         @JvmStatic
         fun createTestUser(): User {

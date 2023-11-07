@@ -1,6 +1,6 @@
 package com.scprojekt.infrastructure.repository
 
-import com.scprojekt.domain.model.user.dto.UuidResponse
+import com.scprojekt.domain.model.user.dto.response.UuidResponse
 import com.scprojekt.domain.model.user.entity.UserEvent
 import com.scprojekt.domain.model.user.repository.UserEventRepository
 import jakarta.enterprise.context.ApplicationScoped

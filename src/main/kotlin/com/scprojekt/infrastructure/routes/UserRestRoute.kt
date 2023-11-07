@@ -2,14 +2,13 @@ package com.scprojekt.infrastructure.routes
 
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
-import com.scprojekt.infrastructure.constants.Routes
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_CREATEUSER
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_DELETEUSER
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_FINDBYUUID
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_SAVEINDATABASE
 import com.scprojekt.infrastructure.constants.Routes.Companion.DRECT_MANAGEUSER
 import com.scprojekt.infrastructure.constants.Routes.Companion.MEDIATYPE_JSON
-import com.scprojekt.infrastructure.processor.CamelConstants
+import com.scprojekt.infrastructure.constants.Camel
 import com.scprojekt.infrastructure.processor.JpaUrlProcessor
 import com.scprojekt.infrastructure.processor.StringToUUidProcessor
 import com.scprojekt.infrastructure.repository.UserJpaRepository
@@ -125,10 +124,10 @@ class UserRestRoute : RouteBuilder() {
             .transacted()
             .process(prepareJpaUrlProcessor)
             .choice()
-            .`when`(exchangeProperty(CamelConstants.JPA_URL).isNotNull())
-            .to("jpa://" + exchangeProperty(CamelConstants.JPA_URL).toString())
+            .`when`(exchangeProperty(Camel.JPA_URL).isNotNull())
+            .to("jpa://" + exchangeProperty(Camel.JPA_URL).toString())
             .otherwise()
-            .log(LoggingLevel.INFO, CamelConstants.NODATABASE_URL)
+            .log(LoggingLevel.INFO, Camel.NODATABASE_URL)
             .end()
     }
 

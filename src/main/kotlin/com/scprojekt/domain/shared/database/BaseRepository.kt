@@ -1,6 +1,6 @@
 package com.scprojekt.domain.shared.database
 
-import com.scprojekt.domain.model.user.dto.UuidResponse
+import com.scprojekt.domain.model.user.dto.response.UuidResponse
 import io.quarkus.hibernate.orm.panache.PanacheRepository
 
 

@@ -1,6 +1,6 @@
 package com.scprojekt.infrastructure.repository
 
-import com.scprojekt.domain.model.user.dto.UuidResponse
+import com.scprojekt.domain.model.user.dto.response.UuidResponse
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.domain.model.user.exception.UserCreationException

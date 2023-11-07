@@ -7,11 +7,15 @@ import io.smallrye.reactive.messaging.memory.InMemoryConnector
 class MessagingTestResourcelifecycleManager : QuarkusTestResourceLifecycleManager {
 
     override fun start(): Map<String, String>? {
-        val environmentProperties: MutableMap<String, String> = HashMap()
-        val incomingProperties: Map<String, String> = InMemoryConnector.switchIncomingChannelsToInMemory("users-in")
-        val outgoingProperties: Map<String, String> = InMemoryConnector.switchOutgoingChannelsToInMemory("users-out")
-        environmentProperties.putAll(incomingProperties)
-        environmentProperties.putAll(outgoingProperties)
+        val environmentProperties = HashMap<String, String>()
+        val incomingProperties = InMemoryConnector.switchIncomingChannelsToInMemory("users-in")
+        val outgoingProperties = InMemoryConnector.switchOutgoingChannelsToInMemory("users-out")
+
+        environmentProperties.run {
+            putAll(incomingProperties)
+            putAll(outgoingProperties)
+        }
+
         return environmentProperties
     }
 
