@@ -26,58 +26,60 @@ const val URI_MANAGE = "/api/store/user/manage"
 const val URI_CREATE = "/api/store/user/create"
 
 internal class TestUtil {
-    companion object {
-        @JvmStatic
-        fun createTestUser(): User {
-            val user = User()
-            val userType = UserType()
-            val userTypeList: MutableList<UserType> = ArrayList()
-            val userNumber = UserNumber(UUID.randomUUID())
-            userNumber.uuid = UUID.fromString(UUID_TESTUSER_1)
-            userType.userTypeId = USER_ID_TESTUSER_1
-            userType.userRoleType = TESTROLE
-            userType.userTypeDescription = TESTUSER
-            userTypeList.add(userType)
-            user.userId = USER_ID_TESTUSER_1
-            user.userName = TESTUSER
-            user.userDescription = TESTUSER
-            user.userNumber = userNumber
-            user.userType = userType
-            return user
-        }
+    class TestUtil {
+        companion object {
+            @JvmStatic
+            fun createTestUser(): User {
+                val user = User()
+                val userType = UserType()
+                val userTypeList: MutableList<UserType> = ArrayList()
+                val userNumber = UserNumber(UUID.randomUUID())
+                userNumber.uuid = UUID.fromString(UUID_TESTUSER_1)
+                userType.userTypeId = USER_ID_TESTUSER_1
+                userType.userRoleType = TESTROLE
+                userType.userTypeDescription = TESTUSER
+                userTypeList.add(userType)
+                user.userId = USER_ID_TESTUSER_1
+                user.userName = TESTUSER
+                user.userDescription = TESTUSER
+                user.userNumber = userNumber
+                user.userType = userType
+                return user
+            }
 
-        @JvmStatic
-        fun createTestUserEventStore(userHandlingEvent: UserHandlingEvent): UserEvent {
-            val userEvent = UserEvent()
-            userEvent.uuid = userHandlingEvent.eventid
-            userEvent.userHandlingEvent = VicunaObjectMapper.getInstance().writeValueAsString(userHandlingEvent)
-            return userEvent
-        }
+            @JvmStatic
+            fun createTestUserEventStore(userHandlingEvent: UserHandlingEvent): UserEvent {
+                val userEvent = UserEvent()
+                userEvent.uuid = userHandlingEvent.eventid
+                userEvent.userHandlingEvent = VicunaObjectMapper.getInstance().writeValueAsString(userHandlingEvent)
+                return userEvent
+            }
 
-        @JvmStatic
-        fun createUserRequest(user: User): CreateUserRequest {
-            var createUserRequest = CreateUserRequest()
-            createUserRequest.userName = user.userName
-            createUserRequest.userDescription = user.userDescription
-            createUserRequest.userType = user.userType
-            createUserRequest.userNumber = user.userNumber
-            return createUserRequest
-        }
+            @JvmStatic
+            fun createUserRequest(user: User): CreateUserRequest {
+                var createUserRequest = CreateUserRequest()
+                createUserRequest.userName = user.userName
+                createUserRequest.userDescription = user.userDescription
+                createUserRequest.userType = user.userType
+                createUserRequest.userNumber = user.userNumber
+                return createUserRequest
+            }
 
-        @JvmStatic
-        fun updateUserRequest(user: User): UpdateUserRequest {
-            var updateUserRequest = UpdateUserRequest()
-            updateUserRequest.userName = user.userName
-            updateUserRequest.userUpdate = user.userNumber.uuid!!
-            return updateUserRequest
-        }
+            @JvmStatic
+            fun updateUserRequest(user: User): UpdateUserRequest {
+                var updateUserRequest = UpdateUserRequest()
+                updateUserRequest.userName = user.userName
+                updateUserRequest.userUpdate = user.userNumber.uuid!!
+                return updateUserRequest
+            }
 
-        @JvmStatic
-        fun deleteUserRequest(user: User): DeleteUserRequest {
-            var deleteUserRequest = DeleteUserRequest()
-            deleteUserRequest.userName = NEUUSER
-            deleteUserRequest.userNumber = user.userNumber
-            return deleteUserRequest
+            @JvmStatic
+            fun deleteUserRequest(user: User): DeleteUserRequest {
+                var deleteUserRequest = DeleteUserRequest()
+                deleteUserRequest.userName = NEUUSER
+                deleteUserRequest.userNumber = user.userNumber
+                return deleteUserRequest
+            }
         }
     }
 }
