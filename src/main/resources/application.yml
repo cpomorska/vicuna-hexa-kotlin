@@ -1,12 +1,15 @@
 quarkus:
   camel:
     context:
-      name: vicuna-hexa-kotlin
+      name: vicunacamel
     openapi:
       expose:
         enabled: true
     rest:
       inline-routes: true
+    servlet:
+      url-patterns: /vicuna/*
+
   http:
     cors:
       origins: /.*/
@@ -14,28 +17,79 @@ quarkus:
     access-log:
       enabled: true
     port: 8089
+    root-path: /vicuna
     auth:
+      proactive: true
       permission:
-        authenticated:
-          paths:  /*
+        secured:
+          paths: /vicuna/api/*
           policy: authenticated
+        public:
+          paths: /vicuna/q/*
+          policy: permit
+
+  swagger-ui:
+    always-include: true
+    path: hui
+
   datasource:
-    db-kind: h2
+    db-kind: postgresql
+    jdbc:
+      pooling-enabled: true
+      url: jdbc:postgresql://host.docker.internal:15432/vicuna_user
+    username: vicuna_user
+    password: vicuna_pw
+
   hibernate-orm:
     database:
-      generation: drop-and-create
+      generation: update
+      create-schemas: true
+
   liquibase:
-    migrate-at-start: true
+    enabled: false
+    migrate-at-start: false
     change-log: db/db.changelog-master.yaml
-#  oidc:
-#    auth-server-url: http://localhost:8180/realms/development
-#    client-id: backend-service
-#    credentials:
-#      secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+
+  container-image:
+    builder: docker
+
+  oidc:
+    #auth-server-url: http://host.docker.internal:8180/realms/development
+    client-id: backend-service
+    credentials:
+      client-secret:
+        value: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+    application-type: hybrid
+
+  oidc-client:
+    #auth-server-url: http://host.docker.internal:8180/realms/development
+    client-id: backend-service
+    credentials:
+      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+    grant-type: password
+    grant-options:
+      password:
+        username: alice
+        password: alice
+
+  log:
+    category:
+      "io.quarkus.category":
+        level: WARN
+      "org.apache.kafka.clients":
+        level: ERROR
+      "org.apache.kafka.common.utils":
+        level: ERROR
+      "org.apache.kafka.common.metrics":
+        level: ERROR
+
 #kafka:
 #   bootstrap:
-#     servers: localhost:29092
+#     servers: host.docker.internal:29092
 mp:
+  openapi:
+    scan:
+      disable: false
   messaging:
     outgoing:
       users-out:
@@ -49,14 +103,3 @@ mp:
         value:
           deserializer: org.apache.kafka.common.serialization.StringDeserializer
         topic: user-in
-
-  openapi:
-   scan:
-      disable: false
-  log:
-    category:
-      "io.quarkus.category":
-        level: INFO
-
-  smallrye-openapi:
-    security-scheme: implicit
