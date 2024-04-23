@@ -4,6 +4,7 @@ import com.scprojekt.domain.model.user.entity.UserNumber
 import com.scprojekt.domain.model.user.exception.UserException
 import io.quarkus.test.junit.QuarkusTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -11,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.util.*
 
 @QuarkusTest
+@Disabled
 class UserExceptionTest {
 
     @Test

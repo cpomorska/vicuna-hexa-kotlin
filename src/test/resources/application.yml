@@ -10,33 +10,24 @@ quarkus:
       generation: update
   liquibase:
     migrate-at-start: false
-  kafka:
-    bootstrap:
-      servers: localhost:29092
-#  oidc:
-#    #auth-server-url: http://localhost:8180/realms/development
-#    client-id: quarkus-service-app
-#    credentials.secret: secret
-#    application-type: service
-#    keycloak:
-#      devservices:
-#        realm-path: dev-realm.json
-#        service-name: quarkus
+
+  oidc:
+    #auth-server-url: http://localhost:8180/realms/development
+    client-id: quarkus-service-app
+    credentials.secret: secret
+    application-type: service
+    keycloak:
+      devservices:
+        realm-path: dev-realm.json
+        service-name: quarkus
+kafka:
+   bootstrap:
+     servers: host.docker.internal:29092
 mp:
   messaging:
     outgoing:
       users-out:
         connector: smallrye-kafka
-        key.deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
-        value.deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
-        topic: user-out
     incoming:
       users-in:
         connector: smallrye-kafka
-        value.deserializer: com.scprojekt.infrastructure.messaging.UserDeserializer
-        topic: user-in
-        broadcast: true
-  log:
-    category:
-      "io.quarkus.category":
-        level: INFO

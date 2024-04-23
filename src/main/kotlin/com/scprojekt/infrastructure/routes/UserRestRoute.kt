@@ -2,13 +2,13 @@ package com.scprojekt.infrastructure.routes
 
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
+import com.scprojekt.infrastructure.constants.Camel
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_CREATEUSER
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_DELETEUSER
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_FINDBYUUID
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_SAVEINDATABASE
 import com.scprojekt.infrastructure.constants.Routes.Companion.DRECT_MANAGEUSER
 import com.scprojekt.infrastructure.constants.Routes.Companion.MEDIATYPE_JSON
-import com.scprojekt.infrastructure.constants.Camel
 import com.scprojekt.infrastructure.processor.JpaUrlProcessor
 import com.scprojekt.infrastructure.processor.StringToUUidProcessor
 import com.scprojekt.infrastructure.repository.UserJpaRepository
@@ -17,7 +17,9 @@ import jakarta.inject.Inject
 import org.apache.camel.LoggingLevel
 import org.apache.camel.builder.RouteBuilder
 import org.apache.camel.model.rest.RestBindingMode
+import org.apache.camel.model.rest.RestDefinition
 import java.util.*
+
 
 @ApplicationScoped
 class UserRestRoute : RouteBuilder() {
@@ -32,11 +34,11 @@ class UserRestRoute : RouteBuilder() {
     private lateinit var prepareJpaUrlProcessor: JpaUrlProcessor
 
     override fun configure() {
+        oauth2Rest()
         restConfiguration()
             .bindingMode(RestBindingMode.json)
             .inlineRoutes(true)
             .dataFormatProperty("prettyPrint", "true")
-            .apiContextPath("docs")
             .apiProperty("api.title", "Vicuna API")
             .apiProperty("api.version", "1.0")
             .apiProperty("cors", "true")
@@ -49,11 +51,22 @@ class UserRestRoute : RouteBuilder() {
         createUserStoreRoute()
     }
 
+    private fun oauth2Rest(): RestDefinition {
+        return rest()
+            .securityDefinitions()
+            .oauth2("local_keycloak", "Using a local keycloak instance")
+            .password("http://localhost:8180/realms/development/protocol/openid-connect/token")
+            .withScope("email", "accessing the email address")
+            .withScope("profile", "accessing the profile")
+            .end()
+            .end()
+    }
+
     private fun createUserStoreRoute(){
-        rest("/api/store/user")
-            .post("create").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_CREATEUSER)
-            .post("manage").consumes(MEDIATYPE_JSON).type(User::class.java).to(DRECT_MANAGEUSER)
-            .post("delete").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_DELETEUSER)
+        rest("/api/store/user").description("Write to user store opi")
+            .post("create").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_CREATEUSER).security("local_keycloak")
+            .post("manage").consumes(MEDIATYPE_JSON).type(User::class.java).to(DRECT_MANAGEUSER).security("local_keycloak")
+            .post("delete").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_DELETEUSER).security("local_keycloak")
 
         from(DIRECT_CREATEUSER)
             .routeId("infra.rest.createuser")
@@ -83,18 +96,17 @@ class UserRestRoute : RouteBuilder() {
 
     private fun createUserReadonlyRoute() {
         rest("/api/read/user")
-            .get("uuid/{uuid}").consumes(MEDIATYPE_JSON).type(UUID::class.java).to("direct:byUUID")
-            .get("bytype/{type}").consumes(MEDIATYPE_JSON).type(UserType::class.java).to("direct:byType")
-            .get("byname/{name}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byName")
-            .get("bydescr/{description}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byDescription")
+            .get("uuid/{uuid}").consumes(MEDIATYPE_JSON).type(UUID::class.java).to("direct:byUUID").security("local_keycloak")
+            .get("bytype/{type}").consumes(MEDIATYPE_JSON).type(UserType::class.java).to("direct:byType").security("local_keycloak")
+            .get("byname/{name}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byName").security("local_keycloak")
+            .get("bydescr/{description}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byDescription").security("local_keycloak")
 
         from("direct:byUUID")
             .routeId("infra.rest.byuuid")
             .log(LoggingLevel.INFO,"user by uuid")
             .process(stringToUuidProcessor)
             .bean(baseUserRepository, "findByUUID(\${header.uuid})")
-            //.marshal().json()
-            .log(LoggingLevel.INFO, "user by \${header.uuid} found")
+            .log(LoggingLevel.INFO, "user by \${header.uuid} search, \${body} found")
             .end()
 
         from("direct:byType")

@@ -1,7 +1,7 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "1.9.22"
-    id "org.jetbrains.kotlin.plugin.allopen" version "1.9.22"
-    id "org.jetbrains.kotlin.plugin.noarg" version "1.9.22"
+    id 'org.jetbrains.kotlin.jvm' version "1.9.23"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.9.23"
+    id "org.jetbrains.kotlin.plugin.noarg" version "1.9.23"
     id 'io.quarkus'
     id 'jacoco'
 }
@@ -12,6 +12,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.quarkus:quarkus-container-image-jib'
+    implementation 'io.quarkus:quarkus-container-image-docker'
+    implementation 'io.quarkus:quarkus-container-image-buildpack'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
@@ -20,7 +23,7 @@ dependencies {
 
     /* Lombok */
     compileOnly "org.projectlombok:lombok:1.18.30"
-    annotationProcessor "org.projectlombok:lombok:1.18.28"
+    annotationProcessor "org.projectlombok:lombok:1.18.30"
     implementation "net.bytebuddy:byte-buddy:${bytebuddyVersion}"
 
     /* Quarkus */
@@ -31,6 +34,7 @@ dependencies {
     implementation "io.quarkus:quarkus-kafka-client"
     implementation "io.quarkus:quarkus-resteasy-multipart"
     implementation "io.quarkus:quarkus-oidc"
+    implementation "io.quarkus:quarkus-oidc-client"
     implementation "io.quarkus:quarkus-config-yaml"
     implementation "io.quarkus:quarkus-kubernetes"
     implementation "io.quarkus:quarkus-jdbc-postgresql"
@@ -42,7 +46,7 @@ dependencies {
     implementation "io.quarkus:quarkus-jackson"
     implementation "io.quarkus:quarkus-resteasy-jackson"
     implementation "io.quarkus:quarkus-kafka-streams"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "io.quarkus:quarkus-hibernate-orm-panache"
     implementation "io.quarkus:quarkus-arc"
     implementation "io.quarkus:quarkus-resteasy"
@@ -57,18 +61,19 @@ dependencies {
     implementation "org.apache.camel.quarkus:camel-quarkus-base64"
     implementation "org.apache.camel.quarkus:camel-quarkus-quartz"
     implementation "org.apache.camel.quarkus:camel-quarkus-jpa"
-    implementation "org.apache.camel.quarkus:camel-quarkus-jaxb"
-    implementation "org.apache.camel.quarkus:camel-quarkus-jackson"
+    implementation "org.apache.camel.quarkus:camel-quarkus-jaxb:3.9.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-jackson:3.9.0"
     implementation "org.apache.camel.quarkus:camel-quarkus-direct"
     implementation "org.apache.camel.quarkus:camel-quarkus-mock"
     implementation "org.apache.camel.quarkus:camel-quarkus-bean"
-    implementation "org.apache.camel.quarkus:camel-quarkus-http:3.4.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-rest-openapi"
-    implementation "org.apache.camel.quarkus:camel-quarkus-xml-jaxb"
+    implementation "org.apache.camel.quarkus:camel-quarkus-http:3.9.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-rest-openapi:3.9.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.9.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-xml-jaxb:3.9.0"
     implementation "org.apache.camel.quarkus:camel-quarkus-microprofile-fault-tolerance"
     implementation "org.apache.camel.quarkus:camel-quarkus-junit5"
     implementation "org.apache.camel.quarkus:camel-quarkus-integration-test-kotlin:3.4.0"
-    implementation  "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.4.0"
+    implementation  "org.apache.camel.quarkus:camel-quarkus-openapi-java:"
     //implementation "org.apache.camel.quarkus:camel-quarkus-amqp"
     implementation "org.apache.camel.quarkus:camel-quarkus-attachments"
     //implementation "io.quarkus:quarkus-keycloak-authorization"
@@ -79,7 +84,8 @@ dependencies {
 
     /* Jackson */
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.+"
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1"
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:4.0.1"
 
     /* Test */
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -97,7 +103,7 @@ dependencies {
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.smallrye.reactive:smallrye-reactive-messaging-in-memory"
 
-    //testImplementation "io.quarkus:quarkus-test-oidc-server"
+    testImplementation "io.quarkus:quarkus-test-oidc-server"
     testImplementation "io.quarkus:quarkus-test-keycloak-server"
 }
 

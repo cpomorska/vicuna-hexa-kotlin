@@ -1,6 +1,6 @@
 {
-  "id": "quarkus",
-  "realm": "quarkus",
+  "id": "development",
+  "realm": "development",
   "notBefore": 0,
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,
@@ -43,7 +43,7 @@
         "name": "admin",
         "composite": false,
         "clientRole": false,
-        "containerId": "quarkus",
+        "containerId": "development",
         "attributes": {}
       },
       {
@@ -51,7 +51,7 @@
         "name": "confidential",
         "composite": false,
         "clientRole": false,
-        "containerId": "quarkus",
+        "containerId": "development",
         "attributes": {}
       },
       {
@@ -60,7 +60,7 @@
         "description": "${role_offline-access}",
         "composite": false,
         "clientRole": false,
-        "containerId": "quarkus",
+        "containerId": "development",
         "attributes": {}
       },
       {
@@ -69,7 +69,7 @@
         "description": "${role_uma_authorization}",
         "composite": false,
         "clientRole": false,
-        "containerId": "quarkus",
+        "containerId": "development",
         "attributes": {}
       },
       {
@@ -77,7 +77,7 @@
         "name": "user",
         "composite": false,
         "clientRole": false,
-        "containerId": "quarkus",
+        "containerId": "development",
         "attributes": {}
       }
     ],
@@ -388,7 +388,7 @@
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "secret",
+      "secret": "qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz",
       "redirectUris": ["*"],
       "webOrigins": [],
       "notBefore": 0,
@@ -547,13 +547,13 @@
       "clientId": "account",
       "name": "${client_account}",
       "rootUrl": "${authBaseUrl}",
-      "baseUrl": "/realms/quarkus/account/",
+      "baseUrl": "/realms/development/account/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "0136c3ef-0dfd-4b13-a6d0-2c8b6358edec",
       "redirectUris": [
-        "/realms/quarkus/account/*"
+        "/realms/development/account/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -627,13 +627,13 @@
       "clientId": "security-admin-console",
       "name": "${client_security-admin-console}",
       "rootUrl": "${authAdminUrl}",
-      "baseUrl": "/admin/quarkus/console/",
+      "baseUrl": "/admin/development/console/",
       "surrogateAuthRequired": false,
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "e571b211-2550-475d-b87f-116ff54091ee",
       "redirectUris": [
-        "/admin/quarkus/console/*"
+        "/admin/development/console/*"
       ],
       "webOrigins": [
         "+"
