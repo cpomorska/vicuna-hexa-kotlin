@@ -5,7 +5,7 @@ services:
       context: ./
       dockerfile: src/main/docker/Dockerfile.jvm
     ports:
-      - 8089:8089
+      - 28089:8089
     expose:
       - 8089
     depends_on:
@@ -20,6 +20,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   keycloak:
+    container_name: vicuna-keycloak
     image: quay.io/keycloak/keycloak:latest
     env_file:
       - keycloak.local.env
@@ -77,7 +78,7 @@ services:
       retries: 5
 
   kafka:
-    container_name: vicunakafkazookeeper
+    container_name: vicuna-kafka-zookeeper
     image: spotify/kafka
     hostname: kafka
     env_file:
