@@ -3,6 +3,11 @@ resource "docker_image" "vicuna" {
   keep_locally = true
 }
 
+resource "docker_image" "kafka" {
+  name         = "apache/kafka"
+  keep_locally = true
+}
+
 resource "docker_image" "keycloak" {
   name         = "quay.io/keycloak/keycloak:latest"
   keep_locally = true

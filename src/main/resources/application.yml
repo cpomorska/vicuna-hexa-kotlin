@@ -87,9 +87,9 @@ quarkus:
       "org.apache.kafka.common.metrics":
         level: ERROR
 
-#kafka:
-#   bootstrap:
-#     servers: host.docker.internal:29092
+kafka:
+   bootstrap:
+     servers: host.docker.internal:29092
 mp:
   openapi:
     scan:
