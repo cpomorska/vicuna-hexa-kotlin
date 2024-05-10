@@ -37,17 +37,17 @@ directly or via Kafka.
 #### 1. Run with docker compose (all containers)
 
 * Requires: docker or podman, **artifact was build**
-* Spans 2 x Postgres, Kafka/Zookeeper, Keycloak, vicuna-hexa-kotlin
+* Spans 2 x Postgres, Kafka, Keycloak, vicuna-hexa-kotlin
 * Accessible on http://localhost:28089/vicuna/q/hui/
 * Keycloak is accessible on http://localhost:8180/realms/development
 
 > - start with: **docker compose -f docker-compose.local.yml up -d --build --force-recreate**
 > - shutdown with: **docker compose -f docker-compose.local.yml down**
 
-#### 2. Run with terraform (all containers but kafka)
+#### 2. Run with terraform (all containers)
 
 * Requires: docker or podman, **image was build**
-* Spans 2 x Postgres, no Kafka/Zookeeper, Keycloak, vicuna-hexa-kotlin
+* Spans 2 x Postgres, Kafka, Keycloak, vicuna-hexa-kotlin
 * Accessible on http://localhost:28089/vicuna/q/hui/
 * Keycloak is accessible on http://localhost:8180/realms/development
 
@@ -60,6 +60,23 @@ directly or via Kafka.
 * Destroy deployed terraform resources
 > * Plan for resources to destroy -> **terraform plan -destroy -out "destroy.main.tfplan"**
 > * Destroy resources -> **terraform apply "destroy.main.tfplan"**
+
+#### 2. Run with OpenTofu (all containers)
+
+* Requires: docker or podman, opentofu >= 1.7 **image was build**
+* Spans 2 x Postgres, Kafka, Keycloak, vicuna-hexa-kotlin
+* Accessible on http://localhost:28089/vicuna/q/hui/
+* Keycloak is accessible on http://localhost:8180/realms/development
+
+> * Open terminal and change to the projectroot -> terraform directory
+> * Init with opentofu -> **tofu init**
+> * Validate tf files -> **tofu validate**
+> * Plan with opentofu -> **tofu plan -out "main.tfplan"**
+> * Execute with opentofu -> **tofu apply "main.tfplan"**
+
+* Destroy deployed opentofu resources
+> * Plan for resources to destroy -> **tofu plan -destroy -out "destroy.main.tfplan"**
+> * Destroy resources -> **tofu apply "destroy.main.tfplan"**
 
 
 # Use Case

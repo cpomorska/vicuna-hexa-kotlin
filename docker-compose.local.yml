@@ -1,3 +1,4 @@
+version: '3'
 services:
   vicuna-kotlin-quarkus:
     container_name: vicuna-kotlin-quarkus
@@ -5,16 +6,13 @@ services:
       context: ./
       dockerfile: src/main/docker/Dockerfile.jvm
     ports:
-      - 28089:8089
+      - '28089:8089'
     expose:
       - 8089
     depends_on:
-      kafka:
-        condition: service_healthy
-      keycloak:
-        condition: service_healthy
-      postgres:
-        condition: service_healthy
+      - kafka
+      - keycloak
+      - postgres
     environment:
       - TZ=UTC
     network_mode: bridge
@@ -35,8 +33,8 @@ services:
     ports:
       - "8180:8080"
     depends_on:
-      postgres-kc:
-        condition: service_healthy
+      - postgres-kc
+      - postgres
     network_mode: bridge
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -50,15 +48,16 @@ services:
     container_name: vicuna-postgresql-kc
     image: 'postgres:15'
     hostname: 'pgkc'
+    command: -p 5433
     env_file:
       - postgres.local.keycloak.env
     ports:
-      - '25432:5432'
+      - '25432:5433'
     network_mode: bridge
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U keycloak" ]
+      test: [ "CMD-SHELL", "pg_isready -U keycloak -p 5433" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -94,7 +93,6 @@ services:
       - "host.docker.internal:host-gateway"
     healthcheck:
       test: nc -z localhost 9092 || exit -1
-      start_period: 15s
       interval: 5s
       timeout: 10s
       retries: 10
