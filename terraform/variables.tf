@@ -4,6 +4,12 @@ variable "container_name_vicuna" {
   description = "Value of the name for the vicuna container"
 }
 
+variable "container_name_vicuna_kafka" {
+  default = "vicuna-kafka"
+  type = string
+  description = "default name for kafka container"
+}
+
 variable "container_name_keycloak" {
   default     = "vicuna-keycloak"
   type        = string
@@ -26,6 +32,51 @@ variable "container_name_postgres_keycloak" {
   default     = "vicuna-postgres-keycloak"
   type        = string
   description = "Value of the name for the postgres keycloak db container"
+}
+
+variable "env_kafka_broker_id" {
+  default = 1
+  type = number
+}
+variable "env_kafka_voter_id" {
+  default = "1@vicuna-kafka:9093"
+  type = any
+}
+variable "env_kafka_security_protocal" {
+  default = "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
+  type = any
+}
+variable "env_kafka_advertised_listeners" {
+  default = "PLAINTEXT://vicuna-kafka:29092,PLAINTEXT_HOST://localhost:29092"
+  type = any
+}
+variable "env_kafka_listeners" {
+  default = "PLAINTEXT://:19092,CONTROLLER://:9093,PLAINTEXT_HOST://:9092"
+  type = any
+}
+variable "env_kafka_conroller_listener_names" {
+  default = "CONTROLLER"
+  type = any
+}
+variable "env_kafka_inter_broker_listener" {
+  default = "PLAINTEXT"
+  type = any
+}
+variable "env_kafka_log_dirs" {
+  default = "/tmp/kraft-combined-logs"
+  type = any
+}
+variable "env_kafka_topic_replication_factor" {
+  default = 1
+  type = number
+}
+variable "env_kafka_transaction_state_log_min_isr" {
+  default = 1
+  type = number
+}
+variable "env_kafka_transaction_state_log_repication_factor" {
+  default = 1
+  type = number
 }
 
 variable "env_keycloak_admin" {
