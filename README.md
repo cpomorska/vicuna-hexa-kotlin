@@ -61,6 +61,7 @@ directly or via Kafka.
 > * Plan for resources to destroy -> **terraform plan -destroy -out "destroy.main.tfplan"**
 > * Destroy resources -> **terraform apply "destroy.main.tfplan"**
 
+
 #### 2. Run with OpenTofu (all containers)
 
 * Requires: docker or podman, opentofu >= 1.7 **image was build**
