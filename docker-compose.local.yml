@@ -10,9 +10,12 @@ services:
     expose:
       - 8089
     depends_on:
-      - kafka
-      - keycloak
-      - postgres
+        kafka:
+          condition: service_started
+        keycloak:
+          condition: service_healthy
+        postgres:
+          condition: service_healthy
     environment:
       - TZ=UTC
     network_mode: bridge

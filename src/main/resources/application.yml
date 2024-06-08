@@ -12,7 +12,10 @@ quarkus:
 
   http:
     cors:
-      origins: /.*/
+      ~: true
+      origins: /*
+      headers: origin, accept, authorization, content-type, x-requested-with
+      methods: GET, POST, PUT, DELETE, OPTIONS
     http2: false
     access-log:
       enabled: true

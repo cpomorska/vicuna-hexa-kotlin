@@ -1,5 +1,5 @@
 provider "docker" {
-  host  = "unix:///var/run/docker.sock"
+  host  = "unix:///run/user/1000/podman/podman.sock"
   alias = "condainer"
 }
 
@@ -11,4 +11,4 @@ provider "vault" {
 
 provider "time" {
   alias = "hashitime"
-}
+}                                             
