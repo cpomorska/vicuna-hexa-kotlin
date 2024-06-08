@@ -11,4 +11,4 @@ provider "vault" {
 
 provider "time" {
   alias = "hashitime"
-}
+}                                             
