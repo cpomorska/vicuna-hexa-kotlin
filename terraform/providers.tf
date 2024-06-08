@@ -1,5 +1,5 @@
 provider "docker" {
-  host  = "unix:///run/user/1000/podman/podman.sock"
+  host  = "unix:///var/run/docker.sock"
   alias = "condainer"
 }
 
