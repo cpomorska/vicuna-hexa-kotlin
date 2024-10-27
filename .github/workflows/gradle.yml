@@ -37,5 +37,5 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
     - name: Build with Gradle
-      run:  gradle build -x test -DXmx=1024m -DXX:MaxMetaspaceSize=768m
+      run:  gradle build -x test -Dorg.gradle.jvmArgs="-Xmx4096m -Dkotlin.daemon.jvm.options=-Xmx4096m -DXX:MaxMetaspaceSize=768m"
 
