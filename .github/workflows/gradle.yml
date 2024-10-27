@@ -16,6 +16,9 @@ on:
 permissions:
   contents: read
 
+env:
+  JAVA_OPTS: -Xmx=1024m -XX:MaxMetaspaceSize=768m
+
 jobs:
   build:
     strategy:
