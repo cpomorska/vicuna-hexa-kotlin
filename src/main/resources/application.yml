@@ -1,14 +1,14 @@
 quarkus:
   camel:
-    context:
-      name: vicunacamel
+#    context:
+#      name: vicunacamel
     openapi:
       expose:
         enabled: true
     rest:
       inline-routes: true
-    servlet:
-      url-patterns: /vicuna/*
+#    servlet:
+#      url-patterns: /vicuna/*
 
   http:
     cors:
@@ -32,8 +32,12 @@ quarkus:
           policy: permit
 
   swagger-ui:
-    always-include: true
+    always-include: false
     path: hui
+    enable: false
+
+  smallrye-openapi:
+    enable: false
 
   datasource:
     db-kind: postgresql
@@ -43,10 +47,10 @@ quarkus:
     username: vicuna_user
     password: vicuna_pw
 
-  hibernate-orm:
-    database:
-      generation: update
-      create-schemas: true
+#  hibernate-orm:
+#    database:
+#      generation: update
+#      create-schemas: true
 
   liquibase:
     enabled: false
@@ -68,16 +72,36 @@ quarkus:
         value: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
     application-type: hybrid
 
-  oidc-client:
-    auth-server-url: http://host.docker.internal:8180/realms/development
-    client-id: backend-service
+#  oidc-client:
+#    auth-server-url: http://host.docker.internal:8180/realms/development
+#    client-id: backend-service
+#    credentials:
+#      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+#    grant-type: password
+#    grant-options:
+#      password:
+#        username: alice
+#        password: alice
+
+keycloak:
+  devservices:
+    auth-server-enabled: true
+    enabled: true
+    port: 8180
+    realm-path: dev-realm.json
+    service-name: backend-service
     credentials:
+      username: alice
+      password: alice
       client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-    grant-type: password
-    grant-options:
-      password:
-        username: alice
-        password: alice
+      client-id: backend-service
+#      grant-type: password
+#      grant-options:
+#        password:
+#          username: alice
+#          password: <PASSWORD>
+#    realm-path: dev-realm.json
+#      service-name: quarkus
 
   log:
     category:
@@ -94,9 +118,10 @@ kafka:
    bootstrap:
      servers: host.docker.internal:29092
 mp:
-  openapi:
-    scan:
-      disable: false
+#  rest:
+#    openapi:
+#      scan:
+#        enabled: false
   messaging:
     outgoing:
       users-out:

@@ -19,11 +19,11 @@ public class BaseRulesTest {
     @ArchTest
     private val no_deprecated_api = DEPRECATED_API_SHOULD_NOT_BE_USED
 
-    @ArchTest
-    private fun check_other_rules(classes: JavaClasses) {
-        no_deprecated_api.check(classes)
-        no_field_injection.check(classes)
-    }
+//    @ArchTest
+//    private fun check_other_rules(classes: JavaClasses) {
+//        no_deprecated_api.check(classes)
+//        no_field_injection.check(classes)
+//    }
 
     @ArchTest
     private fun standard_rules_for_all_classes(classes: JavaClasses) {

@@ -5,7 +5,7 @@ import com.scprojekt.infrastructure.repository.UserCamelRepository
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.util.*
 import com.scprojekt.util.TestUtil.Companion.createTestUser
-import io.quarkus.test.common.QuarkusTestResource
+import io.quarkus.test.common.WithTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
 import io.quarkus.test.keycloak.client.KeycloakTestClient
@@ -22,7 +22,7 @@ import java.util.function.Consumer
 private const val USERNAME_ALICE_MANN = "alice"
 
 @QuarkusTest
-@QuarkusTestResource(H2DatabaseTestResource::class)
+@WithTestResource(H2DatabaseTestResource::class)
 class UserRestRouteTest {
 
     private lateinit var testUser: User
@@ -98,6 +98,6 @@ class UserRestRouteTest {
     }
 
     protected fun getAccessToken(userName: String?): String {
-        return keycloakClient.getAccessToken(userName)
+        return keycloakClient.getRealmAccessToken("development","alice","alice","backend-service","qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz")
     }
 }

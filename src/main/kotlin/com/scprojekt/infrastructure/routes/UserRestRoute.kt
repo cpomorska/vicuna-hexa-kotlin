@@ -146,7 +146,7 @@ class UserRestRoute : RouteBuilder() {
     private fun findByUUIDInDatabase(){
         from(DIRECT_FINDBYUUID)
             .transacted()
-            //.process(stringToUuidProcessor)
+            .process(stringToUuidProcessor)
             .bean(UserJpaRepository::class.java, "findByUUID(\${header.uuid})")
             .marshal().json()
             .log(LoggingLevel.INFO, "user by \${header.uuid} found")
