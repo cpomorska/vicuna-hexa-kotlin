@@ -14,7 +14,7 @@ resource "docker_image" "keycloak" {
 }
 
 resource "docker_image" "postgres_keycloak" {
-  name         = "postgres:15"
+  name         = "postgres:17"
   keep_locally = true
 }
 
@@ -34,6 +34,6 @@ resource "time_sleep" "wait_keycloak_for_postgres" {
 }
 
 resource "time_sleep" "wait_for_keycloak" {
-  depends_on      = [time_sleep.wait_keycloak_for_postgres]
+  depends_on      = [docker_container.keycloak]
   create_duration = "30s"
 }
