@@ -3,6 +3,8 @@ plugins {
     id "org.jetbrains.kotlin.plugin.allopen" version "2.0.21"
     id "org.jetbrains.kotlin.plugin.noarg" version "2.0.21"
     id 'io.quarkus'
+//    id 'java'
+//    id 'maven-publish'
     id 'jacoco'
 }
 
@@ -10,6 +12,7 @@ repositories {
     mavenCentral()
     mavenLocal()
 }
+
 
 dependencies {
     implementation 'io.quarkus:quarkus-container-image-jib'
@@ -51,7 +54,7 @@ dependencies {
     implementation "io.quarkus:quarkus-resteasy"
     //implementation "io.quarkus:quarkus-resteasy-reactive"
     //implementation "io.quarkus:quarkus-smallrye-openapi"
-    implementation "io.quarkus:quarkus-smallrye-reactive-messaging-kafka"
+    implementation "io.quarkus:quarkus-smallrye-reactive-messaging-kafka:3.13.0"
 
     /* Camel */
     implementation "org.apache.camel.quarkus:camel-quarkus-log"
@@ -144,3 +147,4 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_17
 }
+
