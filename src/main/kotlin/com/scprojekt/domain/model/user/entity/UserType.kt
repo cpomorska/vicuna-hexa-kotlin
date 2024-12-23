@@ -1,6 +1,6 @@
 package com.scprojekt.domain.model.user.entity
-import com.scprojekt.domain.shared.database.NoSQLInjection
 import com.scprojekt.domain.shared.database.BaseEntity
+import com.scprojekt.domain.shared.database.NoSQLInjection
 import jakarta.persistence.*
 
 @Entity
@@ -24,4 +24,10 @@ open class UserType : BaseEntity() {
     @NoSQLInjection
     @Column(name="usertypeenabled")
     open var userTypeEnabled: Boolean = true
+
+    override fun toString(): String {
+        return "UserType{" +
+                "type='" + UserType::class.java.name + '\'' +
+                '}'
+    } // Optional: Equals and hashCode if needed
 }

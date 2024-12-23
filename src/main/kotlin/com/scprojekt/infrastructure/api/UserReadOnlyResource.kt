@@ -2,6 +2,7 @@ package com.example
 
 import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
+import com.scprojekt.infrastructure.mapping.VicunaObjectMapper
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import jakarta.inject.Inject
 import jakarta.ws.rs.*
@@ -23,9 +24,9 @@ class UserReadOnlyResource @Inject constructor(val jwt: JsonWebToken, val userRe
     }
 
     @GET
-    @Path("/bytype/{type}")
-    fun getByType(@PathParam("type") type:UserType): List<User?> {
-        return userReadOnlyService.findAllUsersByType(type) as List<User>
+    @Path("/bytype/{usertype}")
+    fun getByType(@PathParam("usertype") usertype:String): List<User?> {
+        return userReadOnlyService.findAllUsersByType(VicunaObjectMapper.getInstance().readValue(usertype,UserType::class.java)) as List<User>
     }
 
     @GET
