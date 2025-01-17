@@ -24,7 +24,7 @@ services:
 
   keycloak:
     container_name: vicuna-keycloak
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:24.0.5
     env_file:
       - keycloak.local.env
     command:
@@ -42,14 +42,14 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
       interval: 30s
       timeout: 5s
       retries: 20
 
   postgres-kc:
     container_name: vicuna-postgresql-kc
-    image: 'postgres:17'
+    image: 'postgres:15'
     hostname: 'pgkc'
     command: -p 5433
     env_file:
@@ -67,7 +67,7 @@ services:
 
   postgres:
     container_name: vicuna-postgresql
-    image: 'postgres:17'
+    image: 'postgres:15'
     env_file:
       postgres.local.env
     ports:

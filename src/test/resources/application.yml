@@ -11,19 +11,27 @@ quarkus:
   liquibase:
     migrate-at-start: false
 
-  oidc:
-    #auth-server-url: http://localhost:8180/realms/development
-    client-id: quarkus-service-app
-    credentials.secret: secret
-    application-type: service
-    keycloak:
-      devservices:
-        realm-path: dev-realm.json
-        service-name: quarkus
 kafka:
-   bootstrap:
-     servers: host.docker.internal:29092
+  bootstrap:
+    servers: host.docker.internal:29092
+keycloak:
+  devservices:
+    auth-server-enabled: true
+    enabled: true
+    port: 8180
+    realm-path: dev-realm.json
+    service-name: backend-service
+    credentials:
+      username: alice
+      password: alice
+      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+      client-id: backend-service
+
 mp:
+  rest:
+    openapi:
+     scan:
+      disable: true
   messaging:
     outgoing:
       users-out:

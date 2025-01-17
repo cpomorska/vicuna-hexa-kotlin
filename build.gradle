@@ -1,8 +1,10 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "2.0.0"
-    id "org.jetbrains.kotlin.plugin.allopen" version "2.0.0"
-    id "org.jetbrains.kotlin.plugin.noarg" version "2.0.0"
+    id 'org.jetbrains.kotlin.jvm' version "2.0.21"
+    id "org.jetbrains.kotlin.plugin.allopen" version "2.0.21"
+    id "org.jetbrains.kotlin.plugin.noarg" version "2.0.21"
     id 'io.quarkus'
+//    id 'java'
+//    id 'maven-publish'
     id 'jacoco'
 }
 
@@ -11,10 +13,10 @@ repositories {
     mavenLocal()
 }
 
+
 dependencies {
     implementation 'io.quarkus:quarkus-container-image-jib'
     implementation 'io.quarkus:quarkus-container-image-docker'
-    implementation 'io.quarkus:quarkus-container-image-buildpack'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
@@ -50,8 +52,9 @@ dependencies {
     implementation "io.quarkus:quarkus-hibernate-orm-panache"
     implementation "io.quarkus:quarkus-arc"
     implementation "io.quarkus:quarkus-resteasy"
-    implementation "io.quarkus:quarkus-smallrye-openapi"
-    implementation "io.quarkus:quarkus-smallrye-reactive-messaging-kafka"
+    //implementation "io.quarkus:quarkus-resteasy-reactive"
+    //implementation "io.quarkus:quarkus-smallrye-openapi"
+    implementation "io.quarkus:quarkus-smallrye-reactive-messaging-kafka:3.13.0"
 
     /* Camel */
     implementation "org.apache.camel.quarkus:camel-quarkus-log"
@@ -59,21 +62,22 @@ dependencies {
     implementation "org.apache.camel.quarkus:camel-quarkus-kotlin"
     implementation "org.apache.camel.quarkus:camel-quarkus-jta"
     implementation "org.apache.camel.quarkus:camel-quarkus-base64"
+    implementation "org.apache.camel.quarkus:camel-quarkus-bean"
     implementation "org.apache.camel.quarkus:camel-quarkus-quartz"
     implementation "org.apache.camel.quarkus:camel-quarkus-jpa"
-    implementation "org.apache.camel.quarkus:camel-quarkus-jaxb:3.9.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-jackson:3.9.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-jaxb"
+    implementation "org.apache.camel.quarkus:camel-quarkus-jackson"
     implementation "org.apache.camel.quarkus:camel-quarkus-direct"
-    implementation "org.apache.camel.quarkus:camel-quarkus-mock"
-    implementation "org.apache.camel.quarkus:camel-quarkus-bean"
-    implementation "org.apache.camel.quarkus:camel-quarkus-http:3.9.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-rest-openapi:3.9.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.9.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-xml-jaxb:3.9.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-mock:3.13.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-support-spring-beans:3.11.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-vertx-http:3.13.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-rest-openapi:3.13.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.13.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-xml-jaxb:3.13.0"
     implementation "org.apache.camel.quarkus:camel-quarkus-microprofile-fault-tolerance"
-    implementation "org.apache.camel.quarkus:camel-quarkus-junit5"
-    implementation "org.apache.camel.quarkus:camel-quarkus-integration-test-kotlin:3.4.0"
-    implementation  "org.apache.camel.quarkus:camel-quarkus-openapi-java:"
+    implementation "org.apache.camel.quarkus:camel-quarkus-junit5-extension-tests:3.10.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-integration-test-kotlin:3.13.0"
+    implementation  "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.13.0"
     //implementation "org.apache.camel.quarkus:camel-quarkus-amqp"
     implementation "org.apache.camel.quarkus:camel-quarkus-attachments"
     //implementation "io.quarkus:quarkus-keycloak-authorization"
@@ -143,3 +147,4 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_17
 }
+

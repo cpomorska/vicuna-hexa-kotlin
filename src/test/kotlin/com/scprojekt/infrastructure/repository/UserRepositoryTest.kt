@@ -6,7 +6,7 @@ import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.USER_ID_TESTUSER_1
 import com.scprojekt.util.UUID_TESTUSER_1
 import com.scprojekt.util.UUID_TESTUSER_2
-import io.quarkus.test.common.QuarkusTestResource
+import io.quarkus.test.common.WithTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
 import jakarta.inject.Inject
@@ -18,7 +18,7 @@ import java.util.*
 import java.util.function.Consumer
 
 @QuarkusTest
-@QuarkusTestResource(H2DatabaseTestResource::class)
+@WithTestResource(H2DatabaseTestResource::class)
 class UserRepositoryTest  {
 
     @Inject

@@ -6,7 +6,7 @@ import com.scprojekt.domain.model.user.event.UserEventType
 import com.scprojekt.domain.model.user.repository.UserEventRepository
 import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.TestUtil.Companion.createTestUserEventStore
-import io.quarkus.test.common.QuarkusTestResource
+import io.quarkus.test.common.WithTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
 import jakarta.inject.Inject
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 import java.util.function.Consumer
 
 @QuarkusTest
-@QuarkusTestResource(H2DatabaseTestResource::class)
+@WithTestResource(H2DatabaseTestResource::class)
 class UserEventRepositoryTest {
 
     @Inject

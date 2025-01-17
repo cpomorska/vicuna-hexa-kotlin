@@ -14,7 +14,7 @@ class TestProcessorRoute : RouteBuilder() {
     private lateinit var prepareJpaUrlProcessor: JpaUrlProcessor
     override fun configure() {
         from("direct:start")
-            .process(prepareJpaUrlProcessor)
+            .process(JpaUrlProcessor())
             .to("mock:resultErrormail")
     }
 }

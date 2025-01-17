@@ -7,10 +7,9 @@ import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.infrastructure.service.UserStorageService
 import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.UUID_TESTUSER_1
-import io.quarkus.test.common.QuarkusTestResource
+import io.quarkus.test.common.WithTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
-import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
@@ -23,14 +22,13 @@ import java.util.function.Consumer
 
 
 @QuarkusTest
-@QuarkusTestResource(H2DatabaseTestResource::class)
+@WithTestResource(H2DatabaseTestResource::class)
 class BaseUserStorageServiceTest {
 
     private lateinit var baseUserStorageService: UserStorageService
     private lateinit var baseUserReadOnlyService : UserReadOnlyService
 
     @Inject
-    @field: Default
     lateinit var userRepository: UserJpaRepository
 
 

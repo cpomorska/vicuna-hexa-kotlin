@@ -4,7 +4,7 @@ import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.infrastructure.service.UserManagementService
 import com.scprojekt.lifecycle.MessagingTestResourcelifecycleManager
 import com.scprojekt.util.TestUtil.Companion.createTestUser
-import io.quarkus.test.common.QuarkusTestResource
+import io.quarkus.test.common.WithTestResource
 import io.quarkus.test.junit.QuarkusTest
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 
 @QuarkusTest
-@QuarkusTestResource(MessagingTestResourcelifecycleManager::class)
+@WithTestResource(MessagingTestResourcelifecycleManager::class)
 class UserManagementServiceTest {
 
     private lateinit var user: User
