@@ -5,8 +5,6 @@ quarkus:
     openapi:
       expose:
         enabled: true
-    rest:
-      inline-routes: true
 #    servlet:
 #      url-patterns: /vicuna/*
 
@@ -31,13 +29,13 @@ quarkus:
           paths: /vicuna/q/*
           policy: permit
 
-  swagger-ui:
-    always-include: false
-    path: hui
-    enable: false
+#  swagger-ui:
+#    always-include: false
+#    path: hui
+#    enable: false
 
-  smallrye-openapi:
-    enable: false
+#  smallrye-openapi:
+#    enable: false
 
   datasource:
     db-kind: postgresql
