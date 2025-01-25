@@ -34,8 +34,8 @@ quarkus:
     path: hui
     enable: true
 
-  smallrye-openapi:
-    enable: true
+#  smallrye-openapi:
+#    enable: false
 
   datasource:
     db-kind: postgresql
@@ -57,7 +57,7 @@ quarkus:
 
   container-image:
     builder: docker
-    build: false
+    build: true
     push: false
     image: cpomorska/vicuna-kotlin-quarkus
     tag: 1.0.develop
