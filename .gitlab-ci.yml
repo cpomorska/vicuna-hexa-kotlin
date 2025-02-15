@@ -1,0 +1,23 @@
+image: gradle:alpine
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+stages:
+  - build_vicuna
+  - unit_test_vicuna
+
+build_vicuna:
+  stage: build_vicuna
+  script:
+    - echo "Compiling the code..."
+    - "gradle clean build -x test"
+
+unit_test_vicuna:
+  stage: unit_test_vicuna
+  script:
+    - echo "Running unit tests... This will take about 60 seconds."
+    - "gradle test"
