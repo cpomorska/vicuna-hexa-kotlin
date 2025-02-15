@@ -12,6 +12,8 @@ on:
     branches: [ "develop","main" ]
   pull_request:
     branches: [ "develop","main" ]
+  merge_group:
+    branches: [ "develop","main" ]
 
 permissions:
   contents: read
