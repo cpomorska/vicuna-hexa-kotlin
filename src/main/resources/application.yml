@@ -5,8 +5,8 @@ quarkus:
     openapi:
       expose:
         enabled: true
-#    servlet:
-#      url-patterns: /vicuna/*
+    servlet:
+      url-patterns: /vicuna/*
 
   http:
     cors:
@@ -29,13 +29,13 @@ quarkus:
           paths: /vicuna/q/*
           policy: permit
 
-#  swagger-ui:
-#    always-include: false
-#    path: hui
-#    enable: false
+  swagger-ui:
+    always-include: false
+    path: hui
+    enable: true
 
-#  smallrye-openapi:
-#    enable: false
+  smallrye-openapi:
+    enable: true
 
   datasource:
     db-kind: postgresql
@@ -116,10 +116,10 @@ kafka:
    bootstrap:
      servers: host.docker.internal:29092
 mp:
-#  rest:
-#    openapi:
-#      scan:
-#        enabled: false
+  rest:
+    openapi:
+      scan:
+        enabled: true
   messaging:
     outgoing:
       users-out:
