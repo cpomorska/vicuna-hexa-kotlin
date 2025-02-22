@@ -24,8 +24,8 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:${lombokVersion}'
 
     /* Lombok */
-    compileOnly "org.projectlombok:lombok:1.18.30"
-    annotationProcessor "org.projectlombok:lombok:1.18.30"
+    compileOnly "org.projectlombok:lombok:1.18.36"
+    annotationProcessor "org.projectlombok:lombok:1.18.36"
     implementation "net.bytebuddy:byte-buddy:${bytebuddyVersion}"
 
     /* Quarkus */
@@ -89,7 +89,7 @@ dependencies {
     /* Jackson */
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.+"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1"
-    implementation "jakarta.xml.bind:jakarta.xml.bind-api:4.0.1"
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2"
 
     /* Test */
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -97,8 +97,8 @@ dependencies {
 
     testImplementation "net.bytebuddy:byte-buddy-agent:${bytebuddyVersion}"
 
-    testImplementation "org.mockito:mockito-core:5.3.1"
-    testImplementation "org.mockito:mockito-inline:5+"
+    testImplementation "org.mockito:mockito-core:5.15.2"
+    testImplementation "org.mockito:mockito-inline:5.2.0"
     testImplementation "org.mockito.kotlin:mockito-kotlin:5.4.0"
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
 
