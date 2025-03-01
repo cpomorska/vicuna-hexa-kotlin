@@ -34,8 +34,8 @@ quarkus:
     path: hui
     enable: true
 
-#  smallrye-openapi:
-#    enable: false
+  smallrye-openapi:
+    enable: true
 
   datasource:
     db-kind: postgresql
