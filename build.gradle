@@ -139,12 +139,16 @@ jacocoTestReport {
     }
 }
 
+static def configureKotlinOptions(task) {
+    task.kotlinOptions.jvmTarget = JavaVersion.VERSION_17
+    task.kotlinOptions.javaParameters = true
+}
+
 compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_17
-    kotlinOptions.javaParameters = true
+    configureKotlinOptions(it)
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_17
+    configureKotlinOptions(it)
 }
 

@@ -28,6 +28,7 @@ services:
     env_file:
       - keycloak.local.env
     command:
+      - '--verbose'
       - 'start-dev'
       - '--import-realm'
       - '--health-enabled=true'
@@ -36,9 +37,12 @@ services:
     ports:
       - "8180:8080"
     depends_on:
-      - postgres-kc
-      - postgres
-    network_mode: bridge
+      postgres-kc:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -56,7 +60,10 @@ services:
       - postgres.local.keycloak.env
     ports:
       - '25432:5433'
-    network_mode: bridge
+    expose:
+      - '5433'
+    networks:
+      - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -72,7 +79,10 @@ services:
       postgres.local.env
     ports:
       - '15432:5432'
-    network_mode: bridge
+    expose:
+      - '5432'
+    networks:
+    - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -83,7 +93,7 @@ services:
 
   kafka:
     container_name: vicuna-kafka
-    image: apache/kafka
+    image: apache/kafka:latest
     hostname: kafka
     env_file:
       - kafka.local.env
@@ -91,7 +101,8 @@ services:
       - "29092:9092"
     expose:
       - "9092"
-    network_mode: bridge
+    networks:
+      - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -99,3 +110,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+
+networks:
+  vicuna-net:
+    driver: bridge
