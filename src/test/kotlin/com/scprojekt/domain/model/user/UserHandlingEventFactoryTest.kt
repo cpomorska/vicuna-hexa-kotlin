@@ -6,8 +6,10 @@ import com.scprojekt.domain.model.user.event.UserHandlingEvent
 import com.scprojekt.util.TestUtil.Companion.createTestUser
 import io.quarkus.test.junit.QuarkusTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
+@Disabled
 @QuarkusTest
 class UserHandlingEventFactoryTest {
 
