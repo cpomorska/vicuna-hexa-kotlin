@@ -1,12 +1,12 @@
 quarkus:
   camel:
-#    context:
-#      name: vicunacamel
+    #    context:
+    #      name: vicunacamel
     openapi:
       expose:
         enabled: true
-    servlet:
-      url-patterns: /vicuna/*
+#    servlet:
+#      url-patterns: /vicuna/*
 
   http:
     cors:
@@ -29,13 +29,13 @@ quarkus:
           paths: /vicuna/q/*
           policy: permit
 
-  swagger-ui:
-    always-include: false
-    path: hui
-    enable: true
+#  swagger-ui:
+    #always-include: false
+    #path: hui
+#    enable: true
 
-  smallrye-openapi:
-    enable: true
+#  smallrye-openapi:
+#    enabled: true
 
   datasource:
     db-kind: postgresql
@@ -44,15 +44,19 @@ quarkus:
       url: jdbc:postgresql://host.docker.internal:15432/vicuna_user
     username: vicuna_user
     password: vicuna_pw
-
-#  hibernate-orm:
+    devservices:
+      enabled: true
+      port: 15432
+      username: vicuna_user
+      password: vicuna_pw
+      db-name: vicuna_user
 #    database:
-#      generation: update
+#      generation: create
 #      create-schemas: true
 
   liquibase:
-    enabled: false
-    migrate-at-start: false
+    enabled: true
+    migrate-at-start: true
     change-log: db/db.changelog-master.yaml
 
   container-image:
@@ -63,12 +67,13 @@ quarkus:
     tag: 1.0.develop
 
   oidc:
-    auth-server-url: http://host.docker.internal:8180/realms/development
+    #auth-server-url: http://localhost:8180/realms/development
     client-id: backend-service
+
+    application-type: hybrid
     credentials:
       client-secret:
         value: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-    application-type: hybrid
 
 #  oidc-client:
 #    auth-server-url: http://host.docker.internal:8180/realms/development
@@ -81,40 +86,46 @@ quarkus:
 #        username: alice
 #        password: alice
 
-keycloak:
-  devservices:
-    auth-server-enabled: true
-    enabled: true
-    port: 8180
-    realm-path: dev-realm.json
-    service-name: backend-service
-    credentials:
-      username: alice
-      password: alice
-      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-      client-id: backend-service
-#      grant-type: password
-#      grant-options:
-#        password:
-#          username: alice
-#          password: <PASSWORD>
-#    realm-path: dev-realm.json
-#      service-name: quarkus
+  keycloak:
+    devservices:
+      enabled: true
+      start-command: "start-dev --db=dev-mem"
+      port: 8180
+      realm-path: dev-realm.json
+      realm-name: development
 
-  log:
-    category:
-      "io.quarkus.category":
-        level: WARN
-      "org.apache.kafka.clients":
-        level: ERROR
-      "org.apache.kafka.common.utils":
-        level: ERROR
-      "org.apache.kafka.common.metrics":
-        level: ERROR
+  #
+  #    auth-server-enabled: true
+  #    port: 8180
+  #    realm-path: dev-realm.json
+  #    service-name: backend-service
+  #    credentials:
+  #      username: alice
+  #      password: alice
+  #      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+  #      client-id: backend-service
+  #      grant-type: password
+  #      grant-options:
+  #        password:
+  #          username: alice
+  #          password: <PASSWORD>
+  #    realm-path: dev-realm.json
+  #      service-name: quarkus
+
+#  log:
+#    category:
+#      "io.quarkus.category":
+#        level: WARN
+#      "org.apache.kafka.clients":
+#        level: ERROR
+#      "org.apache.kafka.common.utils":
+#        level: ERROR
+#      "org.apache.kafka.common.metrics":
+#        level: ERROR
 
 kafka:
-   bootstrap:
-     servers: host.docker.internal:29092
+  bootstrap:
+    servers: host.docker.internal:29092
 mp:
   rest:
     openapi:

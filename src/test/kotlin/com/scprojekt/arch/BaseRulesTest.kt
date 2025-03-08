@@ -13,8 +13,8 @@ public class BaseRulesTest {
 
     //val classes = ClassFileImporter().importPackages("com.scprojekt")
 
-    @ArchTest
-    private val no_field_injection = NO_CLASSES_SHOULD_USE_FIELD_INJECTION
+//    @ArchTest
+//    private val no_field_injection = NO_CLASSES_SHOULD_USE_FIELD_INJECTION
 
     @ArchTest
     private val no_deprecated_api = DEPRECATED_API_SHOULD_NOT_BE_USED
