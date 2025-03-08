@@ -13,7 +13,7 @@ quarkus:
 
 kafka:
   dev-services:
-    enabled: false
+    enabled: true
   bootstrap:
     servers: host.docker.internal:29092
 
