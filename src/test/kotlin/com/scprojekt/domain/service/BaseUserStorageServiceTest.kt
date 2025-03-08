@@ -9,8 +9,6 @@ import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.UUID_TESTUSER_1
 import io.quarkus.test.common.WithTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
-import io.quarkus.test.junit.QuarkusIntegrationTest
-import io.quarkus.test.junit.QuarkusTest
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
@@ -21,7 +19,6 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.*
 import java.util.function.Consumer
-
 
 @Disabled
 @WithTestResource(H2DatabaseTestResource::class)

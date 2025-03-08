@@ -13,11 +13,10 @@ import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.function.Consumer
 
-@Disabled
+@QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
 class UserEventRepositoryTest {
 

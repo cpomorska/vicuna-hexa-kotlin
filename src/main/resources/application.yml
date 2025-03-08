@@ -69,11 +69,8 @@ quarkus:
   oidc:
     #auth-server-url: http://localhost:8180/realms/development
     client-id: backend-service
-
+    client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
     application-type: hybrid
-    credentials:
-      client-secret:
-        value: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
 
 #  oidc-client:
 #    auth-server-url: http://host.docker.internal:8180/realms/development

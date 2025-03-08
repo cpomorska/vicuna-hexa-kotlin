@@ -23,6 +23,7 @@ import java.util.function.Consumer
 private const val USERNAME_ALICE_MANN = "alice"
 
 @Disabled
+@QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
 class UserRestRouteTest {
 
