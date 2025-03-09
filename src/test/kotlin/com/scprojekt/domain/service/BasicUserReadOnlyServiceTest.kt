@@ -8,7 +8,6 @@ import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.UUID_TESTUSER_1
 import io.quarkus.test.common.WithTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
-import io.quarkus.test.junit.QuarkusIntegrationTest
 import io.quarkus.test.junit.QuarkusTest
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
@@ -22,6 +21,7 @@ import java.util.*
 import java.util.function.Consumer
 
 @Disabled
+@QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
 class BasicUserReadOnlyServiceTest {
 
@@ -61,7 +61,7 @@ class BasicUserReadOnlyServiceTest {
 
     @Test
     fun findAllUserByType() {
-        var user = createTestUser()
+        val user = createTestUser()
 
         val result: List<User> = baseUserReadOnlyService.findAllUsersByType(user.userType)
         assertThat(result.first().userName).isNotEmpty().isEqualTo(TESTUSER)

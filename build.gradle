@@ -78,7 +78,7 @@ dependencies {
     implementation "org.apache.camel.quarkus:camel-quarkus-microprofile-fault-tolerance"
     implementation "org.apache.camel.quarkus:camel-quarkus-junit5-extension-tests:3.19.0"
     implementation "org.apache.camel.quarkus:camel-quarkus-integration-test-kotlin:3.16.0"
-    implementation  "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.19.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.19.0"
     //implementation "org.apache.camel.quarkus:camel-quarkus-amqp"
     implementation "org.apache.camel.quarkus:camel-quarkus-attachments"
     //implementation "io.quarkus:quarkus-keycloak-authorization"
@@ -95,10 +95,10 @@ dependencies {
     /* Test */
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:${lombokVersion}"
-
+    testImplementation 'com.github.dasniko:testcontainers-keycloak:3.6.0'
     testImplementation "net.bytebuddy:byte-buddy-agent:${bytebuddyVersion}"
 
-    testImplementation "org.mockito:mockito-core:5.15.2"
+    testImplementation "org.mockito:mockito-core:5.16.0"
     testImplementation "org.mockito:mockito-inline:5.2.0"
     testImplementation "org.mockito.kotlin:mockito-kotlin:5.4.0"
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
@@ -132,13 +132,22 @@ allOpen {
 tasks {
     test {
         useJUnitPlatform()
+        testLogging {
+            events 'PASSED', 'FAILED', 'SKIPPED'
+        }
+        jacocoTestCoverageVerification.enabled = true
     }
 }
 
 jacocoTestReport {
+    dependsOn test
     reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
     }
 }
+
 
 static def configureKotlinOptions(task) {
     task.kotlinOptions.jvmTarget = JavaVersion.VERSION_17
