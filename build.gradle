@@ -68,7 +68,7 @@ dependencies {
     implementation "org.apache.camel.quarkus:camel-quarkus-jaxb"
     implementation "org.apache.camel.quarkus:camel-quarkus-jackson"
     implementation "org.apache.camel.quarkus:camel-quarkus-direct"
-    implementation "org.apache.camel.quarkus:camel-quarkus-mock:3.19.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-mock:3.20.0"
     implementation "org.apache.camel.quarkus:camel-quarkus-support-spring-beans:3.19.0"
     implementation "org.apache.camel.quarkus:camel-quarkus-vertx-http:3.19.0"
     implementation "org.apache.camel.quarkus:camel-quarkus-rest-openapi:3.19.0"
