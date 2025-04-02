@@ -4,6 +4,7 @@ import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.infrastructure.mapping.VicunaObjectMapper
 import com.scprojekt.infrastructure.service.UserReadOnlyService
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.inject.Inject
 import jakarta.ws.rs.GET
 import jakarta.ws.rs.Path
@@ -19,6 +20,7 @@ class UserReadOnlyResource @Inject constructor(
 ) {
     @GET
     @Path("/uuid/{uuid}")
+    @Operation(summary = "Retrieve a user by ID", description = "Returns the user with the specified ID.")
     fun getUserByUuid(@PathParam("uuid") uuid: UUID): User? {
         return userReadOnlyService.getUserByUuid(uuid.toString())
     }

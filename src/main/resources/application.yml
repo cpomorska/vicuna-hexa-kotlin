@@ -23,19 +23,20 @@ quarkus:
       proactive: true
       permission:
         secured:
-          paths: /vicuna/api/*
+          paths: /vicuna/opi/*,
           policy: authenticated
         public:
           paths: /vicuna/q/*
           policy: permit
 
-#  swagger-ui:
-    #always-include: false
-    #path: hui
-#    enable: true
+  swagger-ui:
+    always-include: false
+    path: hui
+    enable: true
 
-#  smallrye-openapi:
-#    enabled: true
+  smallrye-openapi:
+    enabled: true
+    path: swagger
 
   datasource:
     db-kind: postgresql
@@ -128,6 +129,12 @@ mp:
     openapi:
       scan:
         enabled: true
+
+  openapi:
+    extensions:
+      smallrye:
+        operationIdStrategy: METHOD
+
   messaging:
     outgoing:
       users-out:

@@ -10,7 +10,7 @@ abstract class AbstractUserReadOnlyService : UserReadOnlyService {
     var userRepository : UserRepository? = null
 
     constructor(/* required for quarkus*/)
-    constructor(@Named("UserJapRepository") userRepositoryInject: UserRepository) {
+    constructor(@Named("UserJpaRepository") userRepositoryInject: UserRepository) {
         userRepository = userRepositoryInject
     }
 
