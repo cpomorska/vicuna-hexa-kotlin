@@ -9,6 +9,7 @@ before_script:
 stages:
   - build
   - unit_test
+  - int_test
 
 build:
   stage: build
