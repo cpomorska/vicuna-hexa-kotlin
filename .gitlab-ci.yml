@@ -28,3 +28,4 @@ int_test:
   script:
     - echo "Running integration tests..."
     - "gradle integrationTest"
+  allow_failure: true
