@@ -62,7 +62,7 @@ quarkus:
 
   container-image:
     builder: docker
-    build: true
+    build: false
     push: false
     image: cpomorska/vicuna-kotlin-quarkus
     tag: 1.0.develop
