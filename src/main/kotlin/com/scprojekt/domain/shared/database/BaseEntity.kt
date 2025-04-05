@@ -15,15 +15,21 @@ open class BaseEntity {
     @JsonIgnore
     @CreationTimestamp
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "created_at")
     open var createdAt: Date? = null
 
     @JsonIgnore
     @UpdateTimestamp
     @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(nullable = false, name = "modified_at")
     open val modifiedAt: Date? = null
 
     @JsonIgnore
+    @Column(name = "created_from")
+    open val createdFrom: String? = null
+
+    @JsonIgnore
+    @Column(name = "modified_from")
     open val modifiedFrom: String? = null
 
     @JsonIgnore
