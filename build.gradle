@@ -132,12 +132,28 @@ allOpen {
 tasks {
     test {
         useJUnitPlatform()
+        filter {
+            exclude '**/*IT.class'
+        }
         testLogging {
             events 'PASSED', 'FAILED', 'SKIPPED'
         }
         jacocoTestCoverageVerification.enabled = true
     }
 }
+
+tasks.register('integrationTest', Test) {
+    useJUnitPlatform()
+    filter {
+        exclude '**/*Test.class'
+    }
+    testLogging {
+        events 'PASSED', 'FAILED', 'SKIPPED'
+    }
+    jacocoTestCoverageVerification.enabled = true
+}
+
+
 
 jacocoTestReport {
     dependsOn test
