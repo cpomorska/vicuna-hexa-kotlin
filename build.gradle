@@ -1,7 +1,7 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "2.1.20"
-    id "org.jetbrains.kotlin.plugin.allopen" version "2.1.20"
-    id "org.jetbrains.kotlin.plugin.noarg" version "2.1.20"
+    id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
+    id "org.jetbrains.kotlin.plugin.allopen" version "${kotlinVersion}"
+    id "org.jetbrains.kotlin.plugin.noarg" version "${kotlinVersion}"
     id 'io.quarkus'
 //    id 'java'
 //    id 'maven-publish'
@@ -20,12 +20,12 @@ dependencies {
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    testCompileOnly 'org.projectlombok:lombok:${lombokVersion}'
-    testAnnotationProcessor 'org.projectlombok:${lombokVersion}'
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:${lombokVersion}"
 
     /* Lombok */
-    compileOnly "org.projectlombok:lombok:1.18.38"
-    annotationProcessor "org.projectlombok:lombok:1.18.38"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     implementation "net.bytebuddy:byte-buddy:${bytebuddyVersion}"
 
     /* Quarkus */
@@ -68,17 +68,17 @@ dependencies {
     implementation "org.apache.camel.quarkus:camel-quarkus-jaxb"
     implementation "org.apache.camel.quarkus:camel-quarkus-jackson"
     implementation "org.apache.camel.quarkus:camel-quarkus-direct"
-    implementation "org.apache.camel.quarkus:camel-quarkus-mock:3.20.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-support-spring-beans:3.20.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-vertx-http:3.20.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-rest-openapi:3.20.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.20.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-xml-jaxb:3.20.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-mock:${quarkusCamelVersion}"
+    implementation "org.apache.camel.quarkus:camel-quarkus-support-spring-beans:${quarkusCamelVersion}"
+    implementation "org.apache.camel.quarkus:camel-quarkus-vertx-http:${quarkusCamelVersion}"
+    implementation "org.apache.camel.quarkus:camel-quarkus-rest-openapi:${quarkusCamelVersion}"
+    implementation "org.apache.camel.quarkus:camel-quarkus-openapi-java:${quarkusCamelVersion}"
+    implementation "org.apache.camel.quarkus:camel-quarkus-xml-jaxb:${quarkusCamelVersion}"
 
     implementation "org.apache.camel.quarkus:camel-quarkus-microprofile-fault-tolerance"
-    implementation "org.apache.camel.quarkus:camel-quarkus-junit5-extension-tests:3.20.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-integration-test-kotlin:3.16.0"
-    implementation "org.apache.camel.quarkus:camel-quarkus-openapi-java:3.20.0"
+    implementation "org.apache.camel.quarkus:camel-quarkus-junit5-extension-tests:${quarkusCamelVersion}"
+    implementation "org.apache.camel.quarkus:camel-quarkus-integration-test-kotlin:${quarkusCamelIntegrationTestKotlinVersion}"
+    implementation "org.apache.camel.quarkus:camel-quarkus-openapi-java:${quarkusCamelVersion}"
     //implementation "org.apache.camel.quarkus:camel-quarkus-amqp"
     implementation "org.apache.camel.quarkus:camel-quarkus-attachments"
     //implementation "io.quarkus:quarkus-keycloak-authorization"
@@ -88,19 +88,19 @@ dependencies {
     implementation "org.apache.camel.quarkus:camel-quarkus-mail"
 
     /* Jackson */
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.18.+"
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.3"
-    implementation "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.19.+"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.0"
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${jakartaXmlBindApiVersion}"
 
     /* Test */
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:${lombokVersion}"
-    testImplementation 'com.github.dasniko:testcontainers-keycloak:3.7.0'
+    testImplementation "com.github.dasniko:testcontainers-keycloak:${testcontainersKeycloakVersion}"
     testImplementation "net.bytebuddy:byte-buddy-agent:${bytebuddyVersion}"
 
-    testImplementation "org.mockito:mockito-core:5.17.0"
-    testImplementation "org.mockito:mockito-inline:5.2.0"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:5.4.0"
+    testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+    testImplementation "org.mockito:mockito-inline:${mockitoInlineVersion}"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:${mockitoKotlinVersion}"
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
 
     testImplementation "io.quarkus:quarkus-junit5"
@@ -118,6 +118,12 @@ version "1.0.0-SNAPSHOT"
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 test {

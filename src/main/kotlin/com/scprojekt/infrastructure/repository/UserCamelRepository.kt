@@ -34,22 +34,22 @@ class UserCamelRepository : UserIntegrationRepository {
 
     override fun findByType(userType: UserType): List<User> {
         val userList: CompletableFuture<Any>? =  camelProducer.asyncRequestBody(DIRECT_FINDBYTYPE, userType)
-        return userList!!.get().let { it as List<User> }
+        return listOf(userList!!.get() as User)
     }
 
     override fun findByName(userName: String): List<User> {
         val userList: CompletableFuture<Any>? =  camelProducer.asyncRequestBody(DIRECT_FINDBYNAME, userName)
-        return userList!!.get().let { it as List<User> }
+        return listOf(userList!!.get() as User)
     }
 
     override fun findByDescription(userDescription: String): List<User> {
         val userList: CompletableFuture<Any>? =  camelProducer.asyncRequestBody(DIRECT_FINDBYDESCRIPTION, userDescription)
-        return userList!!.get().let { it as List<User> }
+        return listOf(userList!!.get() as User)
     }
 
     fun findAllInRepository(): List<User>? {
         val userList: CompletableFuture<Any>? =  camelProducer.asyncRequestBody(DIRECT_FINDALL,null)
-        return userList!!.get().let { it as List<User> }
+        return listOf(userList!!.get() as User)
     }
 
     fun findByIdInRepository(id: Long): User? {

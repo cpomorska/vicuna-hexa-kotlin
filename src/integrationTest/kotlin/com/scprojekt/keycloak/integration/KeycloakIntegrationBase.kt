@@ -1,4 +1,4 @@
-package com.scprojekt.domain.it
+package com.scprojekt.keycloak.integration
 
 import dasniko.testcontainers.keycloak.KeycloakContainer
 import org.junit.jupiter.api.AfterAll

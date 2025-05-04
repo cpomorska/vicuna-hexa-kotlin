@@ -7,17 +7,25 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
 stages:
-  - build_vicuna
-  - unit_test_vicuna
+  - build
+  - unit_test
+  - int_test
 
-build_vicuna:
-  stage: build_vicuna
+build:
+  stage: build
   script:
-    - echo "Compiling the code..."
+    - echo "Building the application..."
     - "gradle clean build -x test"
 
-unit_test_vicuna:
-  stage: unit_test_vicuna
+unit_test:
+  stage: unit_test
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
+    - echo "Running unit tests..."
     - "gradle test"
+
+int_test:
+  stage: int_test
+  script:
+    - echo "Running integration tests..."
+    - "gradle integrationTest"
+  allow_failure: true
