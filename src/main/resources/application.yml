@@ -29,15 +29,6 @@ quarkus:
           paths: /vicuna/q/*
           policy: permit
 
-  swagger-ui:
-    always-include: false
-    path: hui
-    enable: true
-
-  smallrye-openapi:
-    enabled: true
-    path: swagger
-
   datasource:
     db-kind: postgresql
     jdbc:
@@ -120,6 +111,14 @@ quarkus:
 #        level: ERROR
 #      "org.apache.kafka.common.metrics":
 #        level: ERROR
+swagger-ui:
+  always-include: false
+  path: hui
+  enable: true
+
+smallrye-openapi:
+  enabled: true
+  path: swagger
 
 kafka:
   bootstrap:
