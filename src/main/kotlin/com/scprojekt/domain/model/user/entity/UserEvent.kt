@@ -23,7 +23,7 @@ open class UserEvent: BaseEntity() {
     @NotNull
     open var uuid: UUID? = null
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name="usereventtype")
     @NotNull
     open var userEventType: UserEventType? = null
@@ -36,4 +36,7 @@ open class UserEvent: BaseEntity() {
     @Column(name="isremovable")
     @NotNull
     open var isRemovable: Boolean = false
+
+    @Version
+    open var version = 0
 }
