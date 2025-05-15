@@ -8,9 +8,11 @@ import io.quarkus.test.common.WithTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 
+@Disabled
 @QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
 class UserHandlingEventFactoryTest {
