@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.function.Consumer
 
-@Disabled
 @QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
 class UserEventRepositoryTest {

@@ -20,16 +20,17 @@ import org.junit.jupiter.api.Test
 import java.util.function.Consumer
 
 
-private const val USERNAME_ALICE_MANN = "alice"
 
-@Disabled
 @QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
+@Transactional
 class UserRestRouteTest {
 
     private lateinit var testUser: User
 
     private val keycloakClient = KeycloakTestClient()
+
+    private val USERNAME_ALICE_MANN = "alice"
 
     @Inject
     @field:Default

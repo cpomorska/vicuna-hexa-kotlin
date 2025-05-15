@@ -1,21 +1,21 @@
 quarkus:
   http:
     port: 8083
-  datasource:
-    db-kind: h2
-    jdbc:
-      url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;Mode=Oracle;
+#  datasource:
+#    db-kind: h2
+#    jdbc:
+#      url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;
   hibernate-orm:
     database:
       generation: update
   liquibase:
-    migrate-at-start: false
+    migrate-at-start: true
 
-kafka:
-  dev-services:
-    enabled: false
-  bootstrap:
-    servers: host.docker.internal:29092
+#kafka:
+#  dev-services:
+#    enabled: false
+#  bootstrap:
+#    servers: host.docker.internal:29092
 
 #oidc:
 #  auth-server-url: http://host.docker.internal:8180/realms/development
@@ -43,10 +43,10 @@ mp:
     openapi:
       scan:
         disable: true
-  messaging:
-    outgoing:
-      users-out:
-        connector: smallrye-kafka
-    incoming:
-      users-in:
-        connector: smallrye-kafka
+#  messaging:
+#    outgoing:
+#      users-out:
+#        connector: smallrye-kafka
+#    incoming:
+#      users-in:
+#        connector: smallrye-kafka

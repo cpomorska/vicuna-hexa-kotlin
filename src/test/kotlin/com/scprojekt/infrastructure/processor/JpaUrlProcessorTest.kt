@@ -11,7 +11,6 @@ import org.apache.camel.component.mock.MockEndpoint
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled
 @QuarkusTest
 class JpaUrlProcessorTest : QuarkusTestProfile{
 

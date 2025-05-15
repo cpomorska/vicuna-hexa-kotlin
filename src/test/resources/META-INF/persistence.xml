@@ -8,17 +8,18 @@
         <class>com.scprojekt.domain.model.user.entity.UserType</class>
         <class>com.scprojekt.domain.model.user.entity.UserHash</class>
         <class>com.scprojekt.domain.model.user.entity.UserNumber</class>
+        <class>com.scprojekt.domain.model.user.entity.UserEvent</class>
         <properties>
-            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="jakarta.persistence.jdbc.url"    value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;" />
-            <property name="jakarta.persistence.jdbc.user" value="sa" />
-            <property name="jakarta.persistence.jdbc.password" value="" />
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="jakarta.persistence.jdbc.url"    value="jdbc:postgresql://host.docker.internal:15432/vicuna_user" />
+            <property name="jakarta.persistence.jdbc.user" value="vicuna_user" />
+            <property name="jakarta.persistence.jdbc.password" value="vicuna_passwd" />
             <!-- intentionally using worse case so that we can optimise for this -->
             <property name="hibernate.archive.autodetection" value="class, hbm"/>
 
             <!-- Connection specific -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <property name="hibernate.enable_lazy_load_no_trans" value="false"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
 
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="jakarta.persistence.validation.mode" value="NONE"/>

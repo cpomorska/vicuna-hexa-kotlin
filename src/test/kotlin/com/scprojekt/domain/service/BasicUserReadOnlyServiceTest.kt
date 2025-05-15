@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test
 import java.util.*
 import java.util.function.Consumer
 
-@Disabled
 @QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
 class BasicUserReadOnlyServiceTest {

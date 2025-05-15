@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS public.userevent
     modified_at             timestamp(6) NULL,
     modified_from           varchar(255) NULL,
     enabled                 BOOLEAN NOT NULL DEFAULT TRUE,
+    version                 integer NOT NULL,
     CONSTRAINT  ue_uuid UNIQUE (usereventuuid),
     CONSTRAINT  userevent_pkey PRIMARY KEY (usereventid)
 );
