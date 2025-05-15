@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS public.userevent
     usereventid             bigserial    NOT NULL,
     usereventuuid           uuid NOT NULL,
     usertypedescription     varchar(255) NOT NULL,
-    usereventtype           json NOT NULL,
+    usereventtype           smallint NOT NULL,
     isremovable             BOOLEAN NOT NULL DEFAULT TRUE,
     created_at              timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_from            varchar(255) NULL,

@@ -15,21 +15,20 @@ import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.function.Consumer
 
 
-private const val USERNAME_ALICE_MANN = "alice"
-
-@Disabled
 @QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
+@Transactional
 class UserRestRouteTest {
 
     private lateinit var testUser: User
 
     private val keycloakClient = KeycloakTestClient()
+
+    private val USERNAME_ALICE_MANN = "alice"
 
     @Inject
     @field:Default

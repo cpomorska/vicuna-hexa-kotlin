@@ -34,11 +34,11 @@ internal class TestUtil {
             val userTypeList: MutableList<UserType> = ArrayList()
             val userNumber = UserNumber(UUID.randomUUID())
             userNumber.uuid = UUID.fromString(UUID_TESTUSER_1)
-            userType.userTypeId = USER_ID_TESTUSER_1
+            //userType.userTypeId = USER_ID_TESTUSER_1
             userType.userRoleType = TESTROLE
             userType.userTypeDescription = TESTUSER
             userTypeList.add(userType)
-            user.userId = USER_ID_TESTUSER_1
+            //user.userId = USER_ID_TESTUSER_1
             user.userName = TESTUSER
             user.userDescription = TESTUSER
             user.userNumber = userNumber

@@ -34,4 +34,7 @@ open class User : BaseEntity() {
     @NoSQLInjection
     @Column(name = "userdescription")
     open lateinit var userDescription: String
+
+    @Version
+    open var version = 0
 }

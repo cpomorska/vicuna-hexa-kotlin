@@ -8,10 +8,8 @@ import org.apache.camel.EndpointInject
 import org.apache.camel.Produce
 import org.apache.camel.ProducerTemplate
 import org.apache.camel.component.mock.MockEndpoint
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled
 @QuarkusTest
 class JpaUrlProcessorTest : QuarkusTestProfile{
 

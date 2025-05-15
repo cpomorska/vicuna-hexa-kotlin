@@ -37,7 +37,7 @@ quarkus:
     username: vicuna_user
     password: vicuna_pw
     devservices:
-      enabled: true
+      enabled: false
       port: 15432
       username: vicuna_user
       password: vicuna_pw
@@ -121,6 +121,8 @@ smallrye-openapi:
   path: swagger
 
 kafka:
+  devservices:
+    enabled: false
   bootstrap:
     servers: host.docker.internal:29092
 mp:
