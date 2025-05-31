@@ -5,12 +5,13 @@ quarkus:
     openapi:
       expose:
         enabled: true
-#    servlet:
-#      url-patterns: /vicuna/*
+  #    servlet:
+  #      url-patterns: /vicuna/*
 
   http:
     cors:
-      ~: true
+      enabled: true
+      #~: true
       origins: /*
       headers: origin, accept, authorization, content-type, x-requested-with
       methods: GET, POST, PUT, DELETE, OPTIONS
@@ -42,9 +43,14 @@ quarkus:
       username: vicuna_user
       password: vicuna_pw
       db-name: vicuna_user
-#    database:
-#      generation: create
-#      create-schemas: true
+  #    database:
+  #      generation: create
+  #      create-schemas: true
+  kafka:
+    devservices:
+      enabled: true
+    bootstrap:
+      servers: host.docker.internal:29092
 
   liquibase:
     enabled: true
@@ -64,16 +70,16 @@ quarkus:
     #client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
     application-type: hybrid
 
-#  oidc-client:
-#    auth-server-url: http://host.docker.internal:8180/realms/development
-#    client-id: backend-service
-#    credentials:
-#      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-#    grant-type: password
-#    grant-options:
-#      password:
-#        username: alice
-#        password: alice
+  #  oidc-client:
+  #    auth-server-url: http://host.docker.internal:8180/realms/development
+  #    client-id: backend-service
+  #    credentials:
+  #      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+  #    grant-type: password
+  #    grant-options:
+  #      password:
+  #        username: alice
+  #        password: alice
 
   keycloak:
     devservices:
@@ -120,11 +126,7 @@ smallrye-openapi:
   enabled: true
   path: swagger
 
-kafka:
-  devservices:
-    enabled: false
-  bootstrap:
-    servers: host.docker.internal:29092
+
 mp:
   rest:
     openapi:

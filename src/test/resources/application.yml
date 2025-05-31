@@ -11,11 +11,11 @@ quarkus:
   liquibase:
     migrate-at-start: true
 
-#kafka:
-#  dev-services:
-#    enabled: false
-#  bootstrap:
-#    servers: host.docker.internal:29092
+  kafka:
+    dev-services:
+      enabled: true
+    bootstrap:
+      servers: host.docker.internal:29092
 
 #oidc:
 #  auth-server-url: http://host.docker.internal:8180/realms/development
@@ -43,10 +43,10 @@ mp:
     openapi:
       scan:
         disable: true
-#  messaging:
-#    outgoing:
-#      users-out:
-#        connector: smallrye-kafka
-#    incoming:
-#      users-in:
-#        connector: smallrye-kafka
+  messaging:
+    outgoing:
+      users-out:
+        connector: smallrye-kafka
+    incoming:
+      users-in:
+        connector: smallrye-kafka
