@@ -1,6 +1,6 @@
 package com.scprojekt.infrastructure.messaging
 
-import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.infrastructure.service.UserManagementService
 import com.scprojekt.lifecycle.MessagingTestResourcelifecycleManager
 import com.scprojekt.util.TestUtil.Companion.createTestUser
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 @WithTestResource(MessagingTestResourcelifecycleManager::class)
 class UserManagementServiceTest {
 
-    private lateinit var user: User
+    private lateinit var userEntity: UserEntity
 
     @Inject
     @field:Default
@@ -25,14 +25,14 @@ class UserManagementServiceTest {
 
     @BeforeEach
     fun init(){
-        user = createTestUser()
+        userEntity = createTestUser()
     }
 
     @Test
     fun registerNewUser() {
         val userManagementService = UserManagementService(userToBackendProducer)
 
-        val result = userManagementService.registerNewUser(user)
+        val result = userManagementService.registerNewUser(userEntity)
         assertThat(result).isNotNull()
     }
 
@@ -40,7 +40,7 @@ class UserManagementServiceTest {
     fun manageExistingUser() {
         val userManagementService = UserManagementService(userToBackendProducer)
 
-        val result = userManagementService.manageExistingUser(user)
+        val result = userManagementService.manageExistingUser(userEntity)
         assertThat(result).isNotNull()
     }
 
@@ -48,7 +48,7 @@ class UserManagementServiceTest {
     fun disableExistingUser() {
         val userManagementService = UserManagementService(userToBackendProducer)
 
-        val result = userManagementService.disableExistingUser(user)
+        val result = userManagementService.disableExistingUser(userEntity)
         assertThat(result).isNotNull()
     }
 
@@ -56,7 +56,7 @@ class UserManagementServiceTest {
     fun deleteExistingUser() {
         val userManagementService = UserManagementService(userToBackendProducer)
 
-        val result = userManagementService.deleteExistingUser(user)
+        val result = userManagementService.deleteExistingUser(userEntity)
         assertThat(result).isNotNull()
     }
 }

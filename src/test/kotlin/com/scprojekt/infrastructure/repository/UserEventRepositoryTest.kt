@@ -1,9 +1,9 @@
 package com.scprojekt.infrastructure.repository
 
-import com.scprojekt.domain.model.user.entity.UserEvent
 import com.scprojekt.domain.model.user.event.UserEventFactory
 import com.scprojekt.domain.model.user.event.UserEventType
 import com.scprojekt.domain.model.user.repository.UserEventRepository
+import com.scprojekt.infrastructure.persistence.entity.UserEventEntity
 import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.TestUtil.Companion.createTestUserEventStore
 import io.quarkus.test.common.WithTestResource
@@ -26,8 +26,8 @@ class UserEventRepositoryTest {
     @AfterEach
     @Transactional
     fun teardown() {
-        val users: MutableList<UserEvent>? = userEventRepository.findAllToRemove()
-        users?.forEach(Consumer { u: UserEvent ->
+        val users: MutableList<UserEventEntity>? = userEventRepository.findAllToRemove()
+        users?.forEach(Consumer { u: UserEventEntity ->
             userEventRepository.removeEntity(u)
         })
     }
@@ -37,7 +37,7 @@ class UserEventRepositoryTest {
         val userEvent = UserEventFactory.getInstance().createUserEvent(UserEventType.CREATE, createTestUser())
         val userEventStore = createTestUserEventStore(userEvent)
         userEventRepository.createEntity(userEventStore)
-        val result: UserEvent? = userEventRepository.findByUUID(userEventStore.uuid)
+        val result: UserEventEntity? = userEventRepository.findByUUID(userEventStore.uuid)
 
         Assertions.assertThat(result?.uuid).isEqualTo(userEventStore.uuid)
     }

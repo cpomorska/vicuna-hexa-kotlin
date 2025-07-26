@@ -1,7 +1,5 @@
 package com.scprojekt.infrastructure.routes
 
-import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.infrastructure.constants.Camel
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_CREATEUSER
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_DELETEUSER
@@ -9,6 +7,8 @@ import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_FINDBYUUID
 import com.scprojekt.infrastructure.constants.Routes.Companion.DIRECT_SAVEINDATABASE
 import com.scprojekt.infrastructure.constants.Routes.Companion.DRECT_MANAGEUSER
 import com.scprojekt.infrastructure.constants.Routes.Companion.MEDIATYPE_JSON
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
+import com.scprojekt.infrastructure.persistence.entity.UserTypeEntity
 import com.scprojekt.infrastructure.processor.JpaUrlProcessor
 import com.scprojekt.infrastructure.processor.StringToUUidProcessor
 import com.scprojekt.infrastructure.repository.UserJpaRepository
@@ -64,9 +64,9 @@ class UserRestRoute : RouteBuilder() {
 
     private fun createUserStoreRoute(){
         rest("/api/store/user").description("Write to user store opi")
-            .post("create").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_CREATEUSER).security("local_keycloak")
-            .post("manage").consumes(MEDIATYPE_JSON).type(User::class.java).to(DRECT_MANAGEUSER).security("local_keycloak")
-            .post("delete").consumes(MEDIATYPE_JSON).type(User::class.java).to(DIRECT_DELETEUSER).security("local_keycloak")
+            .post("create").consumes(MEDIATYPE_JSON).type(UserEntity::class.java).to(DIRECT_CREATEUSER).security("local_keycloak")
+            .post("manage").consumes(MEDIATYPE_JSON).type(UserEntity::class.java).to(DRECT_MANAGEUSER).security("local_keycloak")
+            .post("delete").consumes(MEDIATYPE_JSON).type(UserEntity::class.java).to(DIRECT_DELETEUSER).security("local_keycloak")
 
         from(DIRECT_CREATEUSER)
             .routeId("infra.rest.createuser")
@@ -97,7 +97,7 @@ class UserRestRoute : RouteBuilder() {
     private fun createUserReadonlyRoute() {
         rest("/api/read/user")
             .get("uuid/{uuid}").consumes(MEDIATYPE_JSON).type(UUID::class.java).to("direct:byUUID").security("local_keycloak")
-            .get("bytype/{type}").consumes(MEDIATYPE_JSON).type(UserType::class.java).to("direct:byType").security("local_keycloak")
+            .get("bytype/{type}").consumes(MEDIATYPE_JSON).type(UserTypeEntity::class.java).to("direct:byType").security("local_keycloak")
             .get("byname/{name}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byName").security("local_keycloak")
             .get("bydescr/{description}").consumes(MEDIATYPE_JSON).type(String::class.java).to("direct:byDescription").security("local_keycloak")
 

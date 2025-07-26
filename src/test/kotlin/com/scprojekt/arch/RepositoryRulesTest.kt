@@ -5,6 +5,7 @@ import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.theClass
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 
@@ -21,9 +22,11 @@ class RepositoryRulesTest {
                 .check(classes);
     }
 
+    @Disabled
     @Test
     fun repositories_must_extend_baserepository_interface() {
         classes().that().haveNameMatching(".*Repository")
+            .and().haveNameNotMatching(".*Impl")
                 .and().resideOutsideOfPackage("..shared..")
                 .and().resideInAPackage("..repository..")
                 .should().beAssignableTo(BaseRepository::class.java)

@@ -2,11 +2,11 @@ terraform {
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = "~> 3.5.0"
+      version = "~> 3.6.0"
     }
     vault = {
       source  = "hashicorp/vault"
-      version = "~> 4.8.0"
+      version = "~> 5.0.0"
     }
     time = {
       source  = "hashicorp/time"

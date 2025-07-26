@@ -1,12 +1,12 @@
 package com.scprojekt.domain.model.user.repository
 
-import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.domain.shared.database.BaseRepository
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
+import com.scprojekt.infrastructure.persistence.entity.UserTypeEntity
 
-interface UserRepository : BaseRepository<User> {
-    fun findByUUID(uid: String): User?
-    fun findByType(userType: UserType): List<User>
-    fun findByName(userName: String): List<User>
-    fun findByDescription(userDescription: String): List<User>
+interface UserRepository : BaseRepository<UserEntity> {
+    fun findByUUID(uid: String): UserEntity?
+    fun findByType(userTypeEntity: UserTypeEntity): List<UserEntity>
+    fun findByName(userName: String): List<UserEntity>
+    fun findByDescription(userDescription: String): List<UserEntity>
 }

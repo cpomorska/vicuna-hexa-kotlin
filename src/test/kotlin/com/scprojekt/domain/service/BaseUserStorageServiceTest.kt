@@ -1,7 +1,7 @@
 package com.scprojekt.domain.service
 
 import com.scprojekt.domain.model.user.dto.response.UuidResponse
-import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.infrastructure.service.UserStorageService
@@ -40,8 +40,8 @@ class BaseUserStorageServiceTest {
     @AfterEach
     @Transactional
     fun teardown() {
-        val users: MutableList<User>? = userRepository.findAllToRemove()
-        users?.forEach(Consumer { u: User ->
+        val userEntities: MutableList<UserEntity>? = userRepository.findAllToRemove()
+        userEntities?.forEach(Consumer { u: UserEntity ->
             userRepository.removeEntity(u)
         })
     }
@@ -50,7 +50,7 @@ class BaseUserStorageServiceTest {
     @Transactional
     fun whenCreateUserIsCalledTheUserIsCreated() {
         val testUuid = UUID.fromString(UUID_TESTUSER_1)
-        val result: UuidResponse = createTestUser().let { baseUserStorageService.createUser(it) }
+        val result: UuidResponse = this.baseUserStorageService.createUser(createTestUser())
         assertThat(result).isNotNull().isInstanceOf(UuidResponse::class.java)
         assertThat(result.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_1))
         assertEquals(testUuid, result.uuid)
@@ -59,13 +59,13 @@ class BaseUserStorageServiceTest {
     @Test
     @Transactional
     fun whenUpdateUserIsCalledTheUserIsUpdated() {
-        val resultUUID1 = createTestUser().let { baseUserStorageService.createUser(it) }
-        val result1: User = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)!!
+        val resultUUID1 = baseUserStorageService.createUser(createTestUser())
+        val result1: UserEntity = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)!!
         assertThat(result1.userNumber.uuid).isEqualTo(resultUUID1.uuid)
 
         result1.userName = "Nanana"
         baseUserStorageService.updateUser(result1)
-        val result: List<User> = baseUserReadOnlyService.findAllUserByName("Nanana")
+        val result: List<UserEntity> = baseUserReadOnlyService.findAllUserByName("Nanana")
 
         assertThat(result).isNotEmpty
         assertThat(result.first().userName).isEqualTo("Nanana")
@@ -74,11 +74,11 @@ class BaseUserStorageServiceTest {
     @Test
     @Transactional
     fun whenRemoveUserIsCalledTheUserIsRemoved() {
-        createTestUser().let { baseUserStorageService.createUser(it) }
-        val result1: User = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)!!
+        baseUserStorageService.createUser(createTestUser())
+        val result1 = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)
 
-        val uuidResult = result1.let { baseUserStorageService.removeUser(it) }
-        val result: User? = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)
+        val uuidResult = baseUserStorageService.removeUser(result1!!)
+        val result: UserEntity? = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)
 
         assertThat(uuidResult.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_1))
         assertThat(result).isNull()

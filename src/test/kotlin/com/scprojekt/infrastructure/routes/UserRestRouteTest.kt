@@ -1,6 +1,6 @@
 package com.scprojekt.infrastructure.routes
 
-import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.infrastructure.repository.UserCamelRepository
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.util.*
@@ -24,7 +24,7 @@ import java.util.function.Consumer
 @Transactional
 class UserRestRouteTest {
 
-    private lateinit var testUser: User
+    private lateinit var testUserEntity: UserEntity
 
     private val keycloakClient = KeycloakTestClient()
 
@@ -41,10 +41,10 @@ class UserRestRouteTest {
     @BeforeEach
     @Transactional
     fun setup() {
-        testUser = createTestUser()
+        testUserEntity = createTestUser()
 
-        val users: MutableList<User>? = userRepository.findAllToRemove()
-        users?.forEach(Consumer { u: User ->
+        val userEntities: MutableList<UserEntity>? = userRepository.findAllToRemove()
+        userEntities?.forEach(Consumer { u: UserEntity ->
             userRepository.removeEntity(u)
         })
     }
@@ -55,7 +55,7 @@ class UserRestRouteTest {
             .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
-            .body(testUser)
+            .body(testUserEntity)
             .`when`()
             .post(URI_CREATE)
             .then()
@@ -65,15 +65,15 @@ class UserRestRouteTest {
 
     @Test
     fun ifUserExistsInDatabaseItWillBeUpdatedViaManageEndpoint() {
-        userRepository.createEntity(testUser)
-        val userFromRepo: User? = userRepository.findByUUID(UUID_TESTUSER_1)
-        userFromRepo!!.userName = "New User"
+        userRepository.createEntity(testUserEntity)
+        val userEntityFromRepo: UserEntity? = userRepository.findByUUID(UUID_TESTUSER_1)
+        userEntityFromRepo!!.userName = "New User"
 
         given()
             .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
-            .body(testUser)
+            .body(testUserEntity)
             .`when`()
             .post(URI_MANAGE)
             .then()
@@ -84,13 +84,13 @@ class UserRestRouteTest {
 
     @Test
     fun ifUserExistsInDatabaseItWillBeDeletedViaDeleteEndpoint() {
-        userCamelRepository.createEntity(testUser)
+        userCamelRepository.createEntity(testUserEntity)
 
         given()
             .auth().oauth2(getAccessToken(USERNAME_ALICE_MANN))
             .header(HEADER_CONTENT_TYPE, VALUE_APPLICATION_JSON)
             .and()
-            .body(testUser)
+            .body(testUserEntity)
             .`when`()
             .post(URI_DELETE)
             .then()
