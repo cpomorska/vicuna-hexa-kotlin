@@ -1,6 +1,6 @@
 package com.scprojekt.domain.service
 
-import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.infrastructure.repository.UserJpaRepository
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.util.TESTUSER
@@ -39,21 +39,21 @@ class BasicUserReadOnlyServiceTest {
     @AfterEach
     @Transactional
     fun teardown() {
-        val users: MutableList<User>? = userRepository.findAllToRemove()
-        users?.forEach(Consumer { u: User ->
+        val userEntities: MutableList<UserEntity>? = userRepository.findAllToRemove()
+        userEntities?.forEach(Consumer { u: UserEntity ->
             userRepository.removeEntity(u)
         })
     }
 
     @Test
     fun testGetUser() {
-        val result: User? = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)
+        val result: UserEntity? = baseUserReadOnlyService.getUserByUuid(UUID_TESTUSER_1)
         assertThat(result?.userNumber!!.uuid).isEqualTo(UUID.fromString(UUID_TESTUSER_1))
     }
 
     @Test
     fun findAllUserByName() {
-        val result: List<User> = baseUserReadOnlyService.findAllUserByName(TESTUSER)
+        val result: List<UserEntity> = baseUserReadOnlyService.findAllUserByName(TESTUSER)
         assertThat(result[0].userName).isNotEmpty().isEqualTo(TESTUSER)
     }
 
@@ -61,13 +61,13 @@ class BasicUserReadOnlyServiceTest {
     fun findAllUserByType() {
         val user = createTestUser()
 
-        val result: List<User> = baseUserReadOnlyService.findAllUsersByType(user.userType)
+        val result: List<UserEntity> = baseUserReadOnlyService.findAllUsersByType(user.userType)
         assertThat(result.first().userName).isNotEmpty().isEqualTo(TESTUSER)
     }
 
     @Test
     fun findAllUserByDescription() {
-        val result: List<User> = baseUserReadOnlyService.findAllUserByDescription(TESTUSER)
+        val result: List<UserEntity> = baseUserReadOnlyService.findAllUserByDescription(TESTUSER)
         assertThat(result[0].userDescription).isNotEmpty().isEqualTo(TESTUSER)
     }
 }

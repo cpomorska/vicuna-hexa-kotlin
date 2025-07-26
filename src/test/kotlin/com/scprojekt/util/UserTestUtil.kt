@@ -3,12 +3,12 @@ package com.scprojekt.util
 import com.scprojekt.domain.model.user.dto.request.CreateUserRequest
 import com.scprojekt.domain.model.user.dto.request.DeleteUserRequest
 import com.scprojekt.domain.model.user.dto.request.UpdateUserRequest
-import com.scprojekt.domain.model.user.entity.User
-import com.scprojekt.domain.model.user.entity.UserEvent
-import com.scprojekt.domain.model.user.entity.UserNumber
-import com.scprojekt.domain.model.user.entity.UserType
 import com.scprojekt.domain.model.user.event.UserHandlingEvent
 import com.scprojekt.infrastructure.mapping.VicunaObjectMapper
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
+import com.scprojekt.infrastructure.persistence.entity.UserEventEntity
+import com.scprojekt.infrastructure.persistence.entity.UserNumberEntity
+import com.scprojekt.infrastructure.persistence.entity.UserTypeEntity
 import java.util.*
 
 const val TESTROLE = "testrole"
@@ -28,55 +28,55 @@ const val URI_CREATE = "/api/store/user/create"
 internal class TestUtil {
     companion object {
         @JvmStatic
-        fun createTestUser(): User {
-            val user = User()
-            val userType = UserType()
-            val userTypeList: MutableList<UserType> = ArrayList()
-            val userNumber = UserNumber(UUID.randomUUID())
-            userNumber.uuid = UUID.fromString(UUID_TESTUSER_1)
+        fun createTestUser(): UserEntity {
+            val userEntity = UserEntity()
+            val userTypeEntity = UserTypeEntity()
+            val userTypeEntityList: MutableList<UserTypeEntity> = ArrayList()
+            val userNumberEntity = UserNumberEntity(UUID.randomUUID())
+            userNumberEntity.uuid = UUID.fromString(UUID_TESTUSER_1)
             //userType.userTypeId = USER_ID_TESTUSER_1
-            userType.userRoleType = TESTROLE
-            userType.userTypeDescription = TESTUSER
-            userTypeList.add(userType)
+            userTypeEntity.userRoleType = TESTROLE
+            userTypeEntity.userTypeDescription = TESTUSER
+            userTypeEntityList.add(userTypeEntity)
             //user.userId = USER_ID_TESTUSER_1
-            user.userName = TESTUSER
-            user.userDescription = TESTUSER
-            user.userNumber = userNumber
-            user.userType = userType
-            return user
+            userEntity.userName = TESTUSER
+            userEntity.userDescription = TESTUSER
+            userEntity.userNumber = userNumberEntity
+            userEntity.userType = userTypeEntity
+            return userEntity
         }
 
         @JvmStatic
-        fun createTestUserEventStore(userHandlingEvent: UserHandlingEvent): UserEvent {
-            val userEvent = UserEvent()
-            userEvent.uuid = userHandlingEvent.eventid
-            userEvent.userHandlingEvent = VicunaObjectMapper.getInstance().writeValueAsString(userHandlingEvent)
-            return userEvent
+        fun createTestUserEventStore(userHandlingEvent: UserHandlingEvent): UserEventEntity {
+            val userEventEntity = UserEventEntity()
+            userEventEntity.uuid = userHandlingEvent.eventid
+            userEventEntity.userHandlingEvent = VicunaObjectMapper.getInstance().writeValueAsString(userHandlingEvent)
+            return userEventEntity
         }
 
         @JvmStatic
-        fun createUserRequest(user: User): CreateUserRequest {
+        fun createUserRequest(userEntity: UserEntity): CreateUserRequest {
             var createUserRequest = CreateUserRequest()
-            createUserRequest.userName = user.userName
-            createUserRequest.userDescription = user.userDescription
-            createUserRequest.userType = user.userType
-            createUserRequest.userNumber = user.userNumber
+            createUserRequest.userName = userEntity.userName
+            createUserRequest.userDescription = userEntity.userDescription
+            createUserRequest.userTypeEntity = userEntity.userType
+            createUserRequest.userNumberEntity = userEntity.userNumber
             return createUserRequest
         }
 
         @JvmStatic
-        fun updateUserRequest(user: User): UpdateUserRequest {
+        fun updateUserRequest(userEntity: UserEntity): UpdateUserRequest {
             var updateUserRequest = UpdateUserRequest()
-            updateUserRequest.userName = user.userName
-            updateUserRequest.userUpdate = user.userNumber.uuid!!
+            updateUserRequest.userName = userEntity.userName
+            updateUserRequest.userUpdate = userEntity.userNumber.uuid!!
             return updateUserRequest
         }
 
         @JvmStatic
-        fun deleteUserRequest(user: User): DeleteUserRequest {
+        fun deleteUserRequest(userEntity: UserEntity): DeleteUserRequest {
             var deleteUserRequest = DeleteUserRequest()
             deleteUserRequest.userName = NEUUSER
-            deleteUserRequest.userNumber = user.userNumber
+            deleteUserRequest.userNumberEntity = userEntity.userNumber
             return deleteUserRequest
         }
     }

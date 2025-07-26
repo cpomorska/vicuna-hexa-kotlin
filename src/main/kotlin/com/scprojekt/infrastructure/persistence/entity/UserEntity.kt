@@ -1,15 +1,17 @@
-package com.scprojekt.domain.model.user.entity
+package com.scprojekt.infrastructure.persistence.entity
 
-import com.scprojekt.domain.shared.database.NoSQLInjection
 import com.scprojekt.domain.shared.database.BaseEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
-import lombok.Builder
+import java.util.*
 
+/**
+ * JPA entity for User.
+ * This class is used for persistence and is separate from the domain User class.
+ */
 @Entity
 @Table(name = "users")
-@Builder
-open class User : BaseEntity() {
+open class UserEntity : BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
@@ -17,24 +19,25 @@ open class User : BaseEntity() {
     @Column(name = "userid")
     open var userId: Long? = null
 
-    @ManyToOne(cascade = arrayOf(CascadeType.ALL))
+    @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "usertypeid")
     @NotNull
-    open var userType: UserType = UserType()
+    open var userType: UserTypeEntity = UserTypeEntity()
 
-    @NoSQLInjection
     @Column(name = "username", nullable = false)
     open lateinit var userName: String
 
-    @OneToOne(cascade = arrayOf(CascadeType.ALL))
+    @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "usernumberid")
     @NotNull
-    open lateinit var userNumber: UserNumber
+    open lateinit var userNumber: UserNumberEntity
 
-    @NoSQLInjection
     @Column(name = "userdescription")
     open lateinit var userDescription: String
 
     @Version
     open var version = 0
+    
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    open var contactInfo: MutableList<ContactInfoEntity> = mutableListOf()
 }

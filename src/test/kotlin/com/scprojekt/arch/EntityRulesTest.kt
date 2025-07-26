@@ -22,6 +22,7 @@ class EntityRulesTest {
         classes().that().areAnnotatedWith(Entity::class.java)
             .should()
                 .resideInAPackage("..domain..")
+            .orShould().resideInAPackage("..persistence..")
                 .andShould().resideInAPackage("..entity..")
                 .`as`("Entities should reside in package '..domain..' and then in '..entity..'")
                 .allowEmptyShould(true)

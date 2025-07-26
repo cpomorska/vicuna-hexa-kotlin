@@ -4,11 +4,11 @@
              version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
 
     <persistence-unit name="infra" transaction-type="JTA">
-        <class>com.scprojekt.domain.model.user.entity.User</class>
-        <class>com.scprojekt.domain.model.user.entity.UserType</class>
-        <class>com.scprojekt.domain.model.user.entity.UserHash</class>
-        <class>com.scprojekt.domain.model.user.entity.UserNumber</class>
-        <class>com.scprojekt.domain.model.user.entity.UserEvent</class>
+        <class>com.scprojekt.infrastructure.persistence.entity.UserEntity</class>
+        <class>com.scprojekt.infrastructure.persistence.entity.UserTypeEntity</class>
+        <class>com.scprojekt.infrastructure.persistence.entity.UserHashEntity</class>
+        <class>com.scprojekt.infrastructure.persistence.entity.UserNumberEntity</class>
+        <class>com.scprojekt.infrastructure.persistence.entity.UserEventEntity</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver" />
             <property name="jakarta.persistence.jdbc.url"    value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;" />

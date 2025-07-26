@@ -1,6 +1,6 @@
 package com.scprojekt.infrastructure.processor
 
-import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.util.TestUtil.Companion.createTestUser
 import io.quarkus.test.junit.QuarkusTest
 import io.quarkus.test.junit.QuarkusTestProfile
@@ -24,7 +24,7 @@ class JpaUrlProcessorTest : QuarkusTestProfile{
         val testUser = createTestUser()
         producerTemplate.sendBody("direct:start", testUser)
 
-        mockEndpoint.expectedBodiesReceived(User::class.java)
+        mockEndpoint.expectedBodiesReceived(UserEntity::class.java)
         mockEndpoint.expectedMessageCount(1)
         mockEndpoint.assertIsSatisfied()
     }

@@ -1,6 +1,6 @@
 package com.scprojekt.domain.model.user.event
 
-import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import java.util.*
 
 /**
@@ -14,7 +14,7 @@ class UserEventFactory {
         }
     }
 
-    fun createUserEvent(userEventType: UserEventType, user: User): UserHandlingEvent {
+    fun createUserEvent(userEventType: UserEventType, userEntity: UserEntity): UserHandlingEvent {
         val userHandlingEvent = UserHandlingEvent()
         val userHandlingEventType = UserHandlingEventType()
 
@@ -23,7 +23,7 @@ class UserEventFactory {
 
         userHandlingEvent.eventid = UUID.randomUUID()
         userHandlingEvent.userHandlingEventType = userHandlingEventType
-        userHandlingEvent.user = user
+        userHandlingEvent.userEntity = userEntity
         userHandlingEvent.eventTriggeredTimestamp = getTimestampFromDateTime()
 
         return userHandlingEvent

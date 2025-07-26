@@ -1,16 +1,26 @@
-package com.scprojekt.domain.model.user.entity
+package com.scprojekt.infrastructure.persistence.entity
 
 import com.scprojekt.domain.model.user.event.UserEventType
 import com.scprojekt.domain.shared.database.BaseEntity
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Lob
+import jakarta.persistence.SequenceGenerator
+import jakarta.persistence.Table
+import jakarta.persistence.Version
 import jakarta.validation.constraints.NotNull
 import lombok.Builder
-import java.util.*
+import java.util.UUID
 
 @Entity
 @Table(name = "userevent")
 @Builder
-open class UserEvent: BaseEntity() {
+open class UserEventEntity: BaseEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userevent_seq")

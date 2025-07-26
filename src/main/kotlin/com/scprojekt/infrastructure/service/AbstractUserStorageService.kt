@@ -1,9 +1,9 @@
 package com.scprojekt.infrastructure.service
 
 import com.scprojekt.domain.model.user.dto.response.UuidResponse
-import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.repository.UserRepository
 import com.scprojekt.domain.model.user.service.UserStorageService
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import jakarta.inject.Named
 
 abstract class AbstractUserStorageService : UserStorageService {
@@ -14,15 +14,15 @@ abstract class AbstractUserStorageService : UserStorageService {
         userRepository = userRepositoryInject
     }
 
-    override fun createUser(user: User): UuidResponse {
-        return userRepository!!.createEntity(user)
+    override fun createUser(userEntity: UserEntity): UuidResponse {
+        return userRepository!!.createEntity(userEntity)
     }
 
-    override fun updateUser(user: User): UuidResponse {
-        return userRepository!!.updateEntity(user)
+    override fun updateUser(userEntity: UserEntity): UuidResponse {
+        return userRepository!!.updateEntity(userEntity)
     }
 
-    override fun removeUser(user: User): UuidResponse {
-        return userRepository!!.removeEntity(user)
+    override fun removeUser(userEntity: UserEntity): UuidResponse {
+        return userRepository!!.removeEntity(userEntity)
     }
 }
