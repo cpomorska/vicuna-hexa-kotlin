@@ -20,14 +20,3 @@ data class UserValueObject(
     val modifiedAt: Instant?
 )
 
-data class UserTypeValueObject(
-    val id: Long?,
-    val roleType: String,
-    val description: String,
-    val enabled: Boolean
-)
-
-data class ContactInfoValueObject(
-    val email: String,
-    val phone: String?
-)

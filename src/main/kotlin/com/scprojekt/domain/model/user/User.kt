@@ -1,5 +1,6 @@
 package com.scprojekt.domain.model.user
 
+
 import com.scprojekt.domain.model.user.value.ContactInfo
 import com.scprojekt.domain.model.user.value.UserCredentials
 import java.time.Instant
