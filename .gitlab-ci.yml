@@ -4,6 +4,11 @@ variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs='-Xmx2g -Xms512m'"
   GRADLE_TERMS_OF_SERVICE_ACCEPTED: "yes"
 
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
 before_script:
   - export GRADLE_USER_HOME="$CI_PROJECT_DIR/.gradle"
   - rm -rf "$GRADLE_USER_HOME/caches"
