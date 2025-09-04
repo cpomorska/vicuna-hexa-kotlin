@@ -19,7 +19,7 @@ build:
   stage: build
   script:
     - echo "Building the application..."
-    - "gradle build -x test --scan"
+    - "CI=true gradle build -x test --scan"
   only: 
     - develop 
     - main
