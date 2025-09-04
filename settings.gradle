@@ -6,6 +6,9 @@ pluginManagement {
     }
     plugins {
         id "${quarkusPluginId}" version "${quarkusPluginVersion}"
+        id "org.jetbrains.kotlin.jvm" version "${kotlinVersion}"
+        id "org.jetbrains.kotlin.plugin.allopen" version "${kotlinVersion}"
+        id "org.jetbrains.kotlin.plugin.noarg" version "${kotlinVersion}"
     }
 }
 rootProject.name='vicuna-kotlin-quarkus'
