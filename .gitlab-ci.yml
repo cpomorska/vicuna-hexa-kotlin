@@ -1,4 +1,4 @@
-image: gradle:8.3-jdk17
+image: gradle:alpine
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs='-Xmx2g -Xms512m'"
@@ -7,7 +7,7 @@ variables:
 before_script:
   - export GRADLE_USER_HOME="$CI_PROJECT_DIR/.gradle"
   - rm -rf "$GRADLE_USER_HOME/caches"
-  - mkdir -p "$GRADLE_USER_HOME"
+  - mkdir -p "$GRADLE_USER_HOME/caches"
   - chmod -R 0777 "$GRADLE_USER_HOME"
 
 stages:
