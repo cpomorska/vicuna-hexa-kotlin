@@ -1,7 +1,8 @@
 image: gradle:8.3-jdk17
 
 variables:
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs='-Xmx2g -Xms512m'"
+  GRADLE_TERMS_OF_SERVICE_ACCEPTED: "yes"
 
 before_script:
   - export GRADLE_USER_HOME="$CI_PROJECT_DIR/.gradle"
