@@ -4,7 +4,10 @@ variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
+  # ensure Gradle uses a project-local cache and that the directory exists and is writable
+  - export GRADLE_USER_HOME="$CI_PROJECT_DIR/.gradle"
+  - mkdir -p "$GRADLE_USER_HOME"
+  - chmod -R 0777 "$GRADLE_USER_HOME"
 
 stages:
   - build
