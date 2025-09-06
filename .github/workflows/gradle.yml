@@ -55,5 +55,5 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
     - name: Gradle build packages without tests
-      run:  ./gradlew build -x test
+      run:  gradle build -x test
 
