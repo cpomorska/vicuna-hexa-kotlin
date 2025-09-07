@@ -46,7 +46,7 @@ jobs:
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock:ro
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
