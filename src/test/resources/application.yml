@@ -18,6 +18,7 @@ quarkus:
     application-type: service
     keycloak:
       devservices:
+        enable: true
         realm-path: dev-realm.json
         service-name: quarkus
 kafka:
