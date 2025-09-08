@@ -27,10 +27,21 @@ directly or via Kafka.
 #### 1. Build image (all with imagebuild enabled and without tests)
 
    > gradle clean build imagebuild -Dquarkus.container-image.build=true -x test
+   or with Maven (recommended on branch develop-no-camel):
+   > ./mvnw clean package -Dquarkus.container-image.build=true -DskipTests
 
 #### 2. Build artifact (all without imagebuild and without tests)
 
    > gradle clean build -x test
+   or with Maven:
+   > ./mvnw clean package -DskipTests
+
+#### 3. Run tests
+
+   - Unit tests (Maven Surefire):
+     > ./mvnw test
+   - Integration tests (Maven Failsafe):
+     > ./mvnw verify
 
 # Run the project (in docker containers)
 
