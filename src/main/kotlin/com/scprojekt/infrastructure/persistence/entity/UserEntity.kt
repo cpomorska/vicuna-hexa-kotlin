@@ -38,6 +38,6 @@ open class UserEntity : BaseEntity() {
     @Version
     open var version = 0
     
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     open var contactInfo: MutableList<ContactInfoEntity> = mutableListOf()
 }

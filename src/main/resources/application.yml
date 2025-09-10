@@ -2,11 +2,11 @@ quarkus:
   camel:
     #    context:
     #      name: vicunacamel
-    openapi:
-      expose:
-        enabled: true
-  #    servlet:
-  #      url-patterns: /vicuna/*
+    #openapi:
+    #  expose:
+    #    enabled: true
+    #    servlet:
+    #     url-patterns: /vicuna/*
 
   http:
     cors:
@@ -24,17 +24,26 @@ quarkus:
       proactive: true
       permission:
         secured:
-          paths: /vicuna/opi/*,
+          paths: /vicuna/api/*,
           policy: authenticated
         public:
           paths: /vicuna/q/*
           policy: permit
+#  hibernate-orm:
+#    validate-in-dev-mode: false
+#    log:
+#      sql: true
+#    database: vicuna_user
+#    dialect: org.hibernate.dialect.PostgreSQLDialect
+#    persistence-xml:
+#    ignore: true
+    #    dialect: io.quarkus.hibernate.orm.runtime.dialect.H2Dialect
 
   datasource:
     db-kind: postgresql
     jdbc:
       pooling-enabled: true
-      url: jdbc:postgresql://host.docker.internal:15432/vicuna_user
+      url: jdbc:postgresql://localhost:15432/vicuna_user
     username: vicuna_user
     password: vicuna_pw
     devservices:
@@ -112,14 +121,16 @@ quarkus:
 #        level: ERROR
 #      "org.apache.kafka.common.metrics":
 #        level: ERROR
+#      "org.apache.kafka.common.metrics":
+#        level: ERROR
 swagger-ui:
   always-include: false
   path: hui
-  enable: true
+  enabled: true
 
 smallrye-openapi:
   enabled: true
-  path: swagger
+  path: openapi
 
 kafka:
   bootstrap:

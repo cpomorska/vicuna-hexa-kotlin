@@ -1,4 +1,4 @@
-package com.scprojekt.infrastructure.api.dto
+package com.scprojekt.application.api.dto
 
 /**
  * DTO for ContactInfo response.

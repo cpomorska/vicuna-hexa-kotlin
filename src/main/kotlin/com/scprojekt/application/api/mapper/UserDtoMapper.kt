@@ -1,12 +1,12 @@
-package com.scprojekt.infrastructure.api.mapper
+package com.scprojekt.application.api.mapper
 
 import com.scprojekt.domain.model.user.User
 import com.scprojekt.domain.model.user.UserType
 import com.scprojekt.domain.model.user.value.ContactInfo
-import com.scprojekt.infrastructure.api.dto.ContactInfoDto
-import com.scprojekt.infrastructure.api.dto.CreateUserDto
-import com.scprojekt.infrastructure.api.dto.UpdateUserDto
-import com.scprojekt.infrastructure.api.dto.UserDto
+import com.scprojekt.application.api.dto.ContactInfoDto
+import com.scprojekt.application.api.dto.CreateUserDto
+import com.scprojekt.application.api.dto.UpdateUserDto
+import com.scprojekt.application.api.dto.UserDto
 import jakarta.enterprise.context.ApplicationScoped
 
 /**
