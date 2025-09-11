@@ -35,9 +35,7 @@ class UserMapper {
         entity.userNumber = UserNumberEntity(user.number)
         
         // Map ContactInfo list to ContactInfoEntity list
-        entity.contactInfo = user.contactInfo.map { contactInfo ->
-            toContactInfoEntity(contactInfo, entity)
-        }.toMutableList()
+        entity.contactInfo = user.contactInfo.map { toContactInfoEntity(it, entity) }.firstOrNull() ?: ContactInfoEntity()
         
         return entity
     }
@@ -47,7 +45,7 @@ class UserMapper {
      */
     fun toDomain(entity: UserEntity): User {
         val userType = toUserTypeDomain(entity.userType)
-        val contactInfoList = entity.contactInfo.map { toContactInfoDomain(it) }
+        val contactInfoList = entity.contactInfo.let { listOf(toContactInfoDomain(it)) }
         
         return User(
             id = entity.userId,

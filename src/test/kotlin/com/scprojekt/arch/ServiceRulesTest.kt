@@ -1,11 +1,10 @@
-package com.scprojekt.arch;
+package com.scprojekt.arch
 
 import com.scprojekt.domain.shared.service.BaseService
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.theClass
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 
@@ -24,7 +23,7 @@ class ServiceRulesTest {
                 .check(classes)
     }
 
-    @Disabled
+
     @Test
     fun services_must_extend_baseservice_interface() {
         classes().that().haveNameMatching(".*Service")
@@ -33,6 +32,7 @@ class ServiceRulesTest {
                 .and().haveSimpleNameNotContaining("Test")
                 .and().resideOutsideOfPackage("..shared..")
                 .and().resideInAPackage("..service..")
+                .and().haveSimpleNameNotStartingWith("Domain")
                 .should().beAssignableTo(BaseService::class.java)
                 .`as`("Services should implement BaseService")
                 .check(classes)

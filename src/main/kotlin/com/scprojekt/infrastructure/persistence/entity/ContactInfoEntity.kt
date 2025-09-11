@@ -27,7 +27,7 @@ open class ContactInfoEntity : BaseEntity() {
     @Column(name = "phone")
     open var phone: String? = null
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "userid")
     open var user: UserEntity? = null
 }

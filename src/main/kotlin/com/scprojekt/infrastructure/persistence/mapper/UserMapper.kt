@@ -42,12 +42,13 @@ class UserMapper {
         
         // Map ContactInfo list to ContactInfoEntity list
         entity.contactInfo = user.contactInfo.map { contactInfo ->
-            val contactInfoEntity = ContactInfoEntity()
-            contactInfoEntity.email = contactInfo.email
-            contactInfoEntity.phone = contactInfo.phone
-            contactInfoEntity.user = entity
+            val contactInfoEntity = ContactInfoEntity().apply {
+                this.email = contactInfo.email
+                this.phone = contactInfo.phone
+                this.user = entity // Set the back-reference to UserEntity
+            }
             contactInfoEntity
-        }.toMutableList()
+        }.firstOrNull() ?: ContactInfoEntity() // Ensure at least one ContactInfoEntity
         
         return entity
     }
@@ -81,7 +82,7 @@ class UserMapper {
         val numberField = userClass.getDeclaredField("number")
         numberField.isAccessible = true
         numberField.set(user, entity.userNumber.uuid)
-        
+
         // Set version
         val versionField = userClass.getDeclaredField("version")
         versionField.isAccessible = true
@@ -103,7 +104,7 @@ class UserMapper {
         modifiedAtField.set(user, entity.modifiedAt)
         
         // Add ContactInfo objects
-        entity.contactInfo.forEach { contactInfoEntity ->
+        entity.contactInfo.let { contactInfoEntity ->
             user.addContactInfo(ContactInfo(
                 email = contactInfoEntity.email,
                 phone = contactInfoEntity.phone
