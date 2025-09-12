@@ -1,4 +1,8 @@
 quarkus:
+  camel:
+    context:
+      name: vicunacamel
+
   http:
     port: 8083
   datasource:
@@ -10,10 +14,10 @@ quarkus:
 #        generation: drop-and-create
   liquibase:
     migrate-at-start: true
-
   kafka:
     dev-services:
       enabled: true
+
     bootstrap:
       servers: host.docker.internal:29092
 

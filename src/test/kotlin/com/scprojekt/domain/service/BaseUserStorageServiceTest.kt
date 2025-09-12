@@ -12,6 +12,7 @@ import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
+import org.apache.camel.CamelContext
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -21,13 +22,16 @@ import org.junit.jupiter.api.Test
 import java.util.*
 import java.util.function.Consumer
 
-@Disabled("Disabled until Kotlin Gradle Docker Issues ore resolved")
 @QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
 class BaseUserStorageServiceTest {
 
     private lateinit var baseUserStorageService: UserStorageService
     private lateinit var baseUserReadOnlyService : UserReadOnlyService
+
+
+    @Inject
+    lateinit var camelContext: CamelContext
 
     @Inject
     lateinit var userRepository: UserJpaRepository
