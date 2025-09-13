@@ -37,6 +37,6 @@ open class UserEntity : BaseEntity() {
     @Version
     open var version = 0
     
-    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
-    open lateinit var contactInfo: ContactInfoEntity
+//    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
+//    open lateinit var contactInfo: ContactInfoEntity
 }

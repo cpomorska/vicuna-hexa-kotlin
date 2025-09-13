@@ -6,7 +6,6 @@ import com.scprojekt.domain.model.user.value.ContactInfo
 import com.scprojekt.domain.model.user.value.ContactInfoValueObject
 import com.scprojekt.domain.model.user.value.UserTypeValueObject
 import com.scprojekt.domain.model.user.value.UserValueObject
-import com.scprojekt.infrastructure.persistence.entity.ContactInfoEntity
 import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.infrastructure.persistence.entity.UserNumberEntity
 import com.scprojekt.infrastructure.persistence.entity.UserTypeEntity
@@ -34,9 +33,6 @@ class UserMapper {
         // Map UUID to UserNumberEntity
         entity.userNumber = UserNumberEntity(user.number)
         
-        // Map ContactInfo list to ContactInfoEntity list
-        entity.contactInfo = user.contactInfo.map { toContactInfoEntity(it, entity) }.firstOrNull() ?: ContactInfoEntity()
-        
         return entity
     }
 
@@ -45,7 +41,6 @@ class UserMapper {
      */
     fun toDomain(entity: UserEntity): User {
         val userType = toUserTypeDomain(entity.userType)
-        val contactInfoList = entity.contactInfo.let { listOf(toContactInfoDomain(it)) }
         
         return User(
             id = entity.userId,
@@ -53,8 +48,7 @@ class UserMapper {
             name = entity.userName,
             number = entity.userNumber.uuid,
             description = entity.userDescription,
-            enabled = entity.enabled,
-            contactInfo = contactInfoList
+            enabled = entity.enabled
         )
     }
     
@@ -131,20 +125,5 @@ class UserMapper {
             // If UserType has an id field, set it here
             userType
         }
-    }
-    
-    private fun toContactInfoEntity(contactInfo: ContactInfo, userEntity: UserEntity): ContactInfoEntity {
-        val entity = ContactInfoEntity()
-        entity.email = contactInfo.email
-        entity.phone = contactInfo.phone
-        entity.user = userEntity
-        return entity
-    }
-    
-    private fun toContactInfoDomain(entity: ContactInfoEntity): ContactInfo {
-        return ContactInfo(
-            email = entity.email,
-            phone = entity.phone
-        )
     }
 }

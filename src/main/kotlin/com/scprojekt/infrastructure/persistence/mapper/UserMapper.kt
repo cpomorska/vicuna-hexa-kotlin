@@ -2,8 +2,6 @@ package com.scprojekt.infrastructure.persistence.mapper
 
 import com.scprojekt.domain.model.user.User
 import com.scprojekt.domain.model.user.UserType
-import com.scprojekt.domain.model.user.value.ContactInfo
-import com.scprojekt.infrastructure.persistence.entity.ContactInfoEntity
 import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.infrastructure.persistence.entity.UserNumberEntity
 import com.scprojekt.infrastructure.persistence.entity.UserTypeEntity
@@ -40,15 +38,15 @@ class UserMapper {
         val userNumberEntity = UserNumberEntity(user.number ?: UUID.randomUUID())
         entity.userNumber = userNumberEntity
         
-        // Map ContactInfo list to ContactInfoEntity list
-        entity.contactInfo = user.contactInfo.map { contactInfo ->
-            val contactInfoEntity = ContactInfoEntity().apply {
-                this.email = contactInfo.email
-                this.phone = contactInfo.phone
-                this.user = entity // Set the back-reference to UserEntity
-            }
-            contactInfoEntity
-        }.firstOrNull() ?: ContactInfoEntity() // Ensure at least one ContactInfoEntity
+//        // Map ContactInfo list to ContactInfoEntity list
+//        entity.contactInfo = user.contactInfo.map { contactInfo ->
+//            val contactInfoEntity = ContactInfoEntity().apply {
+//                this.email = contactInfo.email
+//                this.phone = contactInfo.phone
+//                this.user = entity // Set the back-reference to UserEntity
+//            }
+//            contactInfoEntity
+//        }.firstOrNull() ?: ContactInfoEntity() // Ensure at least one ContactInfoEntity
         
         return entity
     }
@@ -102,14 +100,6 @@ class UserMapper {
         val modifiedAtField = userClass.getDeclaredField("modifiedAt")
         modifiedAtField.isAccessible = true
         modifiedAtField.set(user, entity.modifiedAt)
-        
-        // Add ContactInfo objects
-        entity.contactInfo.let { contactInfoEntity ->
-            user.addContactInfo(ContactInfo(
-                email = contactInfoEntity.email,
-                phone = contactInfoEntity.phone
-            ))
-        }
         
         return user
     }

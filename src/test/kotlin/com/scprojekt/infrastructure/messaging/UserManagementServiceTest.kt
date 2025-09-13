@@ -12,16 +12,16 @@ import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
 import org.apache.camel.CamelContext
 import org.apache.camel.impl.engine.DefaultManagementNameStrategy
+import org.apache.camel.quarkus.test.CamelQuarkusTestSupport
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 
-@ApplicationScoped
 @QuarkusTest
 @WithTestResource(MessagingTestResourcelifecycleManager::class)
-class UserManagementServiceTest {
+class UserManagementServiceTest : CamelQuarkusTestSupport() {
 
     private lateinit var userEntity: UserEntity
 

@@ -1,7 +1,13 @@
 quarkus:
   camel:
     context:
-      name: vicunacamel
+      name: vicunatest
+    bootstrap:
+      enabled: true
+  oidc:
+    enabled: false
+  naming:
+    enable-jndi: true
 
   http:
     port: 8083
@@ -9,7 +15,9 @@ quarkus:
     db-kind: h2
     jdbc:
       url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;
-#  hibernate-orm:
+#    devservices:
+#        enabled: true
+  #  hibernate-orm:
 #    database:
 #        generation: drop-and-create
   liquibase:
@@ -17,9 +25,12 @@ quarkus:
   kafka:
     dev-services:
       enabled: true
-
     bootstrap:
       servers: host.docker.internal:29092
+
+camel:
+  main:
+    jmxEnabled: false
 
 #oidc:
 #  auth-server-url: http://host.docker.internal:8180/realms/development
@@ -28,7 +39,7 @@ quarkus:
 #    client-secret:
 #      value: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
 #  application-type: hybrid
-#
+
 #keycloak:
 #  devservices:
 ##    auth-server-enabled: true

@@ -2,11 +2,11 @@ quarkus:
   camel:
     context:
     name: vicunacamel
-    openapi:
-      expose:
-        enabled: true
-        servlet:
-         url-patterns: /vicuna/*
+#    openapi:
+#      expose:
+#        enabled: true
+#        servlet:
+#         url-patterns: /vicuna/*
 
   http:
     cors:

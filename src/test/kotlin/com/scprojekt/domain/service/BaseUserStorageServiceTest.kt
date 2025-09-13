@@ -7,12 +7,16 @@ import com.scprojekt.infrastructure.service.UserReadOnlyService
 import com.scprojekt.infrastructure.service.UserStorageService
 import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.UUID_TESTUSER_1
+import com.scprojekt.util.TESTUSER
+import io.quarkus.test.common.QuarkusTestResourceLifecycleManager
 import io.quarkus.test.common.WithTestResource
 import io.quarkus.test.h2.H2DatabaseTestResource
 import io.quarkus.test.junit.QuarkusTest
 import jakarta.inject.Inject
 import jakarta.transaction.Transactional
 import org.apache.camel.CamelContext
+import org.apache.camel.impl.engine.DefaultManagementStrategy
+import org.apache.camel.quarkus.test.CamelQuarkusTestSupport
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -24,7 +28,7 @@ import java.util.function.Consumer
 
 @QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
-class BaseUserStorageServiceTest {
+class BaseUserStorageServiceTest : CamelQuarkusTestSupport() {
 
     private lateinit var baseUserStorageService: UserStorageService
     private lateinit var baseUserReadOnlyService : UserReadOnlyService
@@ -41,15 +45,14 @@ class BaseUserStorageServiceTest {
     fun init(){
         baseUserReadOnlyService = UserReadOnlyService(userRepository)
         baseUserStorageService = UserStorageService(userRepository)
+//        camelContext.managementStrategy = DefaultManagementStrategy()
     }
 
     @AfterEach
     @Transactional
     fun teardown() {
-        val userEntities: MutableList<UserEntity>? = userRepository.findAllToRemove()
-        userEntities?.forEach(Consumer { u: UserEntity ->
-            userRepository.removeEntity(u)
-        })
+        userRepository.deleteByUsername(TESTUSER)
+        userRepository.deleteByUsername("Nanana")
     }
 
     @Test

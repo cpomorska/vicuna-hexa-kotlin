@@ -153,3 +153,9 @@ INSERT INTO public.contact_info (email, phone, userid)
 SELECT 'nobody@example.com', NULL, u.userid
 FROM public.users u WHERE u.username = 'nobody'
   AND NOT EXISTS (SELECT 1 FROM public.contact_info WHERE email = 'nobody@example.com');
+
+-- Ensure sequences are advanced beyond seeded data to avoid PK collisions during tests
+ALTER SEQUENCE public.usertype_seq RESTART WITH 4;
+ALTER SEQUENCE public.usernumber_seq RESTART WITH 5;
+ALTER SEQUENCE public.user_seq RESTART WITH 5;
+ALTER SEQUENCE public.contact_info_seq RESTART WITH 5;
