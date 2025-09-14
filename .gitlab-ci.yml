@@ -1,0 +1,51 @@
+image: nexus.psychotor.local/custom-gradle:8.14.3-jdk
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs='-Xmx2g -Xms512m'"
+  GRADLE_TERMS_OF_SERVICE_ACCEPTED: "yes"
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+before_script:
+  - export GRADLE_USER_HOME="$CI_PROJECT_DIR/.gradle"
+  - mkdir -p "$CI_PROJECT_DIR/.gradle"
+  - mkdir -p "$GRADLE_USER_HOME/caches"
+  - mkdir -p "$GRADLE_USER_HOME/wrapper"
+  - chmod -R 0777 "$GRADLE_USER_HOME"
+
+stages:
+  - build
+  - unit_test
+  - int_test
+
+build:
+  stage: build
+  script:
+    - echo "Building the application..."
+    - "CI=true gradle build -x test --scan"
+  only: 
+    - develop 
+    - main
+
+unit_test:
+  stage: unit_test
+  script:
+    - echo "Running unit tests..."
+    - "gradle test"
+  only: 
+    - develop 
+    - main
+  allow_failure: true
+
+int_test:
+  stage: int_test
+  script:
+    - echo "Running integration tests..."
+    - "gradle integrationTest"
+  only: 
+    - develop 
+    - main
+  allow_failure: true

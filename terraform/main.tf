@@ -2,15 +2,15 @@ terraform {
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = "~> 3.0.1"
+      version = "~> 3.6.0"
     }
     vault = {
       source  = "hashicorp/vault"
-      version = "~> 4.0.0"
+      version = "~> 5.3.0"
     }
     time = {
       source  = "hashicorp/time"
-      version = "~> 0.11.0"
+      version = "~> 0.13.0"
     }
   }
 }
@@ -86,7 +86,7 @@ resource "docker_container" "keycloak" {
   ]
 
   healthcheck {
-    test     = ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'"]
+    test     = ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'"]
     interval = "5s"
     timeout  = "2s"
     retries  = 4

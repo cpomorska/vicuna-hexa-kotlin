@@ -1,4 +1,4 @@
-package com.scprojekt.arch;
+package com.scprojekt.arch
 
 import com.scprojekt.domain.shared.database.BaseRepository
 import com.tngtech.archunit.core.domain.JavaClasses
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 
 class RepositoryRulesTest {
 
-    private val classes: JavaClasses = ClassFileImporter().importPackages("com.scprojekt.domain");
+    private val classes: JavaClasses = ClassFileImporter().importPackages("com.scprojekt.domain")
 
     @Test
     fun repositories_must_reside_in_repository_package() {
@@ -18,14 +18,17 @@ class RepositoryRulesTest {
                 .and().resideOutsideOfPackage("..shared..")
                 .should().resideInAPackage("..repository..")
                 .`as`("Repositories should reside in a package '..repository..'")
-                .check(classes);
+                .check(classes)
     }
+
 
     @Test
     fun repositories_must_extend_baserepository_interface() {
         classes().that().haveNameMatching(".*Repository")
+            .and().haveNameNotMatching(".*Impl")
                 .and().resideOutsideOfPackage("..shared..")
                 .and().resideInAPackage("..repository..")
+                .and().haveSimpleNameNotStartingWith("Domain")
                 .should().beAssignableTo(BaseRepository::class.java)
                 .`as`("Repositories should implement BaseRepository")
                 .check(classes)

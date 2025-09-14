@@ -6,6 +6,7 @@ enum class UserEventType(val eventType: String) {
     DELETE("Delete"),
     MANAGE("Manage"),
     DISABLE("Disable"),
+    ENABLE("Enable"),
     READ("Read"),
     NONE("None")
 }

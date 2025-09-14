@@ -1,21 +1,20 @@
 quarkus:
   camel:
     context:
-      name: vicunacamel
-    openapi:
-      expose:
-        enabled: true
-    rest:
-      inline-routes: true
-    servlet:
-      url-patterns: /vicuna/*
+    name: vicunacamel
+#    openapi:
+#      expose:
+#        enabled: true
+#        servlet:
+#         url-patterns: /vicuna/*
 
   http:
     cors:
-      ~: true
+      enabled: true
+      #~: true
       origins: /*
       headers: origin, accept, authorization, content-type, x-requested-with
-      methods: GET, POST, PUT, DELETE, OPTIONS
+      methods: "*"
     http2: false
     access-log:
       enabled: true
@@ -25,32 +24,41 @@ quarkus:
       proactive: true
       permission:
         secured:
-          paths: /vicuna/api/*
+          paths: /vicuna/upi/*,
           policy: authenticated
         public:
-          paths: /vicuna/q/*
+          paths: /vicuna/*
           policy: permit
-
-  swagger-ui:
-    always-include: true
-    path: hui
+#  hibernate-orm:
+#    validate-in-dev-mode: false
+#    log:
+#      sql: true
+#    database: vicuna_user
+#    dialect: org.hibernate.dialect.PostgreSQLDialect
+#    persistence-xml:
+#    ignore: true
+    #    dialect: io.quarkus.hibernate.orm.runtime.dialect.H2Dialect
 
   datasource:
     db-kind: postgresql
     jdbc:
       pooling-enabled: true
-      url: jdbc:postgresql://host.docker.internal:15432/vicuna_user
+      url: jdbc:postgresql://localhost:15432/vicuna_user
     username: vicuna_user
     password: vicuna_pw
-
-  hibernate-orm:
-    database:
-      generation: update
-      create-schemas: true
+    devservices:
+      enabled: true
+      port: 15432
+      username: vicuna_user
+      password: vicuna_pw
+      db-name: vicuna_user
+#    database:
+#      generation: create
+#      create-schemas: true
 
   liquibase:
-    enabled: false
-    migrate-at-start: false
+    enabled: true
+    migrate-at-start: true
     change-log: db/db.changelog-master.yaml
 
   container-image:
@@ -60,43 +68,94 @@ quarkus:
     image: cpomorska/vicuna-kotlin-quarkus
     tag: 1.0.develop
 
-  oidc:
-    auth-server-url: http://host.docker.internal:8180/realms/development
-    client-id: backend-service
-    credentials:
-      client-secret:
-        value: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-    application-type: hybrid
+#  oidc:
+#    auth-server-url: http://localhost:8180/realms/development
+#    client-id: backend-service
+#    client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+#    application-type: hybrid
 
-  oidc-client:
-    auth-server-url: http://host.docker.internal:8180/realms/development
-    client-id: backend-service
-    credentials:
-      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-    grant-type: password
-    grant-options:
-      password:
-        username: alice
-        password: alice
+#  oidc-client:
+#    auth-server-url: http://host.docker.internal:8180/realms/development
+#    client-id: backend-service
+#    credentials:
+#      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+#    grant-type: password
+#    grant-options:
+#      password:
+#        username: alice
+#        password: alice
 
-  log:
-    category:
-      "io.quarkus.category":
-        level: WARN
-      "org.apache.kafka.clients":
-        level: ERROR
-      "org.apache.kafka.common.utils":
-        level: ERROR
-      "org.apache.kafka.common.metrics":
-        level: ERROR
+  keycloak:
+    devservices:
+      enabled: true
+      start-command: "start-dev --db=dev-mem"
+      port: 8180
+      realm-path: develeopment-realm.json
+      realm-name: development
+
+  #
+  #    auth-server-enabled: true
+  #    port: 8180
+  #    realm-path: dev-realm.json
+  #    service-name: backend-service
+  #    credentials:
+  #      username: alice
+  #      password: alice
+  #      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+  #      client-id: backend-service
+  #      grant-type: password
+  #      grant-options:
+  #        password:
+  #          username: alice
+  #          password: <PASSWORD>
+  #    realm-path: dev-realm.json
+  #      service-name: quarkus
+
+#  log:
+#    category:
+#      "io.quarkus.category":
+#        level: WARN
+#      "org.apache.kafka.clients":
+#        level: ERROR
+#      "org.apache.kafka.common.utils":
+#        level: ERROR
+#      "org.apache.kafka.common.metrics":
+#        level: ERROR
+#      "org.apache.kafka.common.metrics":
+#        level: ERROR
+swagger-ui:
+  always-include: true
+  path: hui
+  enabled: true
+  oauth-client-id: backend-service
+  oauth-client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+  oauth-realm: development
+  oauth-app-name: Vicuna API
+  oauth-scopes: openid,profile,email
+  oauth-use-pkce-with-authorization-code-grant: true
+
+
+smallrye-openapi:
+  enabled: true
+  path: openapi
+  oauth2-implicit-authorization-url: http://localhost:8180/realms/development/protocol/openid-connect/auth
+  oauth2-implicit-token-url: http://localhost:8180/realms/development/protocol/openid-connect/token
+
 
 kafka:
-   bootstrap:
-     servers: host.docker.internal:29092
+  bootstrap:
+    servers: host.docker.internal:29092
 mp:
+  rest:
+    openapi:
+      scan:
+        enabled: true
+
   openapi:
-    scan:
-      disable: false
+    extensions:
+      smallrye:
+        operationIdStrategy: METHOD
+
   messaging:
     outgoing:
       users-out:

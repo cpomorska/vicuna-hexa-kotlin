@@ -3,27 +3,29 @@ package com.scprojekt.domain.shared.database
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass
-import jakarta.persistence.Temporal
-import jakarta.persistence.TemporalType
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import java.util.*
+import java.time.Instant
 
 @MappedSuperclass
 open class BaseEntity {
 
     @JsonIgnore
     @CreationTimestamp
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    open var createdAt: Date? = null
+    @Column(nullable = false, name = "created_at", secondPrecision = 3)
+    open var createdAt: Instant? = null
 
     @JsonIgnore
     @UpdateTimestamp
-    @Temporal(value = TemporalType.TIMESTAMP)
-    open val modifiedAt: Date? = null
+    @Column(nullable = false, name = "modified_at", secondPrecision = 3)
+    open val modifiedAt: Instant? = null
 
     @JsonIgnore
+    @Column(name = "created_from")
+    open val createdFrom: String? = null
+
+    @JsonIgnore
+    @Column(name = "modified_from")
     open val modifiedFrom: String? = null
 
     @JsonIgnore

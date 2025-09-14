@@ -28,6 +28,7 @@ services:
     env_file:
       - keycloak.local.env
     command:
+      - '--verbose'
       - 'start-dev'
       - '--import-realm'
       - '--health-enabled=true'
@@ -36,27 +37,33 @@ services:
     ports:
       - "8180:8080"
     depends_on:
-      - postgres-kc
-      - postgres
-    network_mode: bridge
+      postgres-kc:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
       interval: 30s
       timeout: 5s
       retries: 20
 
   postgres-kc:
     container_name: vicuna-postgresql-kc
-    image: 'postgres:15'
+    image: 'postgres:17'
     hostname: 'pgkc'
     command: -p 5433
     env_file:
       - postgres.local.keycloak.env
     ports:
       - '25432:5433'
-    network_mode: bridge
+    expose:
+      - '5433'
+    networks:
+      - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -67,12 +74,15 @@ services:
 
   postgres:
     container_name: vicuna-postgresql
-    image: 'postgres:15'
+    image: 'postgres:17'
     env_file:
       postgres.local.env
     ports:
       - '15432:5432'
-    network_mode: bridge
+    expose:
+      - '5432'
+    networks:
+    - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -83,7 +93,7 @@ services:
 
   kafka:
     container_name: vicuna-kafka
-    image: apache/kafka
+    image: apache/kafka:latest
     hostname: kafka
     env_file:
       - kafka.local.env
@@ -91,7 +101,8 @@ services:
       - "29092:9092"
     expose:
       - "9092"
-    network_mode: bridge
+    networks:
+      - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
@@ -99,3 +110,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+
+networks:
+  vicuna-net:
+    driver: bridge

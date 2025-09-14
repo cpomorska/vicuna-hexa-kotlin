@@ -1,8 +1,8 @@
 package com.scprojekt.domain.model.user.dto.request
 
-import com.scprojekt.domain.model.user.entity.UserNumber
 import com.scprojekt.domain.model.user.event.UserEventType
 import com.scprojekt.domain.shared.dto.BaseRequest
+import com.scprojekt.infrastructure.persistence.entity.UserNumberEntity
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
@@ -19,5 +19,5 @@ class DeleteUserRequest: BaseRequest() {
     lateinit var userName: String
 
     @NotNull(message = "Please provide a user number")
-    lateinit var userNumber: UserNumber
+    lateinit var userNumberEntity: UserNumberEntity
 }

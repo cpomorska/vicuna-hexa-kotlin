@@ -1,13 +1,18 @@
 package com.scprojekt.infrastructure.messaging
 
-import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.infrastructure.service.UserManagementService
 import com.scprojekt.lifecycle.MessagingTestResourcelifecycleManager
 import com.scprojekt.util.TestUtil.Companion.createTestUser
-import io.quarkus.test.common.QuarkusTestResource
+import io.quarkus.test.common.WithTestResource
+import io.quarkus.test.junit.QuarkusIntegrationTest
 import io.quarkus.test.junit.QuarkusTest
+import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
+import org.apache.camel.CamelContext
+import org.apache.camel.impl.engine.DefaultManagementNameStrategy
+import org.apache.camel.quarkus.test.CamelQuarkusTestSupport
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -16,10 +21,10 @@ import org.junit.jupiter.api.Test
 
 @Disabled
 @QuarkusTest
-@QuarkusTestResource(MessagingTestResourcelifecycleManager::class)
-class UserManagementServiceTest {
+@WithTestResource(MessagingTestResourcelifecycleManager::class)
+class UserManagementServiceTest : CamelQuarkusTestSupport() {
 
-    private lateinit var user: User
+    private lateinit var userEntity: UserEntity
 
     @Inject
     @field:Default
@@ -27,14 +32,14 @@ class UserManagementServiceTest {
 
     @BeforeEach
     fun init(){
-        user = createTestUser()
+        userEntity = createTestUser()
     }
 
     @Test
     fun registerNewUser() {
         val userManagementService = UserManagementService(userToBackendProducer)
 
-        val result = userManagementService.registerNewUser(user)
+        val result = userManagementService.registerNewUser(userEntity)
         assertThat(result).isNotNull()
     }
 
@@ -42,7 +47,7 @@ class UserManagementServiceTest {
     fun manageExistingUser() {
         val userManagementService = UserManagementService(userToBackendProducer)
 
-        val result = userManagementService.manageExistingUser(user)
+        val result = userManagementService.manageExistingUser(userEntity)
         assertThat(result).isNotNull()
     }
 
@@ -50,7 +55,7 @@ class UserManagementServiceTest {
     fun disableExistingUser() {
         val userManagementService = UserManagementService(userToBackendProducer)
 
-        val result = userManagementService.disableExistingUser(user)
+        val result = userManagementService.disableExistingUser(userEntity)
         assertThat(result).isNotNull()
     }
 
@@ -58,7 +63,18 @@ class UserManagementServiceTest {
     fun deleteExistingUser() {
         val userManagementService = UserManagementService(userToBackendProducer)
 
-        val result = userManagementService.deleteExistingUser(user)
+        val result = userManagementService.deleteExistingUser(userEntity)
         assertThat(result).isNotNull()
+    }
+}
+
+class CamelConfiguration {
+
+    @Inject
+    lateinit var camelContext: CamelContext
+
+    // This ensures the Camel context is initialized with a management name strategy
+    fun init() {
+        DefaultManagementNameStrategy(camelContext).also { camelContext.managementNameStrategy = it }
     }
 }

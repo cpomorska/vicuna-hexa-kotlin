@@ -1,6 +1,6 @@
 package com.scprojekt.infrastructure.mapping
 
-import com.scprojekt.domain.model.user.entity.User
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.util.TestUtil.Companion.createTestUser
 import com.scprojekt.util.TestUtil.Companion.createUserRequest
 import org.assertj.core.api.Assertions.assertThat
@@ -27,8 +27,8 @@ class VicunaObjectMapperTest {
         val result = mapper.writeValueAsString(createUserRequest(createTestUser()))
         assertThat(result).isNotNull.isInstanceOf(String::class.java)
 
-        val objectresult =  mapper.readValue(result, User::class.java)
-        assertThat(objectresult).isNotNull.isInstanceOf(User::class.java)
+        val objectresult =  mapper.readValue(result, UserEntity::class.java)
+        assertThat(objectresult).isNotNull.isInstanceOf(UserEntity::class.java)
 
     }
 }

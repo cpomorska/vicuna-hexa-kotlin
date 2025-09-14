@@ -1,9 +1,9 @@
 package com.scprojekt.infrastructure.service
 
-import com.scprojekt.domain.model.user.entity.User
 import com.scprojekt.domain.model.user.event.UserEventType
 import com.scprojekt.domain.model.user.service.UserMessagingService
 import com.scprojekt.infrastructure.messaging.UserToBackendProducer
+import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import io.vertx.core.impl.logging.Logger
 import io.vertx.core.impl.logging.LoggerFactory
 import jakarta.enterprise.context.ApplicationScoped
@@ -18,20 +18,20 @@ class UserManagementService(
 
     private val logger: Logger = LoggerFactory.getLogger(UserMessagingService::class.java)
 
-    override fun registerNewUser(user: User): UUID {
-        return processUser(user, UserEventType.CREATE)
+    override fun registerNewUser(userEntity: UserEntity): UUID {
+        return processUser(userEntity, UserEventType.CREATE)
     }
 
-    override fun manageExistingUser(user: User): UUID {
-        return processUser(user, UserEventType.MANAGE)
+    override fun manageExistingUser(userEntity: UserEntity): UUID {
+        return processUser(userEntity, UserEventType.MANAGE)
     }
 
-    override fun disableExistingUser(user: User): UUID {
-        return processUser(user, UserEventType.DISABLE)
+    override fun disableExistingUser(userEntity: UserEntity): UUID {
+        return processUser(userEntity, UserEventType.DISABLE)
     }
 
-    override fun deleteExistingUser(user: User): UUID {
-        return processUser(user, UserEventType.DELETE)
+    override fun deleteExistingUser(userEntity: UserEntity): UUID {
+        return processUser(userEntity, UserEventType.DELETE)
     }
 }
 
