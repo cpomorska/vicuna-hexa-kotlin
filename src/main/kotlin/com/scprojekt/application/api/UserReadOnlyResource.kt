@@ -19,7 +19,7 @@ import java.util.UUID
  * Read-only REST resource for querying users.
  * Delegates to application service layer instead of Camel REST DSL per DDD architecture.
  */
-@Path("/opi/user/read")
+@Path("/user/read")
 @Produces(MediaType.APPLICATION_JSON)
 class UserReadOnlyResource @Inject constructor(
     private val userReadOnlyService: UserReadOnlyService

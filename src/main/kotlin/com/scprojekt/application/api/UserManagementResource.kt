@@ -14,18 +14,10 @@ import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.security.SecurityScheme
 import jakarta.inject.Inject
-import jakarta.ws.rs.Consumes
-import jakarta.ws.rs.DELETE
-import jakarta.ws.rs.GET
-import jakarta.ws.rs.POST
-import jakarta.ws.rs.PUT
-import jakarta.ws.rs.Path
-import jakarta.ws.rs.PathParam
-import jakarta.ws.rs.Produces
-import jakarta.ws.rs.QueryParam
+import jakarta.ws.rs.*
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
-import java.util.UUID
+import java.util.*
 
 @OpenAPIDefinition(
     info = Info(title = "Vicuna User API", version = "1.0.0"),
@@ -40,49 +32,50 @@ import java.util.UUID
  * REST resource for User operations.
  * This resource uses the domain service and DTOs to expose User operations to clients.
  */
-@Path("/api/users")
+@Path("/user/management")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @SecurityRequirement(name = "oidc")
-class DomainUserResource {
+class UserManagementResource {
     
     @Inject
     lateinit var userService: DomainUserService
     
     @Inject
     lateinit var userDtoMapper: UserDtoMapper
-    @GET
-    @Path("/{userId}")
-    @Operation(summary = "Get a user by ID", description = "Returns the user with the specified ID")
-    @SecurityRequirement(name = "oidc")
-    fun getUser(@PathParam("userId") userId: UUID): Response {
-        val userAggregate = userService.getUserByUuid(userId)
-            ?: return Response.status(Response.Status.NOT_FOUND).build()
 
-        val userDto = userDtoMapper.toDto(userAggregate.getUser())
-        return Response.ok(userDto).build()
-    }
+//    @GET
+//    @Path("/{userId}")
+//    @Operation(summary = "Get a user by ID", description = "Returns the user with the specified ID")
+//    @SecurityRequirement(name = "oidc")
+//    fun getUser(@PathParam("userId") userId: UUID): Response {
+//        val userAggregate = userService.getUserByUuid(userId)
+//            ?: return Response.status(Response.Status.NOT_FOUND).build()
+//
+//        val userDto = userDtoMapper.toDto(userAggregate.getUser())
+//        return Response.ok(userDto).build()
+//    }
 
-    @GET
-    @Operation(summary = "Find users by criteria", description = "Returns users matching the specified criteria")
-    fun findUsers(
-        @QueryParam("name") name: String?,
-        @QueryParam("type") type: String?,
-        @QueryParam("description") description: String?
-    ): Response {
-        val users = when {
-            !name.isNullOrBlank() -> userService.findUsersByName(name)
-            !type.isNullOrBlank() -> {
-                val userType = UserType.create(type, "")
-                userService.findUsersByType(userType)
-            }
-            !description.isNullOrBlank() -> userService.findUsersByDescription(description)
-            else -> emptyList()
-        }
-
-        val userDtos = users.map { userDtoMapper.toDto(it.getUser()) }
-        return Response.ok(userDtos).build()
-    }
+//    @GET
+//    @Operation(summary = "Find users by criteria", description = "Returns users matching the specified criteria")
+//    fun findUsers(
+//        @QueryParam("name") name: String?,
+//        @QueryParam("type") type: String?,
+//        @QueryParam("description") description: String?
+//    ): Response {
+//        val users = when {
+//            !name.isNullOrBlank() -> userService.findUsersByName(name)
+//            !type.isNullOrBlank() -> {
+//                val userType = UserType.create(type, "")
+//                userService.findUsersByType(userType)
+//            }
+//            !description.isNullOrBlank() -> userService.findUsersByDescription(description)
+//            else -> emptyList()
+//        }
+//
+//        val userDtos = users.map { userDtoMapper.toDto(it.getUser()) }
+//        return Response.ok(userDtos).build()
+//    }
 
     @POST
     @Operation(summary = "Create a new user", description = "Creates a new user with the specified details")
