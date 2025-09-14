@@ -24,10 +24,10 @@ quarkus:
       proactive: true
       permission:
         secured:
-          paths: /vicuna/api/*,
+          paths: /vicuna/upi/*,
           policy: authenticated
         public:
-          paths: /vicuna/q/*
+          paths: /vicuna/*
           policy: permit
 #  hibernate-orm:
 #    validate-in-dev-mode: false
@@ -68,11 +68,11 @@ quarkus:
     image: cpomorska/vicuna-kotlin-quarkus
     tag: 1.0.develop
 
-  oidc:
-    #auth-server-url: http://localhost:8180/realms/development
-    #client-id: backend-service
-    #client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-    application-type: hybrid
+#  oidc:
+#    auth-server-url: http://localhost:8180/realms/development
+#    client-id: backend-service
+#    client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+#    application-type: hybrid
 
 #  oidc-client:
 #    auth-server-url: http://host.docker.internal:8180/realms/development
@@ -90,7 +90,7 @@ quarkus:
       enabled: true
       start-command: "start-dev --db=dev-mem"
       port: 8180
-      realm-path: dev-realm.json
+      realm-path: develeopment-realm.json
       realm-name: development
 
   #
@@ -124,13 +124,23 @@ quarkus:
 #      "org.apache.kafka.common.metrics":
 #        level: ERROR
 swagger-ui:
-  always-include: false
+  always-include: true
   path: hui
   enabled: true
+  oauth-client-id: backend-service
+  oauth-client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+  oauth-realm: development
+  oauth-app-name: Vicuna API
+  oauth-scopes: openid,profile,email
+  oauth-use-pkce-with-authorization-code-grant: true
+
 
 smallrye-openapi:
   enabled: true
   path: openapi
+  oauth2-implicit-authorization-url: http://localhost:8180/realms/development/protocol/openid-connect/auth
+  oauth2-implicit-token-url: http://localhost:8180/realms/development/protocol/openid-connect/token
+
 
 kafka:
   bootstrap:

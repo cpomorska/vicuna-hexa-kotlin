@@ -28,6 +28,19 @@ quarkus:
     bootstrap:
       servers: host.docker.internal:29092
 
+  keycloak:
+    devservices:
+      auth-server-enabled: false
+      enabled: true
+      port: 8180
+      realm-path: development-realm.json
+      service-name: backend-service
+      credentials:
+        username: alice
+        password: alice
+        client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
+        client-id: backend-service
+
 camel:
   main:
     jmxEnabled: false
@@ -40,18 +53,7 @@ camel:
 #      value: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
 #  application-type: hybrid
 
-#keycloak:
-#  devservices:
-##    auth-server-enabled: true
-#    enabled: true
-#    port: 8180
-#    realm-path: development-realm.json
-#    service-name: backend-service
-#    credentials:
-#      username: alice
-#      password: alice
-#      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-#      client-id: backend-service
+
 
 mp:
   rest:

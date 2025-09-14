@@ -1,5 +1,9 @@
 package com.scprojekt.infrastructure.constants
 
+/**
+ * Centralized Apache Camel route endpoint names used by the infrastructure layer.
+ * These constants define internal direct: endpoints for messaging between components.
+ */
 class Routes {
 
     companion object {

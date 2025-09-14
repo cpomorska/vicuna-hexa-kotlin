@@ -7,7 +7,12 @@ import com.scprojekt.application.api.mapper.UserDtoMapper
 import com.scprojekt.domain.model.user.UserType
 import com.scprojekt.domain.model.user.service.DomainUserService
 import com.scprojekt.domain.model.user.value.ContactInfo
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
+import io.swagger.v3.oas.annotations.info.Info
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.security.SecurityScheme
 import jakarta.inject.Inject
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
@@ -22,6 +27,15 @@ import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
 import java.util.UUID
 
+@OpenAPIDefinition(
+    info = Info(title = "Vicuna User API", version = "1.0.0"),
+    security = [SecurityRequirement(name = "oidc")]
+)
+@SecurityScheme(
+    name = "oidc",
+    type = SecuritySchemeType.OPENIDCONNECT,
+    openIdConnectUrl = "http://localhost:8180/realms/development/.well-known/openid_configuration"
+)
 /**
  * REST resource for User operations.
  * This resource uses the domain service and DTOs to expose User operations to clients.
@@ -29,13 +43,18 @@ import java.util.UUID
 @Path("/api/users")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-class DomainUserResource @Inject constructor(
-    private val userService: DomainUserService,
-    private val userDtoMapper: UserDtoMapper
-) {
+@SecurityRequirement(name = "oidc")
+class DomainUserResource {
+    
+    @Inject
+    lateinit var userService: DomainUserService
+    
+    @Inject
+    lateinit var userDtoMapper: UserDtoMapper
     @GET
     @Path("/{userId}")
     @Operation(summary = "Get a user by ID", description = "Returns the user with the specified ID")
+    @SecurityRequirement(name = "oidc")
     fun getUser(@PathParam("userId") userId: UUID): Response {
         val userAggregate = userService.getUserByUuid(userId)
             ?: return Response.status(Response.Status.NOT_FOUND).build()
@@ -54,7 +73,7 @@ class DomainUserResource @Inject constructor(
         val users = when {
             !name.isNullOrBlank() -> userService.findUsersByName(name)
             !type.isNullOrBlank() -> {
-                val userType = UserType.Companion.create(type, "")
+                val userType = UserType.create(type, "")
                 userService.findUsersByType(userType)
             }
             !description.isNullOrBlank() -> userService.findUsersByDescription(description)
@@ -68,7 +87,7 @@ class DomainUserResource @Inject constructor(
     @POST
     @Operation(summary = "Create a new user", description = "Creates a new user with the specified details")
     fun createUser(createUserDto: CreateUserDto): Response {
-        val userType = UserType.Companion.create(
+        val userType = UserType.create(
             roleType = createUserDto.userTypeRole,
             description = createUserDto.description
         )
@@ -111,7 +130,7 @@ class DomainUserResource @Inject constructor(
         }
 
         val userType = updateUserDto.userTypeRole?.let {
-            UserType.Companion.create(
+            UserType.create(
                 roleType = it,
                 description = updateUserDto.description ?: ""
             )
@@ -155,7 +174,7 @@ class DomainUserResource @Inject constructor(
         val event = userService.deleteUser(userId)
             ?: return Response.status(Response.Status.NOT_FOUND).build()
 
-        return Response.noContent().build()
+        return Response.ok(event).build()
     }
 
     @PUT
