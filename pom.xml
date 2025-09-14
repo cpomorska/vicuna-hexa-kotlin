@@ -4,20 +4,26 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.scprojekt</groupId>
-    <artifactId>vicuna-kotlin-quarkus</artifactId>
+    <artifactId>vicuna-hexa-kotlin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>vicuna-kotlin-quarkus</name>
-    <description>Quarkus + Kotlin app (migrated from Gradle) without Camel</description>
+    <name>vicuna-hexa-kotlin</name>
+    <description>Hexagonal architecture in Kotlin on Quarkus (Maven build)</description>
     <url>https://example.invalid</url>
     <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
-        <kotlin.version>2.0.0</kotlin.version>
+        <kotlin.version>2.2.10</kotlin.version>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-        <quarkus.platform.version>3.15.1</quarkus.platform.version>
+        <quarkus.platform.version>3.26.3</quarkus.platform.version>
+        <quarkus.camel.version>3.26.0</quarkus.camel.version>
+
+        <sonar.projectKey>Vicuna-kotlin</sonar.projectKey>
+        <sonar.projectName>Vicuna kotlin</sonar.projectName>
+        <sonar.qualitygate.wait>true</sonar.qualitygate.wait>
+        <sonar.exclusions>src/test/kotlin/com/scprojekt/health/**</sonar.exclusions>
 
         <archunit.version>1.2.1</archunit.version>
         <assertj.version>3.24.2</assertj.version>
@@ -26,7 +32,10 @@
         <mockito.inline.version>5.2.0</mockito.inline.version>
         <mockito.kotlin.version>3.2.0</mockito.kotlin.version>
         <jackson.version>2.16.1</jackson.version>
-        <jacoco.version>0.8.12</jacoco.version>
+        <jacoco.version>0.8.13</jacoco.version>
+        <surefire.version>3.2.5</surefire.version>
+        <failsafe.version>3.2.5</failsafe.version>
+        <jacoco.version>0.8.13</jacoco.version>
         <surefire.version>3.2.5</surefire.version>
         <failsafe.version>3.2.5</failsafe.version>
         <lombok.version>1.18.38</lombok.version>
@@ -42,9 +51,9 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>${quarkus.platform.group-id}</groupId>
-                <artifactId>quarkus-camel-bom</artifactId>
-                <version>${quarkus.platform.version}</version>
+                <groupId>org.apache.camel.quarkus</groupId>
+                <artifactId>camel-quarkus-bom</artifactId>
+                <version>${quarkus.camel.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -91,19 +100,15 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-messaging-kafka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-kafka-streams</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-oidc-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-openapi</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -133,19 +138,19 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-liquibase</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-messaging-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-health</artifactId>
+        </dependency>
 
         <!-- Container image support via Quarkus extensions -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-container-image-jib</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-container-image-docker</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-container-image-buildpack</artifactId>
+            <artifactId>quarkus-container-image-openshift</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.camel.quarkus</groupId>
@@ -158,6 +163,7 @@
         <dependency>
             <groupId>org.apache.camel.quarkus</groupId>
             <artifactId>camel-quarkus-kotlin</artifactId>
+            <version>3.16.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.camel.quarkus</groupId>
@@ -219,11 +225,6 @@
             <groupId>org.apache.camel.quarkus</groupId>
             <artifactId>camel-quarkus-junit5</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.camel.quarkus</groupId>
-            <artifactId>camel-quarkus-integration-test-kotlin</artifactId>
-            <version>3.4.0</version>
-        </dependency>
         <!-- optional / commented in original: org.apache.camel.quarkus:camel-quarkus-amqp -->
         <dependency>
             <groupId>org.apache.camel.quarkus</groupId>
@@ -248,17 +249,14 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>4.0.1</version>
         </dependency>
 
         <!-- Lombok -->
@@ -304,7 +302,6 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -329,6 +326,13 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj.version}</version>
+        </dependency>
+        <!-- Integration Test: Camel Quarkus Integration Test for Kotlin -->
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-integration-test-kotlin</artifactId>
+            <version>3.16.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -363,15 +367,26 @@
             <plugin>
                 <groupId>io.quarkus</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>
-                <version>${quarkus.platform.version}</version>
+                <version>3.26.3</version>
                 <extensions>true</extensions>
                 <goals>
                     <goal>build</goal>
                     <goal>test</goal>
+                    <goal>dev</goal>
+                    <goal>image-build</goal>
+                    <goal>run</goal>
                     <goal>generate-code</goal>
                     <goal>generate-code-tests</goal>
                     <goal>native-image-agent</goal>
                 </goals>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>image-build</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -440,18 +455,32 @@
                 <version>${jacoco.version}</version>
                 <executions>
                     <execution>
+                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
                         <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report-integration</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>5.0.0.4389</version>
             </plugin>
         </plugins>
     </build>

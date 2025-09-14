@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  delete-old-runs:
-    runs-on: ubuntu-latest
+  deleteOldRuns:
+    runsOn: ubuntu-latest
     steps:
       - name: Delete old workflow runs
         uses: Mattraks/delete-workflow-runs@v2

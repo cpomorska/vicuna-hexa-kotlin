@@ -1,17 +1,21 @@
+# =====================
+# Quarkus Konfiguration
+# =====================
 quarkus:
+  # --- Camel-Kontext ---
   camel:
     context:
-    name: vicunacamel
-#    openapi:
-#      expose:
-#        enabled: true
-#        servlet:
-#         url-patterns: /vicuna/*
+      name: vicunacamel
+    # openapi:
+    #   expose:
+    #     enabled: true
+    #     servlet:
+    #       url-patterns: /vicuna/*
 
+  # --- HTTP-Einstellungen ---
   http:
     cors:
       enabled: true
-      #~: true
       origins: /*
       headers: origin, accept, authorization, content-type, x-requested-with
       methods: "*"
@@ -29,122 +33,98 @@ quarkus:
         public:
           paths: /vicuna/*
           policy: permit
-#  hibernate-orm:
-#    validate-in-dev-mode: false
-#    log:
-#      sql: true
-#    database: vicuna_user
-#    dialect: org.hibernate.dialect.PostgreSQLDialect
-#    persistence-xml:
-#    ignore: true
-    #    dialect: io.quarkus.hibernate.orm.runtime.dialect.H2Dialect
 
+  # --- Datenbank-Konfiguration ---
+  # ENV-Variablen mit Default-Werten für flexible Nutzung
   datasource:
     db-kind: postgresql
     jdbc:
+      url: ${DB_URL:jdbc:postgresql://host.docker.internal:15432/vicuna_user}
       pooling-enabled: true
-      url: jdbc:postgresql://localhost:15432/vicuna_user
-    username: vicuna_user
-    password: vicuna_pw
+    username: ${DB_USER:vicuna_user}
+    password: ${DB_PASSWORD:vicuna_pw}
     devservices:
       enabled: true
       port: 15432
-      username: vicuna_user
-      password: vicuna_pw
-      db-name: vicuna_user
-#    database:
-#      generation: create
-#      create-schemas: true
+      username: ${DB_USER:vicuna_user}
+      password: ${DB_PASSWORD:vicuna_pw}
+      db-name: ${DB_NAME:vicuna_user}
+    health-exclude: true # Deaktiviert DB-Health-Check
 
+  # --- Liquibase Migration ---
   liquibase:
     enabled: true
     migrate-at-start: true
     change-log: db/db.changelog-master.yaml
 
+  # --- Container-Image Einstellungen ---
   container-image:
     builder: docker
-    build: false
+    build: true
     push: false
     image: cpomorska/vicuna-kotlin-quarkus
     tag: 1.0.develop
 
-#  oidc:
-#    auth-server-url: http://localhost:8180/realms/development
-#    client-id: backend-service
-#    client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-#    application-type: hybrid
+  # --- OIDC (Keycloak) Authentifizierung ---
+  # ENV-Variablen mit Default-Werten für flexible Nutzung
+  oidc:
+    auth-server-url: ${KEYCLOAK_URL:http://host.docker.internal:8180/realms/development}
+    client-id: ${KEYCLOAK_CLIENT_ID:backend-service}
+    client-secret: ${KEYCLOAK_CLIENT_SECRET:qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz}
+    application-type: hybrid
 
-#  oidc-client:
-#    auth-server-url: http://host.docker.internal:8180/realms/development
-#    client-id: backend-service
-#    credentials:
-#      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-#    grant-type: password
-#    grant-options:
-#      password:
-#        username: alice
-#        password: alice
-
+  # --- Keycloak Devservices ---
   keycloak:
     devservices:
       enabled: true
       start-command: "start-dev --db=dev-mem"
       port: 8180
-      realm-path: develeopment-realm.json
-      realm-name: development
+      realm-path: ${KEYCLOAK_REALM_PATH:develeopment-realm.json}
+      realm-name: ${KEYCLOAK_REALM_NAME:development}
 
-  #
-  #    auth-server-enabled: true
-  #    port: 8180
-  #    realm-path: dev-realm.json
-  #    service-name: backend-service
-  #    credentials:
-  #      username: alice
-  #      password: alice
-  #      client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-  #      client-id: backend-service
-  #      grant-type: password
-  #      grant-options:
-  #        password:
-  #          username: alice
-  #          password: <PASSWORD>
-  #    realm-path: dev-realm.json
-  #      service-name: quarkus
+  # --- OpenAPI Einstellungen ---
+  smallrye-openapi:
+    enabled: true
+    path: /openapi
+    #oauth2-implicit-authorization-url: http://localhost:8180/realms/development/protocol/openid-connect/auth
+    #oauth2-implicit-token-url: http://localhost:8180/realms/development/protocol/openid-connect/token
 
-#  log:
-#    category:
-#      "io.quarkus.category":
-#        level: WARN
-#      "org.apache.kafka.clients":
-#        level: ERROR
-#      "org.apache.kafka.common.utils":
-#        level: ERROR
-#      "org.apache.kafka.common.metrics":
-#        level: ERROR
-#      "org.apache.kafka.common.metrics":
-#        level: ERROR
-swagger-ui:
-  always-include: true
-  path: hui
-  enabled: true
-  oauth-client-id: backend-service
-  oauth-client-secret: qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz
-  oauth-realm: development
-  oauth-app-name: Vicuna API
-  oauth-scopes: openid,profile,email
-  oauth-use-pkce-with-authorization-code-grant: true
+  # --- Health-Checks (Messaging/Kafka deaktiviert) ---
+  smallrye-health:
+    extensions:
+      messaging:
+        enabled: false
+      kafka:
+        enabled: false
 
+# =====================
+# Camel Einstellungen
+# =====================
+camel:
+  main:
+    jmxEnabled: false
 
-smallrye-openapi:
-  enabled: true
-  path: openapi
-  oauth2-implicit-authorization-url: http://localhost:8180/realms/development/protocol/openid-connect/auth
-  oauth2-implicit-token-url: http://localhost:8180/realms/development/protocol/openid-connect/token
-
-
+# =====================
+# Kafka Einstellungen
+# =====================
 kafka:
+  health-exclude: true # Deaktiviert Kafka-Health-Check
   bootstrap:
     servers: host.docker.internal:29092
+
+# --- Kafka Streams Einstellungen ---
+kafka-streams:
+  disabled: true
+  health:
+    enabled: false
+  health-exclude: true # Deaktiviert Kafka Streams Health-Check
+  bootstrap:
+    servers: host.docker.internal:29092
+
+
+# =====================
+# MicroProfile Einstellungen
+# =====================
 mp:
   rest:
     openapi:
@@ -157,6 +137,7 @@ mp:
         operationIdStrategy: METHOD
 
   messaging:
+    health-exclude: true # Deaktiviert Messaging-Health-Check
     outgoing:
       users-out:
         connector: smallrye-kafka

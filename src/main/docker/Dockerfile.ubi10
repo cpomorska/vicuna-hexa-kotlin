@@ -1,7 +1,4 @@
-FROM registry.access.redhat.com/ubi10/ubi:10.0
-# Use Red Hat Universal Base Image 10 (UBI10) as the base image
-RUN dnf -y install java-21-openjdk-headless && dnf clean all
-
+FROM registry.access.redhat.com/ub10/ubi
 
 ENV LANGUAGE='en_US:en'
 
@@ -16,4 +13,4 @@ COPY --chown=185 target/quarkus-app/quarkus/* /deployments/quarkus/
 EXPOSE 8080
 ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
-ENTRYPOINT ["sh", "-c", "java -jar $JAVA_OPTS -jar $JAVA_APP_JAR"]
+#ENTRYPOINT ["sh", "-c", "java","-jar", "java $JAVA_OPTS -jar $JAVA_APP_JAR"]
