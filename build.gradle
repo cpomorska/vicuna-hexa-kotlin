@@ -59,7 +59,7 @@ dependencies {
     /* Camel */
     implementation "org.apache.camel.quarkus:camel-quarkus-log"
     implementation "org.apache.camel.quarkus:camel-quarkus-kafka"
-    implementation "org.apache.camel.quarkus:camel-quarkus-kotlin"
+    implementation "org.apache.camel.quarkus:camel-quarkus-kotlin:3.16.0"
     implementation "org.apache.camel.quarkus:camel-quarkus-jta"
     implementation "org.apache.camel.quarkus:camel-quarkus-base64"
     implementation "org.apache.camel.quarkus:camel-quarkus-bean"
