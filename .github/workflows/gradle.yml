@@ -9,11 +9,11 @@ name: Gradle Kotlin CI
 
 on:
   push:
-    branches: [ "develop","main" ]
+    branches: [ "develop-with--gradle" ]
   pull_request:
-    branches: [ "develop","main" ]
+    branches: [ "develop-with--gradle" ]
   merge_group:
-    branches: [ "develop","main" ]
+    branches: [ "develop-with--gradle" ]
 
 permissions:
   contents: read
