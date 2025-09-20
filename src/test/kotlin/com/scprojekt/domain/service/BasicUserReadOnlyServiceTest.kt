@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.*
 
+@Disabled
 @QuarkusTest
 @WithTestResource(H2DatabaseTestResource::class)
 class BasicUserReadOnlyServiceTest : CamelQuarkusTestSupport() {

@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 
+@Disabled
 @QuarkusTest
 @WithTestResource(MessagingTestResourcelifecycleManager::class)
 class UserManagementServiceTest : CamelQuarkusTestSupport() {

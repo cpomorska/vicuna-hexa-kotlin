@@ -12,12 +12,12 @@ open class BaseEntity {
 
     @JsonIgnore
     @CreationTimestamp
-    @Column(nullable = false, name = "created_at", secondPrecision = 3)
+    @Column(nullable = false, name = "created_at")
     open var createdAt: Instant? = null
 
     @JsonIgnore
     @UpdateTimestamp
-    @Column(nullable = false, name = "modified_at", secondPrecision = 3)
+    @Column(nullable = false, name = "modified_at")
     open val modifiedAt: Instant? = null
 
     @JsonIgnore

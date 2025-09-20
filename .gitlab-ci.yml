@@ -1,51 +1,138 @@
-image: nexus.psychotor.local/custom-gradle:8.14.3-jdk
+image: maven:3.9.6-eclipse-temurin-17
 
 variables:
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs='-Xmx2g -Xms512m'"
-  GRADLE_TERMS_OF_SERVICE_ACCEPTED: "yes"
+  MAVEN_OPTS: "-Xmx2g -Xms512m"
+  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+  GIT_DEPTH: "0"
+  DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_REGISTRY: $NEXUS_REGISTRY_URL
+  DOCKER_TLS_CERTDIR: ""
+  NEXUS_USERNAME: darkstar2025
+  NEXUS_PASSWORD: KaGu62Po!!!
+  NEXUS_REGISTRY_URL: nexus.psychotor.local
+  IMAGE_NAME: $DOCKER_REGISTRY/vicuna-hexa-kotlin:latest
+
+default:
+  tags:
+    - docker
 
 cache:
+  policy: pull-push
+  key: "sonar-cache-$CI_COMMIT_REF_SLUG"
   paths:
-    - .gradle/wrapper
-    - .gradle/caches
-
-before_script:
-  - export GRADLE_USER_HOME="$CI_PROJECT_DIR/.gradle"
-  - mkdir -p "$CI_PROJECT_DIR/.gradle"
-  - mkdir -p "$GRADLE_USER_HOME/caches"
-  - mkdir -p "$GRADLE_USER_HOME/wrapper"
-  - chmod -R 0777 "$GRADLE_USER_HOME"
+    - "${SONAR_USER_HOME}/cache"
 
 stages:
-  - build
-  - unit_test
-  - int_test
+  - build_project
+  - run_tests
+  - handle_image
 
 build:
-  stage: build
+  stage: build_project
+  before_script:
+    - export MAVEN_USER_HOME="$CI_PROJECT_DIR/.m2"
+#    - mkdir -p "$MAVEN_USER_HOME/repository"
+#    - chmod -R 0777 "$MAVEN_USER_HOME"
   script:
     - echo "Building the application..."
-    - "CI=true gradle build -x test --scan"
-  only: 
-    - develop 
+    - "mvn clean package -Dmaven.test.skip=true -Dquarkus.container-image.build=true"
+  artifacts:
+    paths:
+      - target/quarkus-app/*.jar
+      - target/quarkus-app/lib/
+      - target/quarkus-app/app
+      - target/quarkus-app/quarkus/
+      - target/site/
+  only:
+    - develop-no-camel
+    - develop
     - main
 
 unit_test:
-  stage: unit_test
+  stage: run_tests
   script:
     - echo "Running unit tests..."
-    - "gradle test"
-  only: 
-    - develop 
+    - "mvn verify -Punit"
+  only:
+    - develop-no-camel
+    - develop
     - main
   allow_failure: true
 
 int_test:
-  stage: int_test
+  stage: run_tests
   script:
     - echo "Running integration tests..."
-    - "gradle integrationTest"
-  only: 
-    - develop 
+    - "mvn verify -Pintegration"
+  only:
+    - develop-no-camel
+    - develop
     - main
   allow_failure: true
+
+sonarqube:
+  stage: run_tests
+  script:
+    - mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+  only:
+    - develop-no-camel
+    - develop
+    - main
+  allow_failure: true
+
+image_build:
+  stage: handle_image
+  image: nexus.psychotor.local/custom-dind:allpurpose
+  services:
+    - name: nexus.psychotor.local/custom-dind:allpurpose
+      alias: docker
+  variables:
+    DOCKER_AUTH_CONFIG: >
+      {
+        "auths": {
+          "https://nexus.psychotor.local": {
+            "auth": "Base64($NEXUS_USERNAME:$NEXUS_PASSWORD)"
+          }
+        }
+      };
+  script:
+    - echo "Baue Docker-Image..."
+    - echo "$NEXUS_PASSWORD" | docker login -u "$NEXUS_USERNAME" --password-stdin "$DOCKER_REGISTRY"
+    - docker build -f src/main/docker/Dockerfile.jvm -t $DOCKER_REGISTRY/vicuna-hexa-kotlin:$CI_COMMIT_REF_NAME .
+    - docker tag $DOCKER_REGISTRY/vicuna-hexa-kotlin:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $DOCKER_REGISTRY/vicuna-hexa-kotlin:$CI_COMMIT_REF_NAME
+  only:
+    - develop-no-camel
+    - develop
+    - main
+
+image_scan:
+  stage: handle_image
+  image: aquasec/trivy:latest
+  services:
+    - name: nexus.psychotor.local/custom-dind:latest
+      alias: docker
+  script:
+    - echo "$NEXUS_PASSWORD" | docker login -u "$NEXUS_USERNAME" --password-stdin "$DOCKER_REGISTRY"
+    - echo "Scanne Docker-Image mit Trivy..."
+    - trivy image --exit-code 0 --severity HIGH,CRITICAL $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  only:
+    - develop-no-camel
+    - develop
+    - main
+  allow_failure: true
+
+#image_push:
+#  stage: handle_image
+#  image: nexus.psychotor.local/custom-dind:latest
+#  services:
+#    - name: nexus.psychotor.local/custom-dind:latest
+#      alias: docker
+#  script:
+#    - echo "Pushe Docker-Image..."
+#    - echo "$NEXUS_PASSWORD" | docker login -u "$NEXUS_USERNAME" --password-stdin "$DOCKER_REGISTRY"
+#    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+#  only:
+#    - develop-no-camel
+#    - develop
+#    - main

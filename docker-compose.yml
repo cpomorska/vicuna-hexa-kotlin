@@ -1,6 +1,6 @@
 version: '3'
 services:
-  vicuna-kotlin-quarkus:
+  vicunaKotlinQuarkus:
     container_name: vicuna-kotlin-quarkus
     build:
       context: ./
