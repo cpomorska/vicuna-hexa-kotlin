@@ -30,7 +30,7 @@
         <bytebuddy.version>1.14.11</bytebuddy.version>
         <mockito.core.version>5.3.1</mockito.core.version>
         <mockito.inline.version>5.2.0</mockito.inline.version>
-        <mockito.kotlin.version>3.2.0</mockito.kotlin.version>
+        <mockito.kotlin.version>6.0.0</mockito.kotlin.version>
         <jackson.version>2.16.1</jackson.version>
         <jacoco.version>0.8.13</jacoco.version>
         <surefire.version>3.2.5</surefire.version>
