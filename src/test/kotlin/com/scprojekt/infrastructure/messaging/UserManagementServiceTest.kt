@@ -5,17 +5,23 @@ import com.scprojekt.infrastructure.service.UserManagementService
 import com.scprojekt.lifecycle.MessagingTestResourcelifecycleManager
 import com.scprojekt.util.TestUtil.Companion.createTestUser
 import io.quarkus.test.common.WithTestResource
+import io.quarkus.test.junit.QuarkusIntegrationTest
 import io.quarkus.test.junit.QuarkusTest
+import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Default
 import jakarta.inject.Inject
+import org.apache.camel.CamelContext
+import org.apache.camel.impl.engine.DefaultManagementNameStrategy
+import org.apache.camel.quarkus.test.CamelQuarkusTestSupport
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 
 @QuarkusTest
 @WithTestResource(MessagingTestResourcelifecycleManager::class)
-class UserManagementServiceTest {
+class UserManagementServiceTest : CamelQuarkusTestSupport() {
 
     private lateinit var userEntity: UserEntity
 
@@ -58,5 +64,16 @@ class UserManagementServiceTest {
 
         val result = userManagementService.deleteExistingUser(userEntity)
         assertThat(result).isNotNull()
+    }
+}
+
+class CamelConfiguration {
+
+    @Inject
+    lateinit var camelContext: CamelContext
+
+    // This ensures the Camel context is initialized with a management name strategy
+    fun init() {
+        DefaultManagementNameStrategy(camelContext).also { camelContext.managementNameStrategy = it }
     }
 }

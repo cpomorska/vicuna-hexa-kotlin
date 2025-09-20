@@ -21,6 +21,10 @@ import jakarta.transaction.Transactional
 import org.apache.camel.ProducerTemplate
 import java.util.concurrent.CompletableFuture
 
+/**
+ * Camel-based implementation of the UserIntegrationRepository.
+ * Uses ProducerTemplate to communicate with internal direct: routes defined in the infrastructure layer.
+ */
 @ApplicationScoped
 class UserCamelRepository : UserIntegrationRepository {
 

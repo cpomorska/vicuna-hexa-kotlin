@@ -3,7 +3,6 @@ package com.scprojekt.infrastructure.persistence.entity
 import com.scprojekt.domain.shared.database.BaseEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotNull
-import java.util.*
 
 /**
  * JPA entity for User.
@@ -38,6 +37,6 @@ open class UserEntity : BaseEntity() {
     @Version
     open var version = 0
     
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    open var contactInfo: MutableList<ContactInfoEntity> = mutableListOf()
+//    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
+//    open lateinit var contactInfo: ContactInfoEntity
 }

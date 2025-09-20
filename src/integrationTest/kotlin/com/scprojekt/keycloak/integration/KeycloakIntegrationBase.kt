@@ -42,7 +42,7 @@ open class KeycloakIntegrationBase {
                     withEnv("KC_HEALTH_ENABLED", "true")
                     withEnv("KC_METRICS_ENABLED", "true")
                     withProviderClassesFrom("build/classes/")
-                    withRealmImportFiles("dev-realm.json")
+                    withRealmImportFiles("development-realm.json")
                 }
                 .also { it.start() }
         }

@@ -1,16 +1,25 @@
-package com.scprojekt.infrastructure.api
+package com.scprojekt.application.api
 
 import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.infrastructure.persistence.entity.UserTypeEntity
 import com.scprojekt.infrastructure.service.UserReadOnlyService
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.inject.Inject
-import jakarta.ws.rs.*
+import jakarta.ws.rs.GET
+import jakarta.ws.rs.Path
+import jakarta.ws.rs.PathParam
+import jakarta.ws.rs.Produces
+import jakarta.ws.rs.QueryParam
+import jakarta.ws.rs.WebApplicationException
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
-import java.util.*
+import java.util.UUID
 
-@Path("/opi/read/user")
+/**
+ * Read-only REST resource for querying users.
+ * Delegates to application service layer instead of Camel REST DSL per DDD architecture.
+ */
+@Path("/user/read")
 @Produces(MediaType.APPLICATION_JSON)
 class UserReadOnlyResource @Inject constructor(
     private val userReadOnlyService: UserReadOnlyService
