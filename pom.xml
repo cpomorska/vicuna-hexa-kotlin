@@ -25,7 +25,7 @@
         <sonar.qualitygate.wait>true</sonar.qualitygate.wait>
         <sonar.exclusions>src/test/kotlin/com/scprojekt/health/**</sonar.exclusions>
 
-        <archunit.version>1.2.1</archunit.version>
+        <archunit.version>1.4.1</archunit.version>
         <assertj.version>3.24.2</assertj.version>
         <bytebuddy.version>1.14.11</bytebuddy.version>
         <mockito.core.version>5.3.1</mockito.core.version>
