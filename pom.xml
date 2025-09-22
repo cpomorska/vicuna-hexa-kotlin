@@ -37,7 +37,7 @@
         <failsafe.version>3.2.5</failsafe.version>
         <jacoco.version>0.8.13</jacoco.version>
         <surefire.version>3.2.5</surefire.version>
-        <failsafe.version>3.2.5</failsafe.version>
+        <failsafe.version>3.5.4</failsafe.version>
         <lombok.version>1.18.42</lombok.version>
     </properties>
 
