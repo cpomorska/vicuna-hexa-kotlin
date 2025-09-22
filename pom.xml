@@ -27,7 +27,7 @@
 
         <archunit.version>1.4.1</archunit.version>
         <assertj.version>3.24.2</assertj.version>
-        <bytebuddy.version>1.14.11</bytebuddy.version>
+        <bytebuddy.version>1.17.7</bytebuddy.version>
         <mockito.core.version>5.3.1</mockito.core.version>
         <mockito.inline.version>5.2.0</mockito.inline.version>
         <mockito.kotlin.version>6.0.0</mockito.kotlin.version>
