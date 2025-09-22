@@ -3,9 +3,9 @@ FROM registry.access.redhat.com/ubi10/ubi:10.0-1758186945
 
 ENV LANGUAGE='en_US:en'
 
-# Install Java as root first
-COPY adoptium.repo /etc/yum.repos.d/
-RUN dnf -y install temurin-21-jdk && dnf clean all
+# Create Adoptium repository file and install Java as root
+# RUN echo -e "[Adoptium]\nname=Adoptium\nbaseurl=https://packages.adoptium.net/artifactory/rpm/rhel/\$releasever/\$basearch\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.adoptium.net/artifactory/api/gpg/key/public" > /etc/yum.repos.d/adoptium.repo
+RUN dnf -y update && dnf -y install java-21-openjdk-headless && dnf clean all
 
 # Now switch to non-root user for application layers
 USER 185
