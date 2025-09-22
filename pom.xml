@@ -25,7 +25,7 @@
 
         <!-- Dependency versions -->
         <archunit.version>1.4.1</archunit.version>
-        <assertj.version>3.24.2</assertj.version>
+        <assertj.version>3.27.6</assertj.version>
         <bytebuddy.version>1.17.7</bytebuddy.version>
         <camel-quarkus-integration-test-kotlin.version>3.16.0</camel-quarkus-integration-test-kotlin.version>
         <camel-quarkus-kotlin.version>3.16.0</camel-quarkus-kotlin.version>
