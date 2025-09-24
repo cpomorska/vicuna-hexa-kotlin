@@ -24,7 +24,6 @@ resource "docker_volume" "import_volume" {
 
 resource "docker_network" "vicuna_network" {
   name            = "vicuna-network"
-  check_duplicate = true
   internal        = true
 }
 

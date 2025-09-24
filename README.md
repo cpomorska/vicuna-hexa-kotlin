@@ -7,7 +7,7 @@
 - Better readable application.yml
 - Enabled tests do work
 - Health APi is enabled, better Kubernetes usability
-- Testdate  is loaded via Liquibase
+- Testdata is loaded via Liquibase
 
 # Changes (Updated: September 20, 2025)
 
@@ -102,7 +102,7 @@ This project uses **Maven** as the primary build system for the following reason
 
 * Requires: docker or podman, **artifact was build**
 * Spans 2 x Postgres, Kafka, Keycloak, vicuna-hexa-kotlin
-* Accessible on http://localhost:28089/vicuna/q/hui/
+* Accessible on http://localhost:28089/vicuna/user/read/byname/bob
 * Keycloak is accessible on http://localhost:8180/realms/development
 
 > - start with: **docker compose -f docker-compose.local.yml up -d --build --force-recreate**
@@ -110,9 +110,12 @@ This project uses **Maven** as the primary build system for the following reason
 
 #### 2. Run with terraform (all containers)
 
-* Requires: docker or podman, **image was build**
+* Requires: docker or podman, **image was build**, if not, build image with
+> * Build docker image -> **docker build -f src/main/dcoker/Dockerfile.jvm -t cpomorska/vicuna-kotlin-quarkus .**
+> * Tag the image -> **docker tag cpomorska/vicuna-kotlin-quarkus:latest cpomorska/vicuna-kotlin-quarkus:latest**
+
 * Spans 2 x Postgres, Kafka, Keycloak, vicuna-hexa-kotlin
-* Accessible on http://localhost:28089/vicuna/q/hui/
+* Accessible on http://localhost:28089/vicuna/user/read/byname/bob
 * Keycloak is accessible on http://localhost:8180/realms/development
 
 > * Open terminal and change to the projectroot -> terraform directory
