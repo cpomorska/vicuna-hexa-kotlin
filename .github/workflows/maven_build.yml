@@ -2,15 +2,18 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "develop","production" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "develop","production" ]
+  merge_group:
+    branches: [ "develop","production" ]
+
+permissions:
+  contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
