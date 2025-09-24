@@ -1,3 +1,14 @@
+# Changes (Updated: September 24, 2025)
+
+- RHEL UBI 10 Image is used with Adoptium JDK
+- Quarkus 3.28.x and JDK 25 work
+- Full migration to Maven for faster builds (it is a small project)
+- Upgraded to latest Keycloak and Postgres DB
+- Better readable application.yml
+- Enabled tests do work
+- Health APi is enabled, better Kubernetes usability
+- Testdate  is loaded via Liquibase
+
 # Changes (Updated: September 20, 2025)
 
 - Migrated build system from Gradle to Maven for better enterprise support and standardization
@@ -21,7 +32,7 @@
 # vicuna-kotlin-quarkus
 
 This project uses Quarkus with Kotlin, Camel and Kafka. It is a (work in progress) small showcase for DDD
-and a single REST Service. The REST Service itself is pure Camel. The backend uses a switch Mann! to talk to database
+and a single REST Service. The REST Service itself is now migrated to Quarkus Resteasy. The backend uses a switch to talk to database
 directly or via Kafka.
 
 # Build System: Why Maven over Gradle
@@ -119,7 +130,7 @@ This project uses **Maven** as the primary build system for the following reason
 
 * Requires: docker or podman, opentofu >= 1.7 **image was build**
 * Spans 2 x Postgres, Kafka, Keycloak, vicuna-hexa-kotlin
-* Accessible on http://localhost:28089/vicuna/q/hui/
+* Accessible on http://localhost:28089/vicuna/user/read/byname/bob
 * Keycloak is accessible on http://localhost:8180/realms/development
 
 > * Open terminal and change to the projectroot -> terraform directory
@@ -139,7 +150,7 @@ The main focus is using Kotlin and Camel with RESTEasy and Quarkus and bringing 
 Eventlistener from Keycloak
 could use (Project ServiceConsumerEventlistener) this Service as external source for users.
 
-# Why Vicuna
+# Why is it named Vicuna
 
 Vicuna is a camel, the national animal of Peru. Because of Camel (the Integration Framework) the Application is named
 Vicuna. It has nothing to do with AI or Ki Models.
@@ -147,13 +158,13 @@ Vicuna. It has nothing to do with AI or Ki Models.
 # Tools used for Development
 
 - Docker
-- Podman - for Docker ReplacementDocker
+- Podman - for Docker Replacement
 - Openshift Local - a local Openshift Installation
 - IntelliJ IDEA - Java and Kotlin Development
-- Windows 11 and RHEL 9
+- Windows 11 and RHEL 9, 10
 - Keycloak 2x.x.x (latest)
-- PostgreSQL 15
-- Terraform 1.8.0 + docker extension
+- PostgreSQL 17
+- Terraform/OpenTofu 1.8.0 + docker extension
 - Maven 3.9+ - Primary build system
 
 

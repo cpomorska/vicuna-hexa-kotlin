@@ -1,6 +1,6 @@
 version: '3'
 services:
-  vicunaKotlinQuarkus:
+  vicuna-kotlin-quarkus:
     container_name: vicuna-kotlin-quarkus
     build:
       context: ./
@@ -48,7 +48,7 @@ services:
       retries: 20
 
   postgres-kc:
-    container_name: vicuna-postgresql-kc
+    container_name: postgres-kc
     image: 'postgres:17'
     hostname: 'pgkc'
     command: -p 5433
@@ -99,3 +99,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+
+networks:
+  vicuna-net:
+    driver: bridge
