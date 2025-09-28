@@ -40,7 +40,7 @@
 
         <!-- Plugin versions -->
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-        <quarkus-maven-plugin.version>3.28.0</quarkus-maven-plugin.version>
+        <quarkus-maven-plugin.version>3.28.1</quarkus-maven-plugin.version>
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
 
         <!-- SonarQube properties -->
