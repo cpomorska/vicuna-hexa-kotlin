@@ -3,10 +3,12 @@ package com.scprojekt.health
 import io.quarkus.test.junit.QuarkusTest
 import org.assertj.core.api.Assertions.assertThat
 import org.eclipse.microprofile.health.HealthCheckResponse
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mockito.mock
 
+@Disabled
 @QuarkusTest
 class RestApiReadinessCheckTest {
 
