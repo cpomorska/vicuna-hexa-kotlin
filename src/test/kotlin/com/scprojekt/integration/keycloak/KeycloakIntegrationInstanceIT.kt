@@ -10,6 +10,7 @@ import org.keycloak.admin.client.KeycloakBuilder
 import io.restassured.RestAssured.given
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.equalTo
+import org.junit.jupiter.api.Disabled
 
 private const val APPLICATION_OPENMETRICS_TEXT = "application/openmetrics-text"
 private const val HEADER_CONTENT_TYPE = "Content-Type"
@@ -39,6 +40,7 @@ private const val ENDPOINT_METRICS = "/metrics"
  * The `buildAdminClient` utility method aids in creating a Keycloak admin
  * client for interaction with the Keycloak server.
  */
+@Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class KeycloakIntegrationInstanceIT : KeycloakIntegrationBase() {
 

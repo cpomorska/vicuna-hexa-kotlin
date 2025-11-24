@@ -3,9 +3,9 @@
 # =====================
 quarkus:
   # --- Camel-Kontext ---
-  camel:
-    context:
-      name: vicunacamel
+  #camel:
+  #  context:
+  #    name: vicunacamel
     # openapi:
     #   expose:
     #     enabled: true
@@ -60,7 +60,7 @@ quarkus:
   # --- Container-Image Einstellungen ---
   container-image:
     builder: docker
-    build: true
+    build: false
     push: false
     image: cpomorska/vicuna-kotlin-quarkus
     tag: 1.0.develop
@@ -70,7 +70,7 @@ quarkus:
   oidc:
     auth-server-url: ${KEYCLOAK_URL:http://host.docker.internal:8180/realms/development}
     client-id: ${KEYCLOAK_CLIENT_ID:backend-service}
-    client-secret: ${KEYCLOAK_CLIENT_SECRET:qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz}
+    #client-secret: ${KEYCLOAK_CLIENT_SECRET:qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz}
     application-type: hybrid
 
   # --- Keycloak Devservices ---
@@ -90,12 +90,12 @@ quarkus:
     #oauth2-implicit-token-url: http://localhost:8180/realms/development/protocol/openid-connect/token
 
   # --- Health-Checks (Messaging/Kafka deaktiviert) ---
-  smallrye-health:
-    extensions:
-      messaging:
-        enabled: false
-      kafka:
-        enabled: false
+#  smallrye-health:
+#    extensions:
+#      messaging:
+#        enabled: false
+#      kafka:
+#        enabled: false
 
 # =====================
 # Camel Einstellungen
