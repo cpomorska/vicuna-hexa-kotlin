@@ -5,6 +5,7 @@ variables:
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: "0"
   DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_DRIVER: overlay2
   DOCKER_REGISTRY: $NEXUS_REGISTRY_URL
   DOCKER_TLS_CERTDIR: ""
   NEXUS_USERNAME: darkstar2025
@@ -35,7 +36,7 @@ build:
 #    - chmod -R 0777 "$MAVEN_USER_HOME"
   script:
     - echo "Building the application..."
-    - "mvn clean package -Dmaven.test.skip=true -Dquarkus.container-image.build=true"
+    - "mvn clean package -Dmaven.test.skip=true -Dquarkus.container-image.build=false"
   artifacts:
     paths:
       - target/quarkus-app/*.jar
@@ -82,9 +83,9 @@ sonarqube:
 
 image_build:
   stage: handle_image
-  image: nexus.psychotor.local/custom-dind:allpurpose
+  image: docker:20.10.16-dind
   services:
-    - name: nexus.psychotor.local/custom-dind:allpurpose
+    - name: docker:20.10.16-dind
       alias: docker
   variables:
     DOCKER_AUTH_CONFIG: >
