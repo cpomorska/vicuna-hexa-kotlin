@@ -40,10 +40,11 @@ build:
   artifacts:
     paths:
       - target/quarkus-app/*.jar
-      - target/quarkus-app/lib/
+      #- target/quarkus-app/lib/
       - target/quarkus-app/app
-      - target/quarkus-app/quarkus/
-      - target/site/
+      #- target/quarkus-app/quarkus/
+      #- target/site/
+    expire_in: 1 week
   only:
     - develop-no-camel
     - develop
