@@ -67,8 +67,6 @@ int_test:
     - echo "Running integration tests..."
     - "mvn verify -Pintegration"
   only:
-    - develop-no-camel
-    - develop
     - main
   allow_failure: true
 
@@ -77,8 +75,6 @@ sonarqube:
   script:
     - mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
   only:
-    - develop-no-camel
-    - develop
     - main
   allow_failure: true
 
@@ -104,8 +100,6 @@ image_build:
     - docker tag $DOCKER_REGISTRY/vicuna-hexa-kotlin:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
     - docker push $DOCKER_REGISTRY/vicuna-hexa-kotlin:$CI_COMMIT_REF_NAME
   only:
-    - develop-no-camel
-    - develop
     - main
 
 image_scan:
@@ -119,8 +113,6 @@ image_scan:
     - echo "Scanne Docker-Image mit Trivy..."
     - trivy image --exit-code 0 --severity HIGH,CRITICAL $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
   only:
-    - develop-no-camel
-    - develop
     - main
   allow_failure: true
 
