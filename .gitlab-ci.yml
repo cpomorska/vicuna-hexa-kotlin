@@ -54,7 +54,7 @@ unit_test:
   stage: run_tests
   script:
     - echo "Running unit tests..."
-    - "mvn verify -Punit"
+    - "mvn verify -Punit Dquarkus.container-image.build=false"
   only:
     - develop-no-camel
     - develop
