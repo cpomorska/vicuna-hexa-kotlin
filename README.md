@@ -1,93 +1,174 @@
-# vicuna-hexa-kotlin
+# Changes (Updated: September 24, 2025)
+
+- RHEL UBI 10 Image is used with Adoptium JDK
+- Quarkus 3.28.x and JDK 25 work
+- Full migration to Maven for faster builds (it is a small project)
+- Upgraded to latest Keycloak and Postgres DB
+- Better readable application.yml
+- Enabled tests do work
+- Health APi is enabled, better Kubernetes usability
+- Testdata is loaded via Liquibase
+
+# Changes (Updated: September 20, 2025)
+
+- Migrated build system from Gradle to Maven for better enterprise support and standardization
+- Fixed Maven wrapper script to properly set `maven.multiModuleProjectDirectory` system property
+- Updated build commands to use Maven exclusively for consistency
+- Standardized on Maven for both development and CI/CD workflows
+- Improved project structure alignment with Maven conventions
+- Added comprehensive GitHub Actions workflows for Maven-based CI/CD
+- Configured Renovate dependency management for automated updates
+- Integrated SonarQube support for code quality analysis
+- Added JaCoCo code coverage reporting
+- Configured Liquibase for database migration management
+- Set up Docker container image building via Quarkus Maven plugin
+- Added comprehensive test separation (unit tests via Surefire, integration tests via Failsafe)
+- Configured GitLab CI/CD pipeline for Maven builds
+- Added Terraform infrastructure as code for container deployment
+- Integrated Keycloak OIDC authentication with proper configuration
+- Set up Kafka messaging with Quarkus integration
+- Added comprehensive application configuration via YAML
+
+# vicuna-kotlin-quarkus
+
+This project uses Quarkus with Kotlin, Camel and Kafka. It is a (work in progress) small showcase for DDD
+and a single REST Service. The REST Service itself is now migrated to Quarkus Resteasy. The backend uses a switch to talk to database
+directly or via Kafka.
+
+# Build System: Why Maven over Gradle
+
+This project uses **Maven** as the primary build system for the following reasons:
+
+## Enterprise Adoption & Standardization
+- **Industry Standard**: Maven is the de facto standard in enterprise Java development with wider adoption across organizations
+- **Corporate Policies**: Many enterprises have standardized on Maven for compliance and governance reasons
+- **Tool Integration**: Better integration with enterprise CI/CD pipelines, security scanning tools, and dependency management systems
+
+## Quarkus & Framework Support
+- **Native Quarkus Support**: Quarkus provides first-class Maven support with extensive documentation and examples
+- **Extension Ecosystem**: Most Quarkus extensions and guides are Maven-first, ensuring better compatibility
+- **Jakarta EE Alignment**: Better alignment with Jakarta EE ecosystem which predominantly uses Maven
+
+## Dependency Management
+- **Mature BOM Support**: Superior Bill of Materials (BOM) handling for managing transitive dependencies
+- **Version Management**: More predictable and standardized approach to version management across multi-module projects
+- **Repository Management**: Better integration with enterprise artifact repositories (Nexus, Artifactory)
+
+## IDE & Tooling Support
+- **IntelliJ IDEA**: Superior Maven integration with better project import and dependency resolution
+- **CI/CD Integration**: More mature integration with GitHub Actions, Jenkins, and other CI systems
+- **Build Reproducibility**: More deterministic builds across different environments
+
+# Current Status
+
+#### Works
+- Project builds and (most of the) tests run
+- Image is built from Quarkus Maven plugin
+- The application runs in containers
+- A local docker-compose setup exists
+- Dependent software like Postgres, Kafka and keycloak are configured
+- Terraform with docker and podman works
+- REST services are accesible and secured with OIDC
+- Kafka connection and Topic creation
+
+### Possible does not work
+- Terraform destroys containers to early (only with podman) 
+- Kafka spams without consumer services
+- No vault connection for secrets
+- some tests fail (30 from 69)
+
+# Build the project
+
+#### 1. Build image (with container image build enabled and without tests)
+
+   > ./mvnw clean package -Dquarkus.container-image.build=true -DskipTests
+
+#### 2. Build artifact (without container image build and without tests)
+
+   > ./mvnw clean package -DskipTests
+
+#### 3. Run tests
+
+   - Unit tests (Maven Surefire):
+     > ./mvnw test
+   - Integration tests (Maven Failsafe):
+     > ./mvnw verify
+   - All tests:
+     > ./mvnw clean verify
+
+# Run the project (in docker containers)
+
+#### 1. Run with docker compose (all containers)
+
+* Requires: docker or podman, **artifact was build**
+* Spans 2 x Postgres, Kafka, Keycloak, vicuna-hexa-kotlin
+* Accessible on http://localhost:28089/vicuna/user/read/byname/bob
+* Keycloak is accessible on http://localhost:8180/realms/development
+
+> - start with: **docker compose -f docker-compose.local.yml up -d --build --force-recreate**
+> - shutdown with: **docker compose -f docker-compose.local.yml down**
+
+#### 2. Run with terraform (all containers)
+
+* Requires: docker or podman, **image was build**, if not, build image with
+> * Build docker image -> **docker build -f src/main/dcoker/Dockerfile.jvm -t cpomorska/vicuna-kotlin-quarkus .**
+> * Tag the image -> **docker tag cpomorska/vicuna-kotlin-quarkus:latest cpomorska/vicuna-kotlin-quarkus:latest**
+
+* Spans 2 x Postgres, Kafka, Keycloak, vicuna-hexa-kotlin
+* Accessible on http://localhost:28089/vicuna/user/read/byname/bob
+* Keycloak is accessible on http://localhost:8180/realms/development
+
+> * Open terminal and change to the projectroot -> terraform directory
+> * Init with terraform -> **terraform init**
+> * Validate tf files -> **terraform validate**
+> * Plan with terraform -> **terraform plan -out "main.tfplan"**
+> * Execute with terraform -> **terraform apply "main.tfplan"**
+ 
+* Destroy deployed terraform resources
+> * Plan for resources to destroy -> **terraform plan -destroy -out "destroy.main.tfplan"**
+> * Destroy resources -> **terraform apply "destroy.main.tfplan"**
+
+
+#### 2. Run with OpenTofu (all containers)
+
+* Requires: docker or podman, opentofu >= 1.7 **image was build**
+* Spans 2 x Postgres, Kafka, Keycloak, vicuna-hexa-kotlin
+* Accessible on http://localhost:28089/vicuna/user/read/byname/bob
+* Keycloak is accessible on http://localhost:8180/realms/development
+
+> * Open terminal and change to the projectroot -> terraform directory
+> * Init with opentofu -> **tofu init**
+> * Validate tf files -> **tofu validate**
+> * Plan with opentofu -> **tofu plan -out "main.tfplan"**
+> * Execute with opentofu -> **tofu apply "main.tfplan"**
+
+* Destroy deployed opentofu resources
+> * Plan for resources to destroy -> **tofu plan -destroy -out "destroy.main.tfplan"**
+> * Destroy resources -> **tofu apply "destroy.main.tfplan"**
+
+
+# Use Case
+
+The main focus is using Kotlin and Camel with RESTEasy and Quarkus and bringing the application to OpenShift. An
+Eventlistener from Keycloak
+could use (Project ServiceConsumerEventlistener) this Service as external source for users.
+
+# Why is it named Vicuna
+
+Vicuna is a camel, the national animal of Peru. Because of Camel (the Integration Framework) the Application is named
+Vicuna. It has nothing to do with AI or Ki Models.
+
+# Tools used for Development
+
+- Docker
+- Podman - for Docker Replacement
+- Openshift Local - a local Openshift Installation
+- IntelliJ IDEA - Java and Kotlin Development
+- Windows 11 and RHEL 9, 10
+- Keycloak 2x.x.x (latest)
+- PostgreSQL 17
+- Terraform/OpenTofu 1.8.0 + docker extension
+- Maven 3.9+ - Primary build system
 
 
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.smartjump.tech/develop/vicuna-hexa-kotlin.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.smartjump.tech/develop/vicuna-hexa-kotlin/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
