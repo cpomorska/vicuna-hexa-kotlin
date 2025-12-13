@@ -1,0 +1,152 @@
+# =====================
+# Quarkus Konfiguration
+# =====================
+quarkus:
+  # --- Camel-Kontext ---
+  #camel:
+  #  context:
+  #    name: vicunacamel
+    # openapi:
+    #   expose:
+    #     enabled: true
+    #     servlet:
+    #       url-patterns: /vicuna/*
+
+  # --- HTTP-Einstellungen ---
+  http:
+    cors:
+      enabled: true
+      origins: /*
+      headers: origin, accept, authorization, content-type, x-requested-with
+      methods: "*"
+    http2: false
+    access-log:
+      enabled: true
+    port: 8089
+    root-path: /vicuna
+    auth:
+      proactive: true
+      permission:
+        secured:
+          paths: /vicuna/upi/*,
+          policy: authenticated
+        public:
+          paths: /vicuna/*
+          policy: permit
+
+  # --- Datenbank-Konfiguration ---
+  # ENV-Variablen mit Default-Werten für flexible Nutzung
+  datasource:
+    db-kind: postgresql
+    jdbc:
+      url: ${DB_URL:jdbc:postgresql://host.docker.internal:15432/vicuna_user}
+      pooling-enabled: true
+    username: ${DB_USER:vicuna_user}
+    password: ${DB_PASSWORD:vicuna_pw}
+    devservices:
+      enabled: true
+      port: 15432
+      username: ${DB_USER:vicuna_user}
+      password: ${DB_PASSWORD:vicuna_pw}
+      db-name: ${DB_NAME:vicuna_user}
+    health-exclude: true # Deaktiviert DB-Health-Check
+
+  # --- Liquibase Migration ---
+  liquibase:
+    enabled: true
+    migrate-at-start: true
+    change-log: db/db.changelog-master.yaml
+
+  # --- Container-Image Einstellungen ---
+  container-image:
+    builder: docker
+    build: false
+    push: false
+    image: cpomorska/vicuna-kotlin-quarkus
+    tag: 1.0.develop
+
+  # --- OIDC (Keycloak) Authentifizierung ---
+  # ENV-Variablen mit Default-Werten für flexible Nutzung
+  oidc:
+    auth-server-url: ${KEYCLOAK_URL:http://host.docker.internal:8180/realms/development}
+    client-id: ${KEYCLOAK_CLIENT_ID:backend-service}
+    #client-secret: ${KEYCLOAK_CLIENT_SECRET:qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz}
+    application-type: hybrid
+
+  # --- Keycloak Devservices ---
+  keycloak:
+    devservices:
+      enabled: true
+      start-command: "start-dev --db=dev-mem"
+      port: 8180
+      realm-path: ${KEYCLOAK_REALM_PATH:develeopment-realm.json}
+      realm-name: ${KEYCLOAK_REALM_NAME:development}
+
+  # --- OpenAPI Einstellungen ---
+  smallrye-openapi:
+    enabled: true
+    path: /openapi
+    #oauth2-implicit-authorization-url: http://localhost:8180/realms/development/protocol/openid-connect/auth
+    #oauth2-implicit-token-url: http://localhost:8180/realms/development/protocol/openid-connect/token
+
+  # --- Health-Checks (Messaging/Kafka deaktiviert) ---
+#  smallrye-health:
+#    extensions:
+#      messaging:
+#        enabled: false
+#      kafka:
+#        enabled: false
+
+# =====================
+# Camel Einstellungen
+# =====================
+camel:
+  main:
+    jmxEnabled: false
+
+# =====================
+# Kafka Einstellungen
+# =====================
+kafka:
+  health-exclude: true # Deaktiviert Kafka-Health-Check
+  bootstrap:
+    servers: host.docker.internal:29092
+
+# --- Kafka Streams Einstellungen ---
+kafka-streams:
+  disabled: true
+  health:
+    enabled: false
+  health-exclude: true # Deaktiviert Kafka Streams Health-Check
+  bootstrap:
+    servers: host.docker.internal:29092
+
+
+# =====================
+# MicroProfile Einstellungen
+# =====================
+mp:
+  rest:
+    openapi:
+      scan:
+        enabled: true
+
+  openapi:
+    extensions:
+      smallrye:
+        operationIdStrategy: METHOD
+
+  messaging:
+    health-exclude: true # Deaktiviert Messaging-Health-Check
+    outgoing:
+      users-out:
+        connector: smallrye-kafka
+        topic: user-out
+    incoming:
+      users-in:
+        connector: smallrye-kafka
+        key:
+          deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+        value:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        topic: user-in
