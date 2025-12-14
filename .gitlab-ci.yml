@@ -79,8 +79,8 @@ sonarqube:
       #!/bin/bash
       set -e # Exit immediately if any command fails
 
-      echo "Fetching certificate chain from $SONAR_HOSTNAME..."
-      openssl s_client -showcerts -connect sonorqube.smartjump.tech:443 -servername $SONAR_HOSTNAME </dev/null 2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/sonarqube_chain.pem
+      echo "Fetching certificate chain from ..."
+      openssl s_client -showcerts -connect sonorqube.smartjump.tech:443 -servername https://sonorqube.smartjump.tech </dev/null 2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/sonarqube_chain.pem
       
       # Now the IF statement is robust bash syntax:
       if [ ! -s "/tmp/sonarqube_chain.pem" ]; then
