@@ -12,6 +12,7 @@ variables:
   NEXUS_PASSWORD: KaGu62Po!!!
   NEXUS_REGISTRY_URL: nexus.psychotor.local
   IMAGE_NAME: $DOCKER_REGISTRY/vicuna-hexa-kotlin:latest
+  SONAR_HOSTNAME: $(echo $SONAR_HOST_URL | sed -e 's|^[^/]*//||' -e 's|/.*$||')
 
 default:
   tags:
@@ -72,9 +73,22 @@ int_test:
 
 sonarqube:
   stage: run_tests
+  before_script:
+    # Use a literal block scalar and force the shell to be bash
+    - echo "Fetching certificate chain from ..."
+    - echo $(echo ${SONAR_HOST_URL#*//}):443
+    # get sonar qube host cert
+    - openssl s_client -showcerts -connect $(echo ${SONAR_HOST_URL#*//}):443 </dev/null 2>/dev/null | openssl x509 -outform PEM > sonarqube.crt
+    - cat sonarqube.crt >> /usr/local/share/ca-certificates/scp.sonarqube.crt
+
+    # 2. Import the certificate (Runs in the SAME process as step 1, but modifies the FS)
+    - keytool -importcert -file /usr/local/share/ca-certificates/scp.sonarqube.crt -alias scp-sonarqube -cacerts -storepass changeit -noprompt -rfc
   script:
-    - mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+    # Gitlab CI might execute this as a new shell instance, ensuring a fresh JVM is spawned.
+    - echo "Running Sonar analysis with updated truststore..."
+    - mvn -q test sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml -Dsonar.projectKey=vicuna-hexa-kotlin -Dquarkus.container-image.build=false
   only:
+    - develop
     - main
   allow_failure: true
 
