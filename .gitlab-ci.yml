@@ -89,6 +89,7 @@ sonarqube:
 
     - mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
   only:
+    - develop
     - main
   allow_failure: true
 
