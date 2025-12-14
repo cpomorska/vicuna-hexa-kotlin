@@ -74,20 +74,25 @@ int_test:
 sonarqube:
   stage: run_tests
   script:
-    # 1. Fetch the certificate chain using openssl s_client (flattened into one command line)
-    - openssl s_client -showcerts -connect $SONAR_HOSTNAME:443 -servername $SONAR_HOSTNAME </dev/null 2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/sonarqube_chain.pem
+    # Use a literal block scalar and force the shell to be bash
+    - |
+      #!/bin/bash
+      set -e # Exit immediately if any command fails
 
-    # 2. Verify the downloaded file
-    - "if [ ! -s /tmp/sonarqube_chain.pem ]; then echo 'Error: Failed to download certificate chain.'; exit 1; fi"
+      echo "Fetching certificate chain from $SONAR_HOSTNAME..."
+      openssl s_client -showcerts -connect sonorqube.smartjump.tech:443 -servername $SONAR_HOSTNAME </dev/null 2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/sonarqube_chain.pem
+      
+      # Now the IF statement is robust bash syntax:
+      if [ ! -s "/tmp/sonarqube_chain.pem" ]; then
+        echo "Error: Failed to download certificate chain or file is empty."
+        exit 1
+      fi
 
-    # 3. Import the entire PEM bundle into the Java 'cacerts' truststore using keytool
-    - echo "Importing certificate into JRE truststore..."
-    - keytool -import -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -alias sonarqube_ca_chain -file /tmp/sonarqube_chain.pem -noprompt
+      echo "Importing certificate into JRE truststore..."
+      keytool -import -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -alias sonarqube_ca_chain -file /tmp/sonarqube_chain.pem -noprompt
 
-    # 4. Run the original Maven command
-    - echo "Certificate imported, running Sonar analysis..."
-
-    - mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+      echo "Certificate imported, running Sonar analysis..."
+      mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
   only:
     - develop
     - main
