@@ -86,7 +86,7 @@ sonarqube:
   script:
     # Gitlab CI might execute this as a new shell instance, ensuring a fresh JVM is spawned.
     - echo "Running Sonar analysis with updated truststore..."
-    - mvn -q test sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml -Dsonar.projectKey=vicuna-hexa-kotlin -Dquarkus.container-image.build=false
+    - mvn -q test sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml -Dsonar.projectKey=develop_vicuna-hexa-kotlin_6dbd0254-de00-4c97-b9a5-65e8af77847c -Dquarkus.container-image.build=false
   only:
     - develop
     - main
