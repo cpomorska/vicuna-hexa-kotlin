@@ -73,7 +73,7 @@ int_test:
 
 sonarqube:
   stage: run_tests
-  script:
+  before_script:
     # Use a literal block scalar and force the shell to be bash
     - |
       #!/bin/bash
@@ -91,7 +91,7 @@ sonarqube:
 
     # 2. Import the certificate (Runs in the SAME process as step 1, but modifies the FS)
     - keytool -import -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -alias sonarqube_ca_chain -file /tmp/sonarqube_chain.pem -noprompt
-
+  script:
     # 3. CRITICAL: Run Maven in a *separate* script entry.
     # Gitlab CI might execute this as a new shell instance, ensuring a fresh JVM is spawned.
     - echo "Running Sonar analysis with updated truststore..."
