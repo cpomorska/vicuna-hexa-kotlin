@@ -75,24 +75,15 @@ sonarqube:
   stage: run_tests
   before_script:
     # Use a literal block scalar and force the shell to be bash
-    - |
-      #!/bin/bash
-      set -e # Exit immediately if any command fails
-
-      echo "Fetching certificate chain from ..."
-      openssl s_client -showcerts -connect sonorqube.smartjump.tech:443 -servername https://sonorqube.smartjump.tech </dev/null 2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/sonarqube_chain.pem
-      
-      # Now the IF statement is robust bash syntax:
-      if [ ! -s "/tmp/sonarqube_chain.pem" ]; then
-        echo "Error: Failed to download certificate chain or file is empty."
-        exit 1
-      fi
-      echo "Certificate chain downloaded."
+    - echo "Fetching certificate chain from ..."
+    - echo $(echo ${SONAR_HOST_URL#*//}):443
+    # get sonar qube host cert
+    - openssl s_client -showcerts -connect $(echo ${SONAR_HOST_URL#*//}):443 </dev/null 2>/dev/null | openssl x509 -outform PEM > sonarqube.crt
+    - cat sonarqube.crt >> /usr/local/share/ca-certificates/scp.sonarqube.crt
 
     # 2. Import the certificate (Runs in the SAME process as step 1, but modifies the FS)
-    - keytool -import -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -alias sonarqube_ca_chain -file /tmp/sonarqube_chain.pem -noprompt
-  script:
-    # 3. CRITICAL: Run Maven in a *separate* script entry.
+    - keytool -importcert -file /usr/local/share/ca-certificates/scp.sonarqube.crt -alias scp-sonarqube -cacerts -storepass changeit -noprompt -rfc
+
     # Gitlab CI might execute this as a new shell instance, ensuring a fresh JVM is spawned.
     - echo "Running Sonar analysis with updated truststore..."
     - mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
