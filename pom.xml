@@ -498,7 +498,6 @@
                     <goal>build</goal>
                     <goal>test</goal>
                     <goal>dev</goal>
-<!--                    <goal>image-build</goal>-->
                     <goal>run</goal>
                     <goal>generate-code</goal>
                     <goal>generate-code-tests</goal>
@@ -508,7 +507,6 @@
                     <execution>
                         <goals>
                             <goal>build</goal>
-<!--                            <goal>image-build</goal>-->
                         </goals>
                     </execution>
                 </executions>
