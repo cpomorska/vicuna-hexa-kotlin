@@ -87,12 +87,15 @@ sonarqube:
         echo "Error: Failed to download certificate chain or file is empty."
         exit 1
       fi
+      echo "Certificate chain downloaded."
 
-      echo "Importing certificate into JRE truststore..."
-      keytool -import -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -alias sonarqube_ca_chain -file /tmp/sonarqube_chain.pem -noprompt
+    # 2. Import the certificate (Runs in the SAME process as step 1, but modifies the FS)
+    - keytool -import -trustcacerts -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -alias sonarqube_ca_chain -file /tmp/sonarqube_chain.pem -noprompt
 
-      echo "Certificate imported, running Sonar analysis..."
-      mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+    # 3. CRITICAL: Run Maven in a *separate* script entry.
+    # Gitlab CI might execute this as a new shell instance, ensuring a fresh JVM is spawned.
+    - echo "Running Sonar analysis with updated truststore..."
+    - mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
   only:
     - develop
     - main
