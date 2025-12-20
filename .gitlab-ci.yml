@@ -83,10 +83,10 @@ sonarqube:
 
     # 2. Import the certificate (Runs in the SAME process as step 1, but modifies the FS)
     - keytool -importcert -file /usr/local/share/ca-certificates/scp.sonarqube.crt -alias scp-sonarqube -cacerts -storepass changeit -noprompt -rfc
-
+  script:
     # Gitlab CI might execute this as a new shell instance, ensuring a fresh JVM is spawned.
     - echo "Running Sonar analysis with updated truststore..."
-    - mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+    - mvn -q test sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml -Dsonar.projectKey=vicuna-hexa-kotlin -Dquarkus.container-image.build=false
   only:
     - develop
     - main
