@@ -26,7 +26,9 @@
         <!-- Dependency versions -->
         <archunit.version>1.4.1</archunit.version>
         <assertj.version>3.27.6</assertj.version>
+
         <bytebuddy.version>1.18.2</bytebuddy.version>
+
         <camel-quarkus-integration-test-kotlin.version>3.16.0</camel-quarkus-integration-test-kotlin.version>
         <camel-quarkus-kotlin.version>3.16.0</camel-quarkus-kotlin.version>
         <failsafe.version>3.5.4</failsafe.version>
@@ -40,6 +42,7 @@
 
         <!-- Plugin versions -->
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+
         <quarkus-maven-plugin.version>3.30.4</quarkus-maven-plugin.version>
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
 
