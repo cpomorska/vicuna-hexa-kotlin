@@ -21,12 +21,14 @@
         <quarkus.camel.version>3.26.0</quarkus.camel.version>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.26.4</quarkus.platform.version>
+        <quarkus.platform.version>3.30.4</quarkus.platform.version>
 
         <!-- Dependency versions -->
         <archunit.version>1.4.1</archunit.version>
         <assertj.version>3.27.6</assertj.version>
-        <bytebuddy.version>1.17.8</bytebuddy.version>
+
+        <bytebuddy.version>1.18.2</bytebuddy.version>
+
         <camel-quarkus-integration-test-kotlin.version>3.16.0</camel-quarkus-integration-test-kotlin.version>
         <camel-quarkus-kotlin.version>3.16.0</camel-quarkus-kotlin.version>
         <failsafe.version>3.5.4</failsafe.version>
@@ -40,7 +42,8 @@
 
         <!-- Plugin versions -->
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-        <quarkus-maven-plugin.version>3.28.4</quarkus-maven-plugin.version>
+
+        <quarkus-maven-plugin.version>3.30.4</quarkus-maven-plugin.version>
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
 
         <!-- SonarQube properties -->
@@ -79,9 +82,13 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-config-yaml</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.quarkus</groupId>-->
+<!--            <artifactId>quarkus-container-image-openshift</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-container-image-openshift</artifactId>
+            <artifactId>quarkus-container-image-docker</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -323,7 +330,7 @@
         <dependency>
             <groupId>com.github.dasniko</groupId>
             <artifactId>testcontainers-keycloak</artifactId>
-            <version>3.9.0</version>
+            <version>3.9.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -494,7 +501,6 @@
                     <goal>build</goal>
                     <goal>test</goal>
                     <goal>dev</goal>
-                    <goal>image-build</goal>
                     <goal>run</goal>
                     <goal>generate-code</goal>
                     <goal>generate-code-tests</goal>
@@ -504,7 +510,6 @@
                     <execution>
                         <goals>
                             <goal>build</goal>
-                            <goal>image-build</goal>
                         </goals>
                     </execution>
                 </executions>

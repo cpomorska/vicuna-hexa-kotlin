@@ -5,12 +5,14 @@ variables:
   SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
   GIT_DEPTH: "0"
   DOCKER_HOST: "tcp://docker:2375"
+  DOCKER_DRIVER: overlay2
   DOCKER_REGISTRY: $NEXUS_REGISTRY_URL
   DOCKER_TLS_CERTDIR: ""
   NEXUS_USERNAME: darkstar2025
   NEXUS_PASSWORD: KaGu62Po!!!
   NEXUS_REGISTRY_URL: nexus.psychotor.local
   IMAGE_NAME: $DOCKER_REGISTRY/vicuna-hexa-kotlin:latest
+  SONAR_HOSTNAME: $(echo $SONAR_HOST_URL | sed -e 's|^[^/]*//||' -e 's|/.*$||')
 
 default:
   tags:
@@ -35,14 +37,15 @@ build:
 #    - chmod -R 0777 "$MAVEN_USER_HOME"
   script:
     - echo "Building the application..."
-    - "mvn clean package -Dmaven.test.skip=true -Dquarkus.container-image.build=true"
+    - "mvn clean package -Dmaven.test.skip=true -Dquarkus.container-image.build=false"
   artifacts:
     paths:
       - target/quarkus-app/*.jar
-      - target/quarkus-app/lib/
+      #- target/quarkus-app/lib/
       - target/quarkus-app/app
-      - target/quarkus-app/quarkus/
-      - target/site/
+      #- target/quarkus-app/quarkus/
+      #- target/site/
+    expire_in: 1 week
   only:
     - develop-no-camel
     - develop
@@ -52,7 +55,7 @@ unit_test:
   stage: run_tests
   script:
     - echo "Running unit tests..."
-    - "mvn verify -Punit"
+    - "mvn clean test -Dquarkus.container-image.build=false"
   only:
     - develop-no-camel
     - develop
@@ -65,26 +68,35 @@ int_test:
     - echo "Running integration tests..."
     - "mvn verify -Pintegration"
   only:
-    - develop-no-camel
-    - develop
     - main
   allow_failure: true
 
 sonarqube:
   stage: run_tests
+  before_script:
+    # Use a literal block scalar and force the shell to be bash
+    - echo "Fetching certificate chain from ..."
+    - echo $(echo ${SONAR_HOST_URL#*//}):443
+    # get sonar qube host cert
+    - openssl s_client -showcerts -connect $(echo ${SONAR_HOST_URL#*//}):443 </dev/null 2>/dev/null | openssl x509 -outform PEM > sonarqube.crt
+    - cat sonarqube.crt >> /usr/local/share/ca-certificates/scp.sonarqube.crt
+
+    # 2. Import the certificate (Runs in the SAME process as step 1, but modifies the FS)
+    - keytool -importcert -file /usr/local/share/ca-certificates/scp.sonarqube.crt -alias scp-sonarqube -cacerts -storepass changeit -noprompt -rfc
   script:
-    - mvn -q sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+    # Gitlab CI might execute this as a new shell instance, ensuring a fresh JVM is spawned.
+    - echo "Running Sonar analysis with updated truststore..."
+    - mvn -q test sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml -Dsonar.projectKey=develop_vicuna-hexa-kotlin_6dbd0254-de00-4c97-b9a5-65e8af77847c -Dquarkus.container-image.build=false
   only:
-    - develop-no-camel
     - develop
     - main
   allow_failure: true
 
 image_build:
   stage: handle_image
-  image: nexus.psychotor.local/custom-dind:allpurpose
+  image: docker:20.10.16-dind
   services:
-    - name: nexus.psychotor.local/custom-dind:allpurpose
+    - name: docker:20.10.16-dind
       alias: docker
   variables:
     DOCKER_AUTH_CONFIG: >
@@ -102,8 +114,6 @@ image_build:
     - docker tag $DOCKER_REGISTRY/vicuna-hexa-kotlin:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
     - docker push $DOCKER_REGISTRY/vicuna-hexa-kotlin:$CI_COMMIT_REF_NAME
   only:
-    - develop-no-camel
-    - develop
     - main
 
 image_scan:
@@ -117,8 +127,6 @@ image_scan:
     - echo "Scanne Docker-Image mit Trivy..."
     - trivy image --exit-code 0 --severity HIGH,CRITICAL $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
   only:
-    - develop-no-camel
-    - develop
     - main
   allow_failure: true
 
