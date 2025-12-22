@@ -498,7 +498,6 @@
                     <goal>build</goal>
                     <goal>test</goal>
                     <goal>dev</goal>
-<!--                    <goal>image-build</goal>-->
                     <goal>run</goal>
                     <goal>generate-code</goal>
                     <goal>generate-code-tests</goal>
@@ -508,7 +507,6 @@
                     <execution>
                         <goals>
                             <goal>build</goal>
-<!--                            <goal>image-build</goal>-->
                         </goals>
                     </execution>
                 </executions>
@@ -523,13 +521,13 @@
         </plugins>
     </build>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>central</id>-->
-<!--            <name>Maven Central</name>-->
-<!--            <url>https://repo1.maven.org/maven2/</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
 
     <profiles>
         <profile>
