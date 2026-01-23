@@ -21,7 +21,7 @@
         <quarkus.camel.version>3.26.0</quarkus.camel.version>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.30.4</quarkus.platform.version>
+        <quarkus.platform.version>3.30.8</quarkus.platform.version>
 
         <!-- Dependency versions -->
         <archunit.version>1.4.1</archunit.version>
@@ -43,7 +43,7 @@
         <!-- Plugin versions -->
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
 
-        <quarkus-maven-plugin.version>3.30.4</quarkus-maven-plugin.version>
+        <quarkus-maven-plugin.version>3.30.8</quarkus-maven-plugin.version>
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
 
         <!-- SonarQube properties -->

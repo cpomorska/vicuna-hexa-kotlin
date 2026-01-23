@@ -28,7 +28,7 @@ quarkus:
       proactive: true
       permission:
         secured:
-          paths: /vicuna/upi/*,
+          paths: /vicuna/uiu/read/*,
           policy: authenticated
         public:
           paths: /vicuna/*
@@ -70,7 +70,7 @@ quarkus:
   oidc:
     auth-server-url: ${KEYCLOAK_URL:http://host.docker.internal:8180/realms/development}
     client-id: ${KEYCLOAK_CLIENT_ID:backend-service}
-    #client-secret: ${KEYCLOAK_CLIENT_SECRET:qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz}
+    client-secret: ${KEYCLOAK_CLIENT_SECRET:qQOkEGGd6JzzeDj0wkqjTFzrHdJiWdgz}
     application-type: hybrid
 
   # --- Keycloak Devservices ---
@@ -79,7 +79,7 @@ quarkus:
       enabled: true
       start-command: "start-dev --db=dev-mem"
       port: 8180
-      realm-path: ${KEYCLOAK_REALM_PATH:develeopment-realm.json}
+      realm-path: ${KEYCLOAK_REALM_PATH:development-realm.json}
       realm-name: ${KEYCLOAK_REALM_NAME:development}
 
   # --- OpenAPI Einstellungen ---

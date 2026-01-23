@@ -1,26 +1,26 @@
 version: '3'
 services:
-  vicunakotlinquarkus:
-    container_name: vicuna-kotlin-quarkus
-    build:
-      context: ./
-      dockerfile: src/main/docker/Dockerfile.jvm
-    ports:
-      - '28089:8089'
-    expose:
-      - 8089
-    depends_on:
-        kafka:
-          condition: service_started
-        keycloak:
-          condition: service_healthy
-        postgres:
-          condition: service_healthy
-    environment:
-      - TZ=UTC
-    network_mode: bridge
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+#  vicunakotlinquarkus:
+#    container_name: vicuna-kotlin-quarkus
+#    build:
+#      context: ./
+#      dockerfile: src/main/docker/Dockerfile.jvm
+#    ports:
+#      - '28089:8089'
+#    expose:
+#      - 8089
+#    depends_on:
+#        kafka:
+#          condition: service_started
+#        keycloak:
+#          condition: service_healthy
+#        postgres:
+#          condition: service_healthy
+#    environment:
+#      - TZ=UTC
+#    network_mode: bridge
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
 
   keycloak:
     container_name: vicuna-keycloak
@@ -39,8 +39,8 @@ services:
     depends_on:
       postgres-kc:
         condition: service_healthy
-      postgres:
-        condition: service_healthy
+#      postgres:
+#        condition: service_healthy
     networks:
       - vicuna-net
     extra_hosts:
@@ -72,44 +72,44 @@ services:
       timeout: 5s
       retries: 5
 
-  postgres:
-    container_name: vicuna-postgresql
-    image: 'postgres:17'
-    env_file:
-      postgres.local.env
-    ports:
-      - '15432:5432'
-    expose:
-      - '5432'
-    networks:
-    - vicuna-net
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U vicuna_user" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+#  postgres:
+#    container_name: vicuna-postgresql
+#    image: 'postgres:17'
+#    env_file:
+#      postgres.local.env
+#    ports:
+#      - '15432:5432'
+#    expose:
+#      - '5432'
+#    networks:
+#    - vicuna-net
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U vicuna_user" ]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5
 
-  kafka:
-    container_name: vicuna-kafka
-    image: apache/kafka:latest
-    hostname: kafka
-    env_file:
-      - kafka.local.env
-    ports:
-      - "29092:9092"
-    expose:
-      - "9092"
-    networks:
-      - vicuna-net
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    healthcheck:
-      test: nc -z localhost 9092 || exit -1
-      interval: 5s
-      timeout: 10s
-      retries: 10
+#  kafka:
+#    container_name: vicuna-kafka
+#    image: apache/kafka:latest
+#    hostname: kafka
+#    env_file:
+#      - kafka.local.env
+#    ports:
+#      - "29092:9092"
+#    expose:
+#      - "9092"
+#    networks:
+#      - vicuna-net
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    healthcheck:
+#      test: nc -z localhost 9092 || exit -1
+#      interval: 5s
+#      timeout: 10s
+#      retries: 10
 
 networks:
   vicuna-net:
