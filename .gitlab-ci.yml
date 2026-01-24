@@ -94,9 +94,9 @@ sonarqube:
 
 image_build:
   stage: handle_image
-  image: docker:20.10.16-dind
+  image: docker:20.10.24-dind
   services:
-    - name: docker:20.10.16-dind
+    - name: docker:20.10.24-dind
       alias: docker
   variables:
     DOCKER_AUTH_CONFIG: >
