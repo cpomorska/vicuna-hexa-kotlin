@@ -44,7 +44,7 @@
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
 
         <quarkus-maven-plugin.version>3.31.0</quarkus-maven-plugin.version>
-        <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>5.5.0.6356</sonar-maven-plugin.version>
 
         <!-- SonarQube properties -->
         <sonar.exclusions>src/test/kotlin/com/scprojekt/health/**</sonar.exclusions>
