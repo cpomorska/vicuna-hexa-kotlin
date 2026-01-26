@@ -53,7 +53,7 @@ services:
 
   postgres-kc:
     container_name: postgresql-kc
-    image: 'postgres:17'
+    image: 'postgres:18'
     hostname: 'pgkc'
     command: -p 5433
     env_file:
