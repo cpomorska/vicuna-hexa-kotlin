@@ -23,7 +23,7 @@ class UserMapper {
         entity.userId = user.id
         entity.userName = user.name
         entity.userDescription = user.description
-        entity.version = user.version as Int? ?: 0
+        entity.version = user.version?.toInt() ?: 0
         entity.enabled = user.enabled
         
         // Map UserType to UserTypeEntity
@@ -84,7 +84,7 @@ class UserMapper {
         // Set version
         val versionField = userClass.getDeclaredField("version")
         versionField.isAccessible = true
-        versionField.set(user, entity.version)
+        versionField.set(user, entity.version.toLong())
         
         // Set enabled
         val enabledField = userClass.getDeclaredField("enabled")
