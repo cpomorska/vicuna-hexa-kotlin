@@ -38,7 +38,7 @@
         <mockito.core.version>5.3.1</mockito.core.version>
         <mockito.inline.version>5.2.0</mockito.inline.version>
         <mockito.kotlin.version>6.2.3</mockito.kotlin.version>
-        <surefire.version>3.5.4</surefire.version>
+        <surefire.version>3.5.5</surefire.version>
 
         <!-- Plugin versions -->
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
