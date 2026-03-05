@@ -31,7 +31,7 @@
 
         <camel-quarkus-integration-test-kotlin.version>3.16.0</camel-quarkus-integration-test-kotlin.version>
         <camel-quarkus-kotlin.version>3.16.0</camel-quarkus-kotlin.version>
-        <failsafe.version>3.5.4</failsafe.version>
+        <failsafe.version>3.5.5</failsafe.version>
         <jackson.version>2.16.1</jackson.version>
         <jacoco.version>0.8.14</jacoco.version>
         <lombok.version>1.18.42</lombok.version>
