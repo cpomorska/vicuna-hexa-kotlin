@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi10/ubi:10.1-1769662757
+FROM registry.access.redhat.com/ubi10/ubi:10.1-1772441712
 # Use Red Hat Universal Base Image 10 (UBI10) as the base image
 
 ENV LANGUAGE='en_US:en'
