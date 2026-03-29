@@ -486,7 +486,7 @@
                     <excludes>
                         <exclude>**/*IT.*</exclude>
                     </excludes>
-                    <forkCount>1</forkCount>
+                    <forkCount>0</forkCount>
                     <reuseForks>true</reuseForks>
                     <useManifestOnlyJar>false</useManifestOnlyJar>
                     <useSystemClassLoader>false</useSystemClassLoader>
