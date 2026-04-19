@@ -17,31 +17,32 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Platform versions -->
-        <kotlin.version>2.2.21</kotlin.version>
-        <quarkus.camel.version>3.26.0</quarkus.camel.version>
+        <kotlin.version>2.3.10</kotlin.version>
+        <quarkus.camel.version>3.31.0</quarkus.camel.version>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.30.4</quarkus.platform.version>
+        <quarkus.platform.version>3.34.5</quarkus.platform.version>
 
         <!-- Dependency versions -->
         <archunit.version>1.4.1</archunit.version>
-        <assertj.version>3.27.6</assertj.version>
-        <bytebuddy.version>1.18.2</bytebuddy.version>
+        <assertj.version>3.27.7</assertj.version>
+
         <camel-quarkus-integration-test-kotlin.version>3.16.0</camel-quarkus-integration-test-kotlin.version>
         <camel-quarkus-kotlin.version>3.16.0</camel-quarkus-kotlin.version>
-        <failsafe.version>3.5.4</failsafe.version>
+        <failsafe.version>3.5.5</failsafe.version>
         <jackson.version>2.16.1</jackson.version>
         <jacoco.version>0.8.14</jacoco.version>
-        <lombok.version>1.18.42</lombok.version>
+        <lombok.version>1.18.44</lombok.version>
         <mockito.core.version>5.3.1</mockito.core.version>
         <mockito.inline.version>5.2.0</mockito.inline.version>
-        <mockito.kotlin.version>6.0.0</mockito.kotlin.version>
-        <surefire.version>3.5.4</surefire.version>
+        <mockito.kotlin.version>6.3.0</mockito.kotlin.version>
+        <surefire.version>3.5.5</surefire.version>
 
         <!-- Plugin versions -->
-        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-        <quarkus-maven-plugin.version>3.30.4</quarkus-maven-plugin.version>
-        <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
+        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+
+        <quarkus-maven-plugin.version>3.34.5</quarkus-maven-plugin.version>
+        <sonar-maven-plugin.version>5.5.0.6356</sonar-maven-plugin.version>
 
         <!-- SonarQube properties -->
         <sonar.exclusions>src/test/kotlin/com/scprojekt/health/**</sonar.exclusions>
@@ -315,7 +316,6 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy-agent</artifactId>
-            <version>${bytebuddy.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -327,7 +327,7 @@
         <dependency>
             <groupId>com.github.dasniko</groupId>
             <artifactId>testcontainers-keycloak</artifactId>
-            <version>3.9.1</version>
+            <version>4.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -483,8 +483,10 @@
                     <excludes>
                         <exclude>**/*IT.*</exclude>
                     </excludes>
-                    <forkCount>0</forkCount>
-                    <reuseForks>false</reuseForks>
+                    <forkCount>1</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                    <useSystemClassLoader>false</useSystemClassLoader>
                 </configuration>
             </plugin>
 

@@ -78,27 +78,50 @@ class UserManagementResource {
 //    }
 
     @POST
-    @Operation(summary = "Create a new user", description = "Creates a new user with the specified details")
-    fun createUser(createUserDto: CreateUserDto): Response {
-        val userType = UserType.create(
-            roleType = createUserDto.userTypeRole,
-            description = createUserDto.description
+    @Operation(
+        summary = "Create a new user",
+        description = "Creates a new user with the specified details",
+        requestBody = io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = [
+                io.swagger.v3.oas.annotations.media.Content(
+                    mediaType = "application/json",
+                    schema = io.swagger.v3.oas.annotations.media.Schema(implementation = CreateUserDto::class),
+                    examples = [
+                        io.swagger.v3.oas.annotations.media.ExampleObject(
+                            name = "Standard User",
+                            summary = "A standard user with contact information",
+                            value = """
+                                {
+                                  "username": "jdoe",
+                                  "userTypeRole": "USER",
+                                  "description": "Standard system user",
+                                  "contactInfo": [
+                                    {
+                                      "email": "john.doe@example.com",
+                                      "phone": "+1234567890"
+                                    }
+                                  ]
+                                }
+                            """
+                        )
+                    ]
+                )
+            ]
         )
-
+    )
+    fun createUser(createUserDto: CreateUserDto): Response {
+        val user = userDtoMapper.toDomain(createUserDto)
         val (userAggregate, _) = userService.createUser(
-            name = createUserDto.username,
-            type = userType,
-            description = createUserDto.description
+            name = user.name,
+            type = user.type,
+            description = user.description
         )
 
         // Add contact info if provided
-        createUserDto.contactInfo.forEach { contactInfoDto ->
+        user.contactInfo.forEach { contactInfo ->
             userService.addContactInfo(
                 userId = userAggregate.getNumber(),
-                contactInfo = ContactInfo(
-                    email = contactInfoDto.email,
-                    phone = contactInfoDto.phone
-                )
+                contactInfo = contactInfo
             )
         }
 

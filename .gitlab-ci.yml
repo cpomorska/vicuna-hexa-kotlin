@@ -1,4 +1,4 @@
-image: maven:3.9.11-eclipse-temurin-17
+image: maven:3.9.14-eclipse-temurin-17
 
 variables:
   MAVEN_OPTS: "-Xmx2g -Xms512m"
@@ -94,9 +94,9 @@ sonarqube:
 
 image_build:
   stage: handle_image
-  image: docker:20.10.16-dind
+  image: docker:29.3.1-dind
   services:
-    - name: docker:20.10.16-dind
+    - name: docker:29.3.1-dind
       alias: docker
   variables:
     DOCKER_AUTH_CONFIG: >

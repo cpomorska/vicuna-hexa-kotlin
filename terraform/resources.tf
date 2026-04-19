@@ -14,7 +14,7 @@ resource "docker_image" "keycloak" {
 }
 
 resource "docker_image" "postgres_keycloak" {
-  name         = "postgres:17"
+  name         = "postgres:18"
   keep_locally = true
 }
 
