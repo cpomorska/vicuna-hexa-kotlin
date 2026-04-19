@@ -6,6 +6,8 @@ import com.scprojekt.domain.model.user.value.UserCredentials
 import java.time.Instant
 import java.util.*
 
+private const val USERNAME_CANNOT_BE_BLANK = "Username cannot be blank"
+
 /**
  * User domain entity that represents a user in the system.
  * This is a rich domain model that encapsulates both data and behavior.
@@ -28,7 +30,7 @@ data class User(
             type: UserType,
             description: String
         ): User {
-            require(name.isNotBlank()) { "Username cannot be blank" }
+            require(name.isNotBlank()) { USERNAME_CANNOT_BE_BLANK }
             require(name.length >= 3) { "Username must be at least 3 characters" }
             
             return User(
@@ -54,7 +56,7 @@ data class User(
     }
     
     init {
-        require(name.isNotBlank()) { "Username cannot be blank" }
+        require(name.isNotBlank()) { USERNAME_CANNOT_BE_BLANK }
         require(name.length >= 3) { "Username must be at least 3 characters" }
     }
     
@@ -63,7 +65,7 @@ data class User(
     }
     
     fun changeName(newName: String): User {
-        require(newName.isNotBlank()) { "Username cannot be blank" }
+        require(newName.isNotBlank()) { USERNAME_CANNOT_BE_BLANK }
         require(validateName(newName)) { "Invalid username format" }
         
         return this.copy(name = newName)

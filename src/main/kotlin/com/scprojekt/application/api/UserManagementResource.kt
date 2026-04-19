@@ -44,39 +44,6 @@ class UserManagementResource {
     @Inject
     lateinit var userDtoMapper: UserDtoMapper
 
-//    @GET
-//    @Path("/{userId}")
-//    @Operation(summary = "Get a user by ID", description = "Returns the user with the specified ID")
-//    @SecurityRequirement(name = "oidc")
-//    fun getUser(@PathParam("userId") userId: UUID): Response {
-//        val userAggregate = userService.getUserByUuid(userId)
-//            ?: return Response.status(Response.Status.NOT_FOUND).build()
-//
-//        val userDto = userDtoMapper.toDto(userAggregate.getUser())
-//        return Response.ok(userDto).build()
-//    }
-
-//    @GET
-//    @Operation(summary = "Find users by criteria", description = "Returns users matching the specified criteria")
-//    fun findUsers(
-//        @QueryParam("name") name: String?,
-//        @QueryParam("type") type: String?,
-//        @QueryParam("description") description: String?
-//    ): Response {
-//        val users = when {
-//            !name.isNullOrBlank() -> userService.findUsersByName(name)
-//            !type.isNullOrBlank() -> {
-//                val userType = UserType.create(type, "")
-//                userService.findUsersByType(userType)
-//            }
-//            !description.isNullOrBlank() -> userService.findUsersByDescription(description)
-//            else -> emptyList()
-//        }
-//
-//        val userDtos = users.map { userDtoMapper.toDto(it.getUser()) }
-//        return Response.ok(userDtos).build()
-//    }
-
     @POST
     @Operation(
         summary = "Create a new user",

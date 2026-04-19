@@ -1,9 +1,11 @@
 package com.scprojekt.infrastructure.persistence.mapper
 
 import com.scprojekt.domain.model.user.User
+import com.scprojekt.domain.model.user.value.ContactInfo as DomainContactInfo
 import com.scprojekt.domain.model.user.UserType
 import com.scprojekt.infrastructure.persistence.entity.UserEntity
 import com.scprojekt.infrastructure.persistence.entity.UserNumberEntity
+import com.scprojekt.infrastructure.persistence.entity.ContactInfoEntity
 import com.scprojekt.infrastructure.persistence.entity.UserTypeEntity
 import jakarta.enterprise.context.ApplicationScoped
 import java.util.*
@@ -38,16 +40,15 @@ class UserMapper {
         val userNumberEntity = UserNumberEntity(user.number ?: UUID.randomUUID())
         entity.userNumber = userNumberEntity
         
-//        // Map ContactInfo list to ContactInfoEntity list
-//        entity.contactInfo = user.contactInfo.map { contactInfo ->
-//            val contactInfoEntity = ContactInfoEntity().apply {
-//                this.email = contactInfo.email
-//                this.phone = contactInfo.phone
-//                this.user = entity // Set the back-reference to UserEntity
-//            }
-//            contactInfoEntity
-//        }.firstOrNull() ?: ContactInfoEntity() // Ensure at least one ContactInfoEntity
-        
+        // Map ContactInfo list to ContactInfoEntity (persist all elements)
+        entity.contactInfo = user.contactInfo.map { contactInfo ->
+            ContactInfoEntity().apply {
+                this.email = contactInfo.email
+                this.phone = contactInfo.phone
+                this.user = entity // Set the back-reference to UserEntity
+            }
+        }.toMutableList()
+
         return entity
     }
 
@@ -72,31 +73,46 @@ class UserMapper {
         val userClass = User::class.java
         
         // Set ID
+        @Suppress("kotlin:S6518")
         val idField = userClass.getDeclaredField("id")
         idField.isAccessible = true
         idField.set(user, entity.userId)
         
         // Set UUID
+        @Suppress("kotlin:S6518")
         val numberField = userClass.getDeclaredField("number")
         numberField.isAccessible = true
         numberField.set(user, entity.userNumber.uuid)
 
         // Set version
+        @Suppress("kotlin:S6518")
         val versionField = userClass.getDeclaredField("version")
         versionField.isAccessible = true
         versionField.set(user, entity.version.toLong())
         
         // Set enabled
+        @Suppress("kotlin:S6518")
         val enabledField = userClass.getDeclaredField("enabled")
         enabledField.isAccessible = true
         enabledField.set(user, entity.enabled)
-        
+
+        // Set contactInfo list (map persistence entities to domain value objects)
+        @Suppress("kotlin:S6518")
+        val contactInfoField = userClass.getDeclaredField("contactInfo")
+        contactInfoField.isAccessible = true
+        val contactInfoList = entity.contactInfo.map { ci ->
+            DomainContactInfo(ci.email, ci.phone)
+        }
+        contactInfoField.set(user, contactInfoList)
+
         // Set createdAt
+        @Suppress("kotlin:S6518")
         val createdAtField = userClass.getDeclaredField("createdAt")
         createdAtField.isAccessible = true
         createdAtField.set(user, entity.createdAt)
         
         // Set modifiedAt
+        @Suppress("kotlin:S6518")
         val modifiedAtField = userClass.getDeclaredField("modifiedAt")
         modifiedAtField.isAccessible = true
         modifiedAtField.set(user, entity.modifiedAt)
