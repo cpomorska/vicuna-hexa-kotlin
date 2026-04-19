@@ -15,6 +15,7 @@ import java.util.*
  * This class helps achieve persistence ignorance by separating the domain model from the persistence concerns.
  */
 @ApplicationScoped
+@SuppressWarnings("kotlin:S6518")
 class UserMapper {
 
     /**
