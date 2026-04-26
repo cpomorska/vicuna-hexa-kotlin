@@ -24,7 +24,7 @@
         <quarkus.platform.version>3.31.1</quarkus.platform.version>
 
         <!-- Dependency versions -->
-        <archunit.version>1.4.1</archunit.version>
+        <archunit.version>1.4.2</archunit.version>
         <assertj.version>3.27.7</assertj.version>
 
         <bytebuddy.version>1.18.8-jdk5</bytebuddy.version>
