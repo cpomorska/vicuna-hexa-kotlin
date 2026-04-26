@@ -24,7 +24,7 @@
         <quarkus.platform.version>3.34.5</quarkus.platform.version>
 
         <!-- Dependency versions -->
-        <archunit.version>1.4.1</archunit.version>
+        <archunit.version>1.4.2</archunit.version>
         <assertj.version>3.27.7</assertj.version>
 
         <camel-quarkus-integration-test-kotlin.version>3.16.0</camel-quarkus-integration-test-kotlin.version>
@@ -323,7 +323,7 @@
         <dependency>
             <groupId>com.github.dasniko</groupId>
             <artifactId>testcontainers-keycloak</artifactId>
-            <version>4.2.0</version>
+            <version>4.2.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
