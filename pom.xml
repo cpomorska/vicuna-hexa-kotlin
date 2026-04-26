@@ -200,7 +200,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.camel.quarkus</groupId>
-            <artifactId>camel-quarkus-junit5</artifactId>
+            <artifactId>camel-quarkus-junit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -286,7 +286,7 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-junit5</artifactId>
+            <artifactId>quarkus-junit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -479,8 +479,8 @@
                     <excludes>
                         <exclude>**/*IT.*</exclude>
                     </excludes>
-                    <forkCount>1</forkCount>
-                    <reuseForks>true</reuseForks>
+                    <forkCount>0</forkCount>
+                    <reuseForks>false</reuseForks>
                     <useManifestOnlyJar>false</useManifestOnlyJar>
                     <useSystemClassLoader>false</useSystemClassLoader>
                 </configuration>
