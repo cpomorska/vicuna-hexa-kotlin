@@ -19,6 +19,39 @@ import java.util.UUID
 
 class UserManagementResourceTest {
 
+    @Test
+    fun `deleteUser should return 200 OK when user is successfully deleted`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+        val userHandlingEvent = UserHandlingEvent()
+
+        Mockito.`when`(userServiceMock.deleteUser(userId)).thenReturn(userHandlingEvent)
+
+        // Act
+        val response = userManagementResource.deleteUser(userId)
+
+        // Assert
+        assertEquals(Response.Status.OK.statusCode, response.status)
+        assertEquals(userHandlingEvent, response.entity)
+
+        Mockito.verify(userServiceMock).deleteUser(userId)
+    }
+
+    @Test
+    fun `deleteUser should return 404 Not Found if the user does not exist`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+        Mockito.`when`(userServiceMock.deleteUser(userId)).thenReturn(null)
+
+        // Act
+        val response = userManagementResource.deleteUser(userId)
+
+        // Assert
+        assertEquals(Response.Status.NOT_FOUND.statusCode, response.status)
+
+        Mockito.verify(userServiceMock).deleteUser(userId)
+    }
+
     private val userServiceMock: DomainUserService = Mockito.mock(DomainUserService::class.java)
     private val userDtoMapperMock: UserDtoMapper = Mockito.mock(UserDtoMapper::class.java)
     private val userManagementResource = UserManagementResource().apply {
@@ -238,5 +271,201 @@ class UserManagementResourceTest {
 
         // Assert
         assertEquals(Response.Status.NOT_FOUND.statusCode, response.status)
+    }
+
+    @Test
+    fun `disableUser should return 200 OK when user is successfully disabled`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+
+        val disabledUser = User(
+            id = 1,
+            type = UserType.create("USER", "Disabled user"),
+            name = "jdoe",
+            description = "A disabled user",
+            enabled = false,
+            contactInfo = emptyList(),
+            number = userId,
+            version = 1,
+            createdAt = java.time.Instant.now(),
+            modifiedAt = java.time.Instant.now()
+        )
+
+        val userAggregate = Mockito.mock(UserAggregate::class.java)
+        Mockito.`when`(userAggregate.getUser()).thenReturn(disabledUser)
+        Mockito.`when`(userServiceMock.disableUser(userId)).thenReturn(Pair(userAggregate, UserHandlingEvent()))
+
+        val userDto = UserDto(
+            id = 1,
+            uuid = userId,
+            username = "jdoe",
+            userType = "USER",
+            description = "A disabled user",
+            enabled = false,
+            contactInfo = emptyList()
+        )
+        Mockito.`when`(userDtoMapperMock.toDto(disabledUser)).thenReturn(userDto)
+
+        // Act
+        val response = userManagementResource.disableUser(userId)
+
+        // Assert
+        assertEquals(Response.Status.OK.statusCode, response.status)
+        assertEquals(userDto, response.entity)
+        Mockito.verify(userServiceMock).disableUser(userId)
+    }
+
+    @Test
+    fun `disableUser should return 404 Not Found if the user does not exist`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+        Mockito.`when`(userServiceMock.disableUser(userId)).thenReturn(null)
+
+        // Act
+        val response = userManagementResource.disableUser(userId)
+
+        // Assert
+        assertEquals(Response.Status.NOT_FOUND.statusCode, response.status)
+        Mockito.verify(userServiceMock).disableUser(userId)
+    }
+
+    @Test
+    fun `enableUser should return 200 OK when the user is successfully enabled`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+
+        val enabledUser = User(
+            id = 1,
+            type = UserType.create("USER", "Enabled user"),
+            name = "jdoe",
+            description = "An enabled user",
+            enabled = true,
+            contactInfo = emptyList(),
+            number = userId,
+            version = 1,
+            createdAt = java.time.Instant.now(),
+            modifiedAt = java.time.Instant.now()
+        )
+
+        val userAggregate = Mockito.mock(UserAggregate::class.java)
+        Mockito.`when`(userAggregate.getUser()).thenReturn(enabledUser)
+        Mockito.`when`(userServiceMock.enableUser(userId)).thenReturn(Pair(userAggregate, UserHandlingEvent()))
+
+        val userDto = UserDto(
+            id = 1,
+            uuid = userId,
+            username = "jdoe",
+            userType = "USER",
+            description = "An enabled user",
+            enabled = true,
+            contactInfo = emptyList()
+        )
+        Mockito.`when`(userDtoMapperMock.toDto(enabledUser)).thenReturn(userDto)
+
+        // Act
+        val response = userManagementResource.enableUser(userId)
+
+        // Assert
+        assertEquals(Response.Status.OK.statusCode, response.status)
+        assertEquals(userDto, response.entity)
+        Mockito.verify(userServiceMock).enableUser(userId)
+    }
+
+    @Test
+    fun `enableUser should return 404 Not Found if the user does not exist`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+        Mockito.`when`(userServiceMock.enableUser(userId)).thenReturn(null)
+
+        // Act
+        val response = userManagementResource.enableUser(userId)
+
+        // Assert
+        assertEquals(Response.Status.NOT_FOUND.statusCode, response.status)
+        Mockito.verify(userServiceMock).enableUser(userId)
+    }
+
+    @Test
+    fun `addContactInfo should return 200 OK when contact info is successfully added`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+        val contactInfoDto = ContactInfoDto(
+            email = "new.email@example.com",
+            phone = "+1234567890"
+        )
+
+        val updatedUser = User(
+            id = 1,
+            type = UserType.create("USER", "Standard system user"),
+            name = "jdoe",
+            description = "Standard system user",
+            enabled = true,
+            contactInfo = listOf(
+                ContactInfo(email = "new.email@example.com", phone = "+1234567890")
+            ),
+            number = userId,
+            version = 1,
+            createdAt = java.time.Instant.now(),
+            modifiedAt = java.time.Instant.now()
+        )
+
+        val userAggregate = Mockito.mock(UserAggregate::class.java)
+        Mockito.`when`(userAggregate.getUser()).thenReturn(updatedUser)
+
+        val userDto = UserDto(
+            id = 1,
+            uuid = userId,
+            username = "jdoe",
+            userType = "USER",
+            description = "Standard system user",
+            enabled = true,
+            contactInfo = listOf(
+                ContactInfoDto(email = "new.email@example.com", phone = "+1234567890")
+            )
+        )
+
+        Mockito.`when`(
+            userServiceMock.addContactInfo(
+                userId,
+                ContactInfo(email = "new.email@example.com", phone = "+1234567890")
+            )
+        ).thenReturn(Pair(userAggregate, UserHandlingEvent()))
+
+        Mockito.`when`(userDtoMapperMock.toDto(updatedUser)).thenReturn(userDto)
+
+        // Act
+        val response = userManagementResource.addContactInfo(userId, contactInfoDto)
+
+        // Assert
+        assertEquals(Response.Status.OK.statusCode, response.status)
+        assertEquals(userDto, response.entity)
+        Mockito.verify(userServiceMock)
+            .addContactInfo(userId, ContactInfo(email = "new.email@example.com", phone = "+1234567890"))
+        Mockito.verify(userDtoMapperMock).toDto(updatedUser)
+    }
+
+    @Test
+    fun `addContactInfo should return 404 Not Found if the user does not exist`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+        val contactInfoDto = ContactInfoDto(
+            email = "new.email@example.com",
+            phone = "+1234567890"
+        )
+
+        Mockito.`when`(
+            userServiceMock.addContactInfo(
+                userId,
+                ContactInfo(email = "new.email@example.com", phone = "+1234567890")
+            )
+        ).thenReturn(null)
+
+        // Act
+        val response = userManagementResource.addContactInfo(userId, contactInfoDto)
+
+        // Assert
+        assertEquals(Response.Status.NOT_FOUND.statusCode, response.status)
+        Mockito.verify(userServiceMock)
+            .addContactInfo(userId, ContactInfo(email = "new.email@example.com", phone = "+1234567890"))
     }
 }
