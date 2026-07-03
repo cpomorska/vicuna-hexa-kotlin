@@ -445,6 +445,71 @@ class UserManagementResourceTest {
     }
 
     @Test
+    fun `removeContactInfo should return 200 OK when contact info is successfully removed`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+        val contactInfoDto = ContactInfoDto(
+            email = "new.email@example.com",
+            phone = "+1234567890"
+        )
+
+        val updatedUser = User(
+            id = 1,
+            type = UserType.create("USER", "Standard system user"),
+            name = "jdoe",
+            description = "Standard system user",
+            enabled = true,
+            contactInfo = listOf(
+                ContactInfo(email = "new.email@example.com", phone = "+1234567890")
+            ),
+            number = userId,
+            version = 1,
+            createdAt = java.time.Instant.now(),
+            modifiedAt = java.time.Instant.now()
+        )
+
+        val userAggregate = Mockito.mock(UserAggregate::class.java)
+        Mockito.`when`(userAggregate.getUser()).thenReturn(updatedUser)
+
+        Mockito.`when`(
+            userServiceMock.addContactInfo(
+                userId,
+                ContactInfo(email = "new.email@example.com", phone = "+1234567890")
+            )
+        ).thenReturn(Pair(userAggregate, UserHandlingEvent()))
+
+        Mockito.`when`(userAggregate.getUser()).thenReturn(updatedUser)
+
+        val userDto = UserDto(
+            id = 1,
+            uuid = userId,
+            username = "jdoe",
+            userType = "USER",
+            description = "Standard system user",
+            enabled = true,
+            contactInfo = listOf(
+                ContactInfoDto(email = "new.email@example.com", phone = "+1234567890")
+            )
+        )
+
+        Mockito.`when`(
+            userServiceMock.removeContactInfo(userId, "new.email@example.com")
+        ).thenReturn(Pair(userAggregate, UserHandlingEvent()))
+
+        Mockito.`when`(userDtoMapperMock.toDto(updatedUser)).thenReturn(userDto)
+
+        // Act
+        val response = userManagementResource.removeContactInfo(userId, contactInfoDto.email)
+
+        // Assert
+        assertEquals(Response.Status.OK.statusCode, response.status)
+        assertEquals(userDto, response.entity)
+        Mockito.verify(userServiceMock)
+            .removeContactInfo(userId, "new.email@example.com")
+        Mockito.verify(userDtoMapperMock).toDto(updatedUser)
+    }
+
+    @Test
     fun `addContactInfo should return 404 Not Found if the user does not exist`() {
         // Arrange
         val userId = UUID.randomUUID()
@@ -467,5 +532,30 @@ class UserManagementResourceTest {
         assertEquals(Response.Status.NOT_FOUND.statusCode, response.status)
         Mockito.verify(userServiceMock)
             .addContactInfo(userId, ContactInfo(email = "new.email@example.com", phone = "+1234567890"))
+    }
+
+    @Test
+    fun `removeContactInfo should return 404 Not Found if the user does not exist`() {
+        // Arrange
+        val userId = UUID.randomUUID()
+        val contactInfoDto = ContactInfoDto(
+            email = "new.email@example.com",
+            phone = "+1234567890"
+        )
+
+        Mockito.`when`(
+            userServiceMock.removeContactInfo(
+                userId,
+                "new.email@example.com"
+            )
+        ).thenReturn(null)
+
+        // Act
+        val response = userManagementResource.removeContactInfo(userId, contactInfoDto.email)
+
+        // Assert
+        assertEquals(Response.Status.NOT_FOUND.statusCode, response.status)
+        Mockito.verify(userServiceMock)
+            .removeContactInfo(userId, "new.email@example.com")
     }
 }

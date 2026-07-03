@@ -77,7 +77,6 @@ class DomainUserServiceImpl @Inject constructor(
 
     override fun deleteUser(userId: UUID): UserHandlingEvent? {
         val userAggregate = userRepository.findByUUID(userId) ?: return null
-        val user = userAggregate.getUser()
         userRepository.delete(userAggregate)
         
         // Create a delete event
