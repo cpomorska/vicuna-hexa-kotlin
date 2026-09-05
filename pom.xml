@@ -32,7 +32,7 @@
         <failsafe.version>3.5.6</failsafe.version>
         <jackson.version>2.16.1</jackson.version>
         <jacoco.version>0.8.15</jacoco.version>
-        <lombok.version>1.18.46</lombok.version>
+        <lombok.version>1.18.48</lombok.version>
         <mockito.core.version>5.3.1</mockito.core.version>
         <mockito.inline.version>5.2.0</mockito.inline.version>
         <mockito.kotlin.version>6.3.0</mockito.kotlin.version>
