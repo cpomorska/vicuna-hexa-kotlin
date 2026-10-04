@@ -14,7 +14,10 @@ class JpaUrlProcessor : Processor {
 
     override fun process(exchange: Exchange) {
         exchange.setProperty("jpaUrl", "com.scprojekt.vicuna.jpa")
-        val clazz: Class<*> = exchange.message.getBody(Any::class.java).javaClass
+        val body = requireNotNull(exchange.message.getBody(Any::class.java)) {
+            "Message body must not be null when determining the JPA entity class"
+        }
+        val clazz: Class<*> = body.javaClass
         exchange.message.setHeader("jpaUrl", clazz.name)
     }
 }
