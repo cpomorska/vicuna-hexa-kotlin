@@ -39,7 +39,7 @@ quarkus:
   datasource:
     db-kind: postgresql
     jdbc:
-      url: ${DB_URL:jdbc:postgresql://host.docker.internal:15432/vicuna_user}
+      url: ${DB_URL:jdbc:postgresql://localhost:15432/vicuna_user}
       pooling-enabled: true
     username: ${DB_USER:vicuna_user}
     password: ${DB_PASSWORD:vicuna_pw}
