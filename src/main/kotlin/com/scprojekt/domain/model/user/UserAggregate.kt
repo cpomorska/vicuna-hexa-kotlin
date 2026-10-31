@@ -15,7 +15,7 @@ import java.util.*
  * go through the aggregate root.
  */
 class UserAggregate private constructor(
-    private val user: User
+    private var user: User
 ) {
     companion object {
         fun create(
@@ -63,37 +63,37 @@ class UserAggregate private constructor(
     fun getUser(): User = user
     
     fun changeUserType(newType: UserType): UserHandlingEvent {
-        user.changeUserType(newType)
+        user = user.changeUserType(newType)
         return UserEventFactory.getInstance().createUserEvent(UserEventType.UPDATE, toEntity(user))
     }
     
     fun changeName(newName: String): UserHandlingEvent {
-        user.changeName(newName)
+        user = user.changeName(newName)
         return UserEventFactory.getInstance().createUserEvent(UserEventType.UPDATE, toEntity(user))
     }
     
     fun changeDescription(newDescription: String): UserHandlingEvent {
-        user.changeDescription(newDescription)
+        user = user.changeDescription(newDescription)
         return UserEventFactory.getInstance().createUserEvent(UserEventType.UPDATE, toEntity(user))
     }
     
     fun disable(): UserHandlingEvent {
-        user.disable()
+        user = user.disable()
         return UserEventFactory.getInstance().createUserEvent(UserEventType.DISABLE, toEntity(user))
     }
     
     fun enable(): UserHandlingEvent {
-        user.enable()
+        user = user.enable()
         return UserEventFactory.getInstance().createUserEvent(UserEventType.ENABLE, toEntity(user))
     }
     
     fun addContactInfo(info: ContactInfo): UserHandlingEvent {
-        user.addContactInfo(info)
+        user = user.addContactInfo(info)
         return UserEventFactory.getInstance().createUserEvent(UserEventType.UPDATE, toEntity(user))
     }
     
     fun removeContactInfo(email: String): UserHandlingEvent {
-        user.removeContactInfo(email)
+        user = user.removeContactInfo(email)
         return UserEventFactory.getInstance().createUserEvent(UserEventType.UPDATE, toEntity(user))
     }
     

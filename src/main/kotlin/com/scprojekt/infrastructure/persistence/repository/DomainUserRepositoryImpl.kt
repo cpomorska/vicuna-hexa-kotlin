@@ -75,6 +75,11 @@ class DomainUserRepositoryImpl @Inject constructor(
         if (entity.userId == null) {
             entityManager.persist(entity)
         } else {
+            val existing = entityManager.find(UserEntity::class.java, entity.userId)
+            if (existing != null) {
+                entity.userNumber = existing.userNumber
+                entity.userType = existing.userType
+            }
             entityManager.merge(entity)
         }
         

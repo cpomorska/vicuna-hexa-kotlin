@@ -28,6 +28,7 @@ services:
     env_file:
       - keycloak.local.env
     command:
+      - '--verbose'
       - 'start-dev'
       - '--import-realm'
       - '--health-enabled=true'
@@ -36,19 +37,22 @@ services:
     ports:
       - "8180:8080"
     depends_on:
-      - postgres-kc
-      - postgres
-    network_mode: bridge
+      postgres-kc:
+        condition: service_healthy
+    #      postgres:
+    #        condition: service_healthy
+    networks:
+      - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
       interval: 30s
       timeout: 5s
       retries: 20
 
   postgres-kc:
-    container_name: postgres-kc
+    container_name: postgresql-kc
     image: 'postgres:18'
     hostname: 'pgkc'
     command: -p 5433
@@ -56,7 +60,10 @@ services:
       - postgres.local.keycloak.env
     ports:
       - '25432:5433'
-    network_mode: bridge
+    expose:
+      - '5433'
+    networks:
+      - vicuna-net
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
